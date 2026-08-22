@@ -584,6 +584,7 @@ a{color:var(--pen);}
 .settings-row.centered{flex-direction:column;align-items:center;text-align:center;gap:12px;}
 .settings-row.centered .settings-label{text-align:center;}
 .settings-row.centered .settings-input{justify-content:center;flex-wrap:wrap;}
+.settings-row.column{flex-direction:column;align-items:flex-start;gap:12px;}
 .settings-sub{background:var(--paper);border-bottom:1px solid var(--line);}
 .settings-sub .settings-row{padding-left:38px;}
 .settings-sub .settings-sub .settings-row{padding-left:64px;}
@@ -1315,7 +1316,6 @@ function dropboxSettingsHTML(){
       <small>${tr('Els arxius que adjuntes es guarden al teu Dropbox personal. ')}${connected ? tr('Els nous arxius aniran al teu Dropbox.') : tr('Connecta el teu compte per guardar-hi els arxius.')}</small>
     </div>
     <div class="settings-input">
-      <span class="mono" style="font-size:.72rem">${connected ? tr('Connectat') : tr('No connectat')}</span>
       <button class="btn btn-sm ${connected ? 'btn-danger' : 'btn-primary'}" onclick="dbxToggle()">${connected ? tr('Desconnecta') : tr('Connecta amb Dropbox')}</button>
     </div>
   </div>
@@ -1942,7 +1942,7 @@ function settingsHTML(){
   </div>
 
   <div class="settings-card">
-    <div class="settings-row">
+    <div class="settings-row column">
       <div class="settings-label">
         <b>${tr('Còpia de seguretat')}</b>
         <small>${tr('Descarrega o restaura una còpia de totes les dades.')}</small>
