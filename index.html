@@ -191,7 +191,8 @@ a{color:var(--pen);}
 /* Area header */
 .area-header{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:22px;}
 .area-header-left{display:flex;gap:14px;align-items:flex-start;flex:1;min-width:240px;}
-.area-color-badge{width:44px;height:44px;border-radius:11px;background:var(--area-color);flex:none;margin-top:2px;}
+.area-color-badge{width:44px;height:44px;border-radius:11px;background:var(--area-color);flex:none;margin-top:2px;display:flex;align-items:center;justify-content:center;color:#fff;}
+.area-color-badge svg{width:22px;height:22px;}
 .area-title-input{
   font-family:'Fraunces',serif;font-weight:600;font-size:1.8rem;border:none;background:none;
   padding:2px 0;width:100%;border-bottom:2px solid transparent;
@@ -206,13 +207,25 @@ a{color:var(--pen);}
 .color-swatches{display:flex;gap:6px;}
 .swatch{width:18px;height:18px;border-radius:50%;border:2px solid transparent;padding:0;}
 .swatch.active{border-color:var(--ink);}
+.color-badge-clickable{cursor:pointer;transition:filter .12s ease;}
+.color-badge-clickable:hover{filter:brightness(1.08);}
+#color-modal .modal{max-width:400px;}
+#color-modal-body{padding:6px 0 4px;}
+.color-modal-swatches{display:flex;flex-wrap:wrap;gap:10px;}
+.color-modal-swatches .swatch{width:30px;height:30px;}
+.color-modal-swatches .swatch.active{border-color:var(--pen);box-shadow:0 0 0 2px var(--white) inset;}
+.color-modal-custom{display:flex;align-items:center;gap:10px;margin-top:16px;padding-top:14px;border-top:1px solid var(--line);}
+.color-modal-custom label{font-size:.85rem;font-weight:600;color:var(--ink-soft);}
+.color-modal-custom input[type=color]{width:40px;height:30px;padding:0;border:1px solid var(--line);border-radius:6px;background:none;cursor:pointer;}
+.color-modal-custom input[type=color]::-webkit-color-swatch-wrapper{padding:0;}
+.color-modal-custom input[type=color]::-webkit-color-swatch{border:none;border-radius:5px;}
 .area-header-right{display:flex;gap:8px;align-items:flex-start;}
 
 .sa-add-row{margin-bottom:20px;}
 
 /* SA card */
 .sa-card{
-  background:var(--white);border:1px solid var(--line);border-radius:var(--radius);
+  background:color-mix(in srgb, var(--area-color, #ffffff) 6%, var(--white));border:1px solid var(--line);border-radius:var(--radius);
   margin-bottom:16px;box-shadow:var(--shadow);overflow:hidden;
 }
 .sa-header{display:flex;align-items:center;gap:12px;padding:16px 18px;flex-wrap:wrap;}
@@ -236,7 +249,7 @@ a{color:var(--pen);}
 @media(max-width:640px){.sa-card.open .sa-body{grid-template-columns:1fr;}}
 
 /* Session card */
-.session-card{background:var(--white);border:1px solid var(--line);border-radius:10px;margin-bottom:12px;overflow:hidden;}
+.session-card{background:color-mix(in srgb, var(--area-color, #ffffff) 5%, var(--white));border:1px solid var(--line);border-radius:10px;margin-bottom:12px;overflow:hidden;}
 .sa-body .session-card{margin-bottom:0;}
 .session-card.open{grid-column:1 / -1;}
 .session-card:not(.open) .duration-bar-wrap{display:none;}
@@ -459,10 +472,13 @@ a{color:var(--pen);}
 .urgent-banner:hover{filter:brightness(1.05);}
 .agenda-card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;}
 .agenda-head{display:flex;align-items:center;gap:12px;padding:9px 18px;border-bottom:1px solid var(--line);}
-.agenda-color-badge{width:36px;height:36px;border-radius:9px;background:var(--area-color);flex:none;}
-.agenda-area{flex:1;min-width:0;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
-.agenda-area-name{color:var(--area-color);font-size:1.02rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.agenda-color-badge{width:36px;height:36px;border-radius:9px;background:var(--area-color);flex:none;display:flex;align-items:center;justify-content:center;color:#fff;}
+.agenda-color-badge svg{width:18px;height:18px;}
+.agenda-area{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:3px;}
+.agenda-area-name{color:var(--area-color);font-size:1.02rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;}
 .agenda-area small{color:var(--ink-faint);font-size:.78rem;}
+.agenda-sa-label{display:inline-flex;align-items:center;gap:6px;font-size:.78rem;font-weight:600;padding:3px 10px;border-radius:20px;white-space:nowrap;max-width:300px;overflow:hidden;text-overflow:ellipsis;}
+.agenda-sa-label .sa-num{font-family:'IBM Plex Mono',monospace;font-weight:600;opacity:.8;}
 .agenda-sp{margin-left:4px;background:var(--gold);color:var(--ink);font-size:.86rem;font-weight:700;text-transform:uppercase;letter-spacing:.02em;padding:2px 10px;border-radius:20px;white-space:nowrap;max-width:260px;overflow:hidden;text-overflow:ellipsis;}
 .agenda-progress{color:var(--ink-soft);font-size:.85rem;}
 .agenda-head-actions{display:flex;align-items:center;gap:8px;flex:none;flex-wrap:wrap;}
@@ -781,6 +797,18 @@ a{color:var(--pen);}
   </div>
 </div>
 
+<!-- Tria color de l'àrea modal -->
+<div class="modal-backdrop" id="color-modal" onclick="if(event.target===this)closeColorModal()">
+  <div class="modal">
+    <h2 data-i18n="Color de l'àrea">Color de l'àrea</h2>
+    <p class="hint" data-i18n="Tria un color per a la icona de l'àrea.">Tria un color per a la icona de l'àrea.</p>
+    <div id="color-modal-body"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeColorModal()" data-i18n="Tanca">Tanca</button>
+    </div>
+  </div>
+</div>
+
 <!-- Inicia sessió / crea compte modal -->
 <div class="modal-backdrop" id="auth-modal" onclick="if(event.target===this)closeAuthModal()">
   <div class="modal">
@@ -830,7 +858,7 @@ let trashQuery = '';
 let trashTypeFilter = 'all';
 let parsedAreaName = '';
 
-const AREA_COLORS = ['#33507A','#B0523F','#6B8F71','#7A5980','#3C8C8C','#B9860F','#55707A','#8A5B3F'];
+const AREA_COLORS = ['#33507A','#B0523F','#6B8F71','#7A5980','#3C8C8C','#B9860F','#55707A','#8A5B3F','#D97A1F','#D9A608'];
 
 const LS_STATE = 'quadernAulaState';
 
@@ -918,6 +946,11 @@ const I18N_ES = {
   'Setmanes que dura el curs.': 'Semanas que dura el curso.',
   'setmanes': 'semanas',
   'General': 'General',
+  'Tria un color personalitzat': 'Elige un color personalizado',
+  'Canvia el color de l\'àrea': 'Cambia el color del área',
+  'Color de l\'àrea': 'Color del área',
+  'Tria un color per a la icona de l\'àrea.': 'Elige un color para el icono del área.',
+  'Personalitzat': 'Personalizado',
   'Configuració': 'Configuración',
   'Connexions': 'Conexiones',
   'Elements de la programació': 'Elementos de la programación',
@@ -1561,6 +1594,18 @@ async function signOut(){
   render();
 }
 function colorForNewArea(){ return AREA_COLORS[state.areas.length % AREA_COLORS.length]; }
+function colorForAreaName(name){
+  const t = normText(name);
+  const has = list => list.some(k => t.includes(k));
+  if(has(['valencia'])) return '#D9A608';
+  if(has(['caste'])) return '#B0523F';
+  if(has(['mate'])) return '#33507A';
+  if(has(['ling','llengua','lleng','catal','lengua','lengu'])) return '#D97A1F';
+  if(has(['coneixement del medi','medi','social','naturals','natura','cienc','historia','geograf','economia','filosof','civilitzaci','voluntariat','astronom','geologia'])) return '#6B8F71';
+  if(has(['tutori','tutoria'])) return '#7A5980';
+  if(has(['valors','etic','religio','religion'])) return '#8A5B3F';
+  return null;
+}
 function esc(str){
   return String(str ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
@@ -1647,7 +1692,7 @@ function areaHTML(area){
   return `
   <div class="area-header">
     <div class="area-header-left">
-      <div class="area-color-badge" style="--area-color:${area.color}"></div>
+      <div class="area-color-badge" style="--area-color:${area.color}">${areaIconHTML(area.name)}</div>
       <div style="flex:1;">
         <input class="area-title-input" style="--area-color:${area.color}" value="${esc(area.name)}" oninput="renameArea('${area.id}', this.value)">
         <div class="area-meta">
@@ -1672,7 +1717,7 @@ function areaHTML(area){
 function saHTML(area, sa, index){
   const sessions = sa.sessions.map((se,i)=> sessionHTML(area, sa, se, i)).join('') || `<p class="empty-hint">${tr('Cap sessió encara. Canvia el número de sessions per afegir-ne.')}</p>`;
   return `
-  <div class="sa-card ${sa.open?'open':''}" id="sa-${sa.id}">
+  <div class="sa-card ${sa.open?'open':''}" id="sa-${sa.id}" style="--area-color:${area.color}">
     <div class="sa-header" style="--area-color:${area.color};background:${hexToRgba(area.color,0.08)}">
       <button class="sa-toggle" onclick="toggleSA('${area.id}','${sa.id}')" aria-label="${tr('Desplega')}">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="9 6 15 12 9 18"/></svg>
@@ -3229,17 +3274,19 @@ function agendaCardHTML(a){
   const done = !!a.doneOn;
   const info = agendaInfo(a);
   const saIdx = info.complete ? 0 : a.situacions.indexOf(info.sa) + 1;
-  const spLine = info.complete ? '' : `<span class="agenda-sp" title="${esc(info.sa.name)}">SA${saIdx} · ${esc(info.sa.name)}</span>`;
+  const saLabel = (!done && !info.complete && info.sa)
+    ? `<span class="agenda-sa-label" style="color:${a.color};background:${hexToRgba(a.color,0.12)}" title="${esc(info.sa.name)}"><span class="sa-num">SA${saIdx}</span>${esc(info.sa.name)}</span>`
+    : '';
   const courseLine = a.course ? `<span class="agenda-course">${esc(a.course)}</span>` : '';
   const stateBtn = done
     ? `<button class="btn btn-gold btn-sm" onclick="resumeArea('${a.id}')">${tr('Reprendre')}</button>`
     : `<button class="btn btn-primary btn-sm" onclick="markAreaDone('${a.id}')">${tr('Fet')}</button>`;
   const head = `
   <div class="agenda-head" style="--area-color:${a.color};background:${hexToRgba(a.color,0.10)};border-left:4px solid ${a.color}">
-    <div class="agenda-color-badge" style="--area-color:${a.color}"></div>
+    <div class="agenda-color-badge color-badge-clickable" style="--area-color:${a.color}" onclick="openColorModal('${a.id}')" title="${tr('Canvia el color de l\'àrea')}">${areaIconHTML(a.name)}</div>
     <div class="agenda-area">
       <b class="agenda-area-name">${esc(a.name)}</b>
-      <small>${trf('{n} sessions', { n: countSessions(a) })}</small>
+      ${saLabel}
     </div>
     <div class="agenda-head-actions">
       ${courseLine}
@@ -3252,23 +3299,15 @@ function agendaCardHTML(a){
     body = `<div class="done-banner"><span class="check">✓</span>${tr('Totes les sessions completades')}</div>
       <div class="agenda-foot"><button class="btn btn-ghost btn-sm" onclick="resetAgenda('${a.id}')">${tr('Reinicia')}</button></div>`;
   } else {
-    const total = sumMinutes(info.session.activities);
-    const bar = durationBarHTML(a, info.session);
     const acts = info.session.activities.map(x => activityVistaHTML(null, null, null, x, `openAreaAtSession('${a.id}','${info.sa.id}','${info.session.id}')`)).join('');
     const actGrid = acts ? `<div class="vista-act-grid">${acts}</div>` : `<p class="empty-hint">${tr('Sense activitats.')}</p>`;
-    const dur = durationsEnabled()
-      ? `<div class="duration-bar-wrap">
-          <div class="duration-bar${total===0?' empty':''}">${bar}</div>
-        </div>
-        <span class="session-total mono">${total}′</span>`
-      : '';
+    const sessNumInSA = info.sa.sessions.indexOf(info.session) + 1;
+    const saTotal = info.sa.sessions.length;
     body = `
     <div class="session-card open">
       <div class="session-header">
-        ${spLine}
-        <span class="session-num">S${info.sa.sessions.indexOf(info.session) + 1}</span>
+        <span class="session-num">S${sessNumInSA}</span>
         <span class="session-name" title="${esc(sessionCleanName(info.session))}">${esc(sessionCleanName(info.session))}</span>
-        ${dur}
       </div>
       <div class="session-body">
         ${actGrid}
@@ -3276,7 +3315,7 @@ function agendaCardHTML(a){
       </div>
     </div>
     <div class="agenda-foot">
-      <span class="agenda-progress">${trf('Sessió {a} de {b}', { a: info.idx + 1, b: info.total })}</span>
+      <span class="agenda-progress">${trf('Sessió {a} de {b}', { a: sessNumInSA, b: saTotal })}</span>
       <span class="agenda-foot-spacer"></span>
       <button class="btn btn-ghost btn-icon" onclick="prevSession('${a.id}')" aria-label="${tr('Sessió anterior')}">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="15 18 9 12 15 6"/></svg>
@@ -3295,7 +3334,7 @@ function areaVistaHTML(area){
   return `
   <div class="area-header">
     <div class="area-header-left">
-      <div class="area-color-badge" style="--area-color:${area.color}"></div>
+      <div class="area-color-badge color-badge-clickable" style="--area-color:${area.color}" onclick="openColorModal('${area.id}')" title="${tr('Canvia el color de l\'àrea')}">${areaIconHTML(area.name)}</div>
       <div style="flex:1;">
         <input class="area-title-input" style="--area-color:${area.color}" value="${esc(area.name)}" oninput="renameArea('${area.id}', this.value)">
         <div class="area-meta">
@@ -3332,7 +3371,7 @@ function saVistaHTML(area, sa, index){
     return editingHere ? sessionHTML(area, sa, se, i) : sessionVistaHTML(area, sa, se, i);
   }).join('') || `<p class="empty-hint">${tr('Cap sessió en aquesta situació.')}</p>`;
   return `
-  <div class="sa-card ${sa.open?'open':''}" id="sa-${sa.id}">
+  <div class="sa-card ${sa.open?'open':''}" id="sa-${sa.id}" style="--area-color:${area.color}">
     <div class="sa-header" style="--area-color:${area.color};background:${hexToRgba(area.color,0.08)}">
       <button class="sa-toggle" onclick="toggleSA('${area.id}','${sa.id}')" aria-label="${tr('Desplega')}">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="9 6 15 12 9 18"/></svg>
@@ -3390,6 +3429,33 @@ const ACTIVITY_ICONS = {
   jocs: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 12h4"/><path d="M8 10v4"/><path d="M15 13h.01"/><path d="M18 11h.01"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>',
   oral: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>'
 };
+const AREA_ICONS = {
+  mates: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="19" r="1.5"/><path d="M4 12h16"/></svg>',
+  llengua: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>',
+  idiomes: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>',
+  ciencies: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>',
+  tecnologia: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>',
+  ef: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>',
+  art: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>',
+  musica: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>',
+  religio: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>',
+  default: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>'
+};
+function areaIconHTML(name){
+  const t = normText(name);
+  const has = list => list.some(k => t.includes(k));
+  let key = 'default';
+  if(has(['educacio fisica','ed fisica','educacion fisica','esport','sport'])) key = 'ef';
+  else if(has(['matem','mates','numer','algebra','geometr','estadist','calcul','funci','trigonometr','nombres'])) key = 'mates';
+  else if(has(['llengua','catal','castell','valenci','lengu','lengua','llengues','ling'])) key = 'llengua';
+  else if(has(['angles','frances','alemany','italia','llati','ingles','english','alemán'])) key = 'idiomes';
+  else if(has(['cienc','biolog','fisic','quimic','naturals','natura','ciencia','medi','salut','cos huma','social','historia','geograf','economia','filosof','civilitzaci','voluntariat','coneixement del medi','geologia','astronom'])) key = 'ciencies';
+  else if(has(['tecnolog','informatic','digital','computaci','programaci','programacio'])) key = 'tecnologia';
+  else if(has(['plastica','dibuix','dibuj','art ','manualitat','arts','artis'])) key = 'art';
+  else if(has(['musica','canco','cant'])) key = 'musica';
+  else if(has(['religio','religion','valors','etica','ciutadania','etic'])) key = 'religio';
+  return AREA_ICONS[key] || AREA_ICONS.default;
+}
 function normText(s){
   return String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
 }
@@ -3460,7 +3526,7 @@ function closeAddAreaModal(){
   if(m) m.classList.remove('open');
 }
 function addArea(){
-  const area = { id: uid(), name: tr('Nova àrea'), course: '', color: colorForNewArea(), active: true, currentSessionId: null, createdAt: new Date().toISOString(), situacions: [] };
+  const area = { id: uid(), name: tr('Nova àrea'), course: '', color: colorForAreaName(tr('Nova àrea')) || colorForNewArea(), active: true, currentSessionId: null, createdAt: new Date().toISOString(), situacions: [] };
   state.areas.push(area);
   state.selectedAreaId = area.id;
   showAgenda = false;
@@ -3502,7 +3568,12 @@ function prepareAreaView(area){
 }
 function renameArea(id, value){
   const area = state.areas.find(a=>a.id===id); if(!area) return;
-  area.name = value; saveState();
+  area.name = value;
+  if(!area.colorPinned){
+    const c = colorForAreaName(value);
+    if(c) area.color = c;
+  }
+  saveState();
   const navEl = document.getElementById('area-nav-name-'+id);
   if(navEl) navEl.textContent = value;
 }
@@ -3512,7 +3583,28 @@ function renameCourse(id, value){
 }
 function recolorArea(id, color){
   const area = state.areas.find(a=>a.id===id); if(!area) return;
-  area.color = color; saveState(); render();
+  area.color = color; area.colorPinned = true; saveState(); render();
+  const m = document.getElementById('color-modal');
+  if(m && m.classList.contains('open')) openColorModal(id);
+}
+let colorTargetId = null;
+function openColorModal(id){
+  colorTargetId = id;
+  const area = state.areas.find(a=>a.id===id); if(!area) return;
+  const body = document.getElementById('color-modal-body');
+  if(body) body.innerHTML = `
+    <div class="color-modal-swatches">${AREA_COLORS.map(c=>`<button class="swatch ${c===area.color?'active':''}" style="background:${c}" onclick="recolorArea('${id}','${c}')" title="Tria color ${c}" aria-label="Tria color"></button>`).join('')}</div>
+    <div class="color-modal-custom">
+      <label for="color-modal-input">${tr('Personalitzat')}</label>
+      <input type="color" id="color-modal-input" value="${esc(area.color)}" onchange="recolorArea('${id}', this.value)">
+    </div>`;
+  const m = document.getElementById('color-modal');
+  if(m) m.classList.add('open');
+}
+function closeColorModal(){
+  const m = document.getElementById('color-modal');
+  if(m) m.classList.remove('open');
+  colorTargetId = null;
 }
 function removeFilesFromArea(area){
   area.situacions.forEach(sa => sa.sessions.forEach(se => se.activities.forEach(a => removeFilesFromStorage(a.files))));
@@ -4524,7 +4616,7 @@ function confirmImport(){
   const areaNameInput = document.getElementById('import-area-name').value.trim() || importFileName || tr('Àrea importada');
   let area;
   if(target==='new'){
-    area = { id: uid(), name: areaNameInput, color: colorForNewArea(), active: true, currentSessionId: null, createdAt: new Date().toISOString(), situacions: [] };
+    area = { id: uid(), name: areaNameInput, color: colorForAreaName(areaNameInput) || colorForNewArea(), colorPinned: true, active: true, currentSessionId: null, createdAt: new Date().toISOString(), situacions: [] };
     state.areas.push(area);
   } else {
     area = state.areas.find(a=>a.id===target);
