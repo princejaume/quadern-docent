@@ -713,6 +713,7 @@ let attachTarget = null;
 let recursosUrgents = true;
 let recursosChecked = false;
 let attachAnimActId = null;
+let pruneRunning = false;
 let filesQuery = '';
 let filesFilter = 'all';
 let filesAreaFilter = 'all';
@@ -1089,7 +1090,7 @@ function saHTML(area, sa, index){
       <button class="sa-toggle" onclick="toggleSA('${area.id}','${sa.id}')" aria-label="Desplega">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="9 6 15 12 9 18"/></svg>
       </button>
-      <span class="sa-num">SP${index+1}</span>
+      <span class="sa-num">SA${index+1}</span>
       <input class="sa-title-input" id="sa-title-${sa.id}" value="${esc(sa.name)}" oninput="renameSA('${area.id}','${sa.id}', this.value)">
       <div class="sa-stats">
         <div class="sessions-count-field">
@@ -1475,6 +1476,9 @@ function cleanResourceText(text){
   if(!raw) return '';
   return raw.replace(RES_FILTER_RE, '').replace(/[\s,;]+/g, ' ').replace(/^[\s,;]+|[\s,;]+$/g, '').trim();
 }
+function hasAttachments(act){
+  return !!((act.files && act.files.length) || (act.links && act.links.length));
+}
 
 function selectResourcesArea(id){
   resourcesAreaId = id;
@@ -1543,7 +1547,6 @@ function animateCardLeave(actId, animClass, then){
 function markFirstAttach(areaId, saId, sessionId, actId, a){
   if(a.resourceDone) return;
   if(!cleanResourceText(a.resources)) return;
-  a.resourceDone = true;
   attachAnimActId = actId;
   saveState();
 }
@@ -1630,7 +1633,7 @@ function areaResourcesHTML(area){
     const sIdx = sa.sessions.indexOf(se) + 1;
     for(const act of se.activities){
       const res = cleanResourceText(act.resources);
-      if(res && (recursosChecked ? act.resourceDone : !act.resourceDone)){
+      if(res && (recursosChecked ? act.resourceDone : (!act.resourceDone && !hasAttachments(act)))){
         rows.push({ sa, se, actId: act.id, resource: res, s: sIdx, sp: spIdx, pos: _pos });
       }
     }
@@ -1663,7 +1666,7 @@ function resourceCardHTML(area, r){
       </button>`;
   return `
   <div class="res-card" id="res-card-${r.actId}">
-    <span class="sp-num">SP${r.sp}</span>
+    <span class="sp-num">SA${r.sp}</span>
     <span class="session-num" onclick="openResSession('${area.id}','${r.sa.id}','${r.se.id}')" title="Obre la sessió">S${r.s}</span>
     <span class="res-name" onclick="openResSession('${area.id}','${r.sa.id}','${r.se.id}')" title="${esc(r.resource)}">${esc(r.resource)}</span>
     <button class="res-btn" title="Adjunta fitxers o enllaços" onclick="openAttachModal('${area.id}','${r.sa.id}','${r.se.id}','${r.actId}')">
@@ -1859,7 +1862,7 @@ function areaReminderHTML(area, cw){
     const sIdx = sa.sessions.indexOf(se) + 1;
     for(const act of se.activities){
       const res = cleanResourceText(act.resources);
-      if(res && !act.resourceDone){
+      if(res && !act.resourceDone && !hasAttachments(act)){
         rows.push({ s: sIdx, sp: spIdx, resource: res, actId: act.id, areaId: area.id, saId: sa.id, seId: se.id });
       }
     }
@@ -1876,7 +1879,7 @@ function reminderCardHTML(r){
   const open = `openResSession('${r.areaId}','${r.saId}','${r.seId}')`;
   return `
   <div class="res-card" id="res-card-${r.actId}">
-    <span class="sp-num">SP${r.sp}</span>
+    <span class="sp-num">SA${r.sp}</span>
     <span class="session-num" onclick="${open}" title="Obre la sessió">S${r.s}</span>
     <span class="res-name" onclick="${open}" title="${esc(r.resource)}">${esc(r.resource)}</span>
     <button class="res-btn" title="Adjunta fitxers o enllaços" onclick="openAttachModal('${r.areaId}','${r.saId}','${r.seId}','${r.actId}')">
@@ -2030,10 +2033,10 @@ function trashCardHTML(a){
 -------------------------------------------------------- */
 function showAgendaView(){ showAgenda = true; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; editTarget = null; render(); closeDrawerIfMobile(); }
 function showSettingsView(){ showAgenda = false; showSettings = true; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; render(); closeDrawerIfMobile(); }
-function showFilesView(){ showAgenda = false; showSettings = false; showFiles = true; showArchived = false; showTrash = false; showResources = false; showReminder = false; render(); closeDrawerIfMobile(); }
+function showFilesView(){ showAgenda = false; showSettings = false; showFiles = true; showArchived = false; showTrash = false; showResources = false; showReminder = false; render(); pruneMissingDropboxFiles(); closeDrawerIfMobile(); }
 function showArchivedView(){ showAgenda = false; showSettings = false; showFiles = false; showArchived = true; showTrash = false; showResources = false; showReminder = false; render(); closeDrawerIfMobile(); }
 function showTrashView(){ showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = true; showResources = false; showReminder = false; render(); closeDrawerIfMobile(); }
-function showResourcesView(){ showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = true; showReminder = false; recursosUrgents = true; recursosChecked = false; render(); closeDrawerIfMobile(); }
+function showResourcesView(){ showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = true; showReminder = false; recursosUrgents = true; recursosChecked = false; render(); pruneMissingDropboxFiles(); closeDrawerIfMobile(); }
 function openArea(id){
   const area = state.areas.find(a=>a.id===id); if(area) prepareAreaView(area);
   state.selectedAreaId = id; showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; editTarget = null; saveState(); render(); closeDrawerIfMobile();
@@ -2136,7 +2139,7 @@ function agendaCardHTML(a){
   const done = !!a.doneOn;
   const info = agendaInfo(a);
   const saIdx = info.complete ? 0 : a.situacions.indexOf(info.sa) + 1;
-  const spLine = info.complete ? '' : `<span class="agenda-sp" title="${esc(info.sa.name)}">SP${saIdx} · ${esc(info.sa.name)}</span>`;
+  const spLine = info.complete ? '' : `<span class="agenda-sp" title="${esc(info.sa.name)}">SA${saIdx} · ${esc(info.sa.name)}</span>`;
   const courseLine = a.course ? `<span class="agenda-course">${esc(a.course)}</span>` : '';
   const stateBtn = done
     ? `<button class="btn btn-gold btn-sm" onclick="resumeArea('${a.id}')">Reprendre</button>`
@@ -2248,7 +2251,7 @@ function saVistaHTML(area, sa, index){
       <button class="sa-toggle" onclick="toggleSA('${area.id}','${sa.id}')" aria-label="Desplega">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="9 6 15 12 9 18"/></svg>
       </button>
-      <span class="sa-num">SP${index+1}</span>
+      <span class="sa-num">SA${index+1}</span>
       <input class="sa-title-input" id="sa-title-${sa.id}" style="flex:1;" value="${esc(sa.name)}" oninput="renameSA('${area.id}','${sa.id}', this.value)">
       <div class="sa-stats">
         ${totBadge}
@@ -2698,6 +2701,10 @@ async function handleActivityFiles(areaId, saId, sessionId, actId, inputOrFiles)
   if(!files.length) return;
   a.files = a.files || [];
   const wasEmpty = !(a.files||[]).length && !(a.links||[]).length;
+  const area = state.areas.find(x=>x.id===areaId);
+  const sa = area ? area.situacions.find(x=>x.id===saId) : null;
+  const saIdx = sa ? area.situacions.indexOf(sa) + 1 : 1;
+  const dropboxFolder = area && sa ? resourcesFolderPath(area, sa, saIdx) : '/Recursos Activitats';
   let added = 0;
   const MAX = 20*1024*1024;
   for(const f of files){
@@ -2709,7 +2716,7 @@ async function handleActivityFiles(areaId, saId, sessionId, actId, inputOrFiles)
     try{
       let meta;
       if(dropboxEnabled()){
-        meta = await uploadFileToDropbox(f, fileId);
+        meta = await uploadFileToDropbox(f, fileId, dropboxFolder);
       }else if(remoteEnabled()){
         meta = await uploadFileToStorage(f, fileId);
       }else{
@@ -2735,13 +2742,28 @@ function readAsDataURL(file){
     r.readAsDataURL(file);
   });
 }
-async function uploadFileToDropbox(file, fileId){
+async function uploadFileToDropbox(file, fileId, folderPath){
   if(!dbx) throw new Error('Sense sessió de Dropbox');
   const ext = extOf(file.name).toLowerCase();
-  const dbxPath = '/act/' + fileId + '.' + ext;
+  const dbxPath = (folderPath || '/Recursos Activitats') + '/' + fileId + '.' + ext;
   await dbx.filesUpload({ path: dbxPath, contents: file, mode: { '.tag': 'overwrite' } });
   const url = await getOrCreateDropboxSharedLink(dbxPath);
   return { dbxPath, url };
+}
+function dropboxSafeName(name){
+  return String(name||'')
+    .replace(/[/\\:*?"<>|]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+function saFolderName(idx, sa){
+  let name = String(sa && sa.name || '').replace(/^Situació d'aprenentatge\s*\d+\s*(?:—|–|-|:)?\s*/i, '').trim();
+  if(!name) name = 'SA';
+  if(name.length > 32) name = name.slice(0, 32).trim();
+  return `SA${idx} (${dropboxSafeName(name)})`;
+}
+function resourcesFolderPath(area, sa, saIdx){
+  return `/Recursos Activitats/${dropboxSafeName(area && area.name)}/${saFolderName(saIdx, sa)}`;
 }
 async function getOrCreateDropboxSharedLink(path){
   try{
@@ -2794,6 +2816,52 @@ function fileUrl(f, download){
     return base + sep + 'download=' + encodeURIComponent(f.name);
   }
   return base;
+}
+function isDropboxNotFoundError(e){
+  if(!e) return false;
+  if(e.status === 409) return true;
+  if(e.error_summary && String(e.error_summary).includes('not_found')) return true;
+  return false;
+}
+async function pruneMissingDropboxFiles(){
+  if(!dbx || pruneRunning) return false;
+  pruneRunning = true;
+  try{
+    const targets = [];
+    for(const area of state.areas){
+      for(const sa of area.situacions){
+        for(const se of sa.sessions){
+          for(const act of se.activities){
+            for(const f of (act.files||[])){
+              if(f && f.dbxPath) targets.push({ act, f });
+            }
+          }
+        }
+      }
+    }
+    if(!targets.length) return false;
+    const results = await Promise.all(targets.map(async ({ f }) => {
+      try{
+        await dbx.filesGetMetadata({ path: f.dbxPath });
+        return false;
+      }catch(e){
+        return isDropboxNotFoundError(e);
+      }
+    }));
+    let changed = false;
+    targets.forEach(({ act, f }, i) => {
+      if(!results[i]) return;
+      act.files = (act.files||[]).filter(x => x.id !== f.id);
+      changed = true;
+    });
+    if(changed){ saveState(); render(); }
+    return changed;
+  }catch(e){
+    console.warn("No s'ha pogut verificar els arxius de Dropbox", e);
+    return false;
+  }finally{
+    pruneRunning = false;
+  }
 }
 function removeActivityFile(areaId, saId, sessionId, actId, fileId){
   const s = findSession(areaId, saId, sessionId); if(!s) return;
@@ -3381,6 +3449,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   initDropbox();
   if(!state.selectedAreaId && state.areas.length) state.selectedAreaId = state.areas[0].id;
   render();
+  pruneMissingDropboxFiles();
   initImportDropzone();
   initAttachDropzone();
   if(remoteEnabled()) loadRemoteState();
