@@ -219,6 +219,52 @@ a{color:var(--pen);}
 .color-modal-custom input[type=color]{width:40px;height:30px;padding:0;border:1px solid var(--line);border-radius:6px;background:none;cursor:pointer;}
 .color-modal-custom input[type=color]::-webkit-color-swatch-wrapper{padding:0;}
 .color-modal-custom input[type=color]::-webkit-color-swatch{border:none;border-radius:5px;}
+#cal-modal .modal{max-width:620px;}
+.cal-tabs{display:flex;gap:6px;margin-bottom:14px;border-bottom:1px solid var(--line);}
+.cal-tab{background:none;border:none;padding:8px 14px;font-size:.88rem;font-weight:600;color:var(--ink-soft);border-bottom:2px solid transparent;cursor:pointer;}
+.cal-tab.active{color:var(--pen);border-bottom-color:var(--pen);}
+.cal-controls{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center;}
+.cal-controls select{border:1px solid var(--line);border-radius:8px;padding:7px 9px;font-size:.85rem;background:var(--paper);color:var(--ink);}
+.cal-grid-wrap{border:1px solid var(--line);border-radius:9px;overflow:hidden;}
+.cal-grid-head,.cal-grid-body{display:grid;grid-template-columns:repeat(7,1fr);}
+.cal-grid-hd{text-align:center;font-size:.72rem;font-weight:600;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.04em;padding:7px 0;background:var(--paper-alt);border-bottom:1px solid var(--line);}
+.cal-cell{display:flex;align-items:center;justify-content:center;height:38px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);font-size:.85rem;font-family:'IBM Plex Mono',monospace;}
+.cal-cell:nth-child(7n){border-right:none;}
+.cal-cell-empty{background:var(--paper);}
+.cal-cell-weekend{background:var(--gold-soft);color:var(--gold-dark);font-weight:600;}
+.cal-cell-holiday{background:var(--danger-soft);color:var(--danger);font-weight:700;}
+.cal-cell:not(.cal-cell-empty):not(.cal-cell-weekend):not(.cal-cell-holiday):not(.cal-cell-special){background:var(--white);cursor:pointer;}
+.cal-cell:not(.cal-cell-empty):not(.cal-cell-weekend):not(.cal-cell-holiday):not(.cal-cell-special):hover{background:var(--pen-soft);}
+.cal-cell-special{position:relative;background:var(--green-tint, #E3F0E4);}
+.cal-cell-special .cal-cell-mark{position:absolute;top:2px;right:4px;font-size:.6rem;font-weight:700;color:#2e6b34;}
+.cal-grid-legend{display:flex;gap:14px;margin-top:10px;flex-wrap:wrap;font-size:.75rem;color:var(--ink-soft);}
+.cal-view{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:16px;}
+@media(max-width:960px){.cal-view{grid-template-columns:repeat(auto-fill,minmax(270px,1fr));}}
+.cal-view-month{min-width:0;}
+.cal-view-month .cal-grid-wrap{font-size:.82rem;box-shadow:0 1px 2px rgba(0,0,0,.05);}
+.cal-view-month-title{font-size:.85rem;font-weight:600;color:var(--pen-dark);text-align:center;margin-bottom:10px;}
+.cal-view .cal-cell{cursor:default;}
+.cal-view .cal-cell:not(.cal-cell-empty):not(.cal-cell-weekend):not(.cal-cell-holiday):not(.cal-cell-special):hover{background:var(--white);}
+.cal-legend::before{content:'';display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px;border:1px solid var(--line);}
+.cal-legend-weekend::before{background:var(--gold-soft);}
+.cal-legend-holiday::before{background:var(--danger-soft);}
+.cal-list-label{display:block;font-size:.85rem;color:var(--ink-soft);margin-bottom:8px;line-height:1.5;}
+#cal-list-input{width:100%;border:1px solid var(--line);border-radius:8px;padding:10px;font-size:.85rem;background:var(--paper);font-family:inherit;color:var(--ink);resize:vertical;}
+#cal-list-result{font-size:.82rem;color:var(--pen-dark);min-height:1.2em;margin-top:8px;}
+.cal-dropzone{border:2px dashed var(--line);border-radius:9px;padding:18px 14px;text-align:center;color:var(--ink-soft);font-size:.88rem;margin-bottom:12px;}
+.cal-dropzone input[type=file]{font-size:.85rem;margin-bottom:8px;}
+.cal-controls{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
+.cal-controls select{border:1px solid var(--line);border-radius:8px;padding:7px 9px;font-size:.85rem;background:var(--paper);color:var(--ink);}
+.cal-canvas-wrap{overflow:auto;max-height:70vh;border:1px solid var(--line);border-radius:9px;background:var(--paper);}
+#cal-canvas{display:block;max-width:100%;cursor:crosshair;}
+.cal-actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+.cal-tune{align-items:center;}
+.cal-tune > span{font-size:.78rem;color:var(--ink-faint);font-weight:600;}
+#cal-status{font-size:.82rem;color:var(--pen-dark);min-height:1.3em;margin:8px 0;}
+#cal-holidays-list{margin-top:6px;}
+.cal-list-title{font-size:.78rem;font-weight:600;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px;}
+.cal-chips{display:flex;flex-wrap:wrap;gap:6px;}
+.cal-chip{background:var(--danger-soft);color:var(--danger);border:1px solid var(--danger);border-radius:20px;padding:3px 10px;font-size:.78rem;font-weight:600;}
 .area-header-right{display:flex;gap:8px;align-items:flex-start;}
 
 .sa-add-row{margin-bottom:20px;}
@@ -461,12 +507,22 @@ a{color:var(--pen);}
 .agenda-nav.active,.settings-nav.active{background:var(--gold);color:#1B212A;border-left-color:var(--gold-dark);}
 .agenda-nav svg,.settings-nav svg{width:14px;height:14px;flex:none;color:var(--gold-dark);}
 .agenda-nav.active svg,.settings-nav.active svg{color:#1B212A;}
+.calendar-nav{
+  display:flex;align-items:center;gap:10px;background:var(--pen-soft);border:none;border-radius:9px;
+  padding:9px 10px;text-align:left;width:100%;font-size:.92rem;color:var(--pen-dark);font-weight:600;
+  border-left:3px solid var(--pen);transition:background .12s ease;
+}
+.calendar-nav:hover{filter:brightness(1.06);}
+.calendar-nav.active{background:var(--pen);color:#fff;border-left-color:var(--pen-dark);}
+.calendar-nav svg{width:14px;height:14px;flex:none;color:var(--pen-dark);}
+.calendar-nav.active svg{color:#fff;}
 .add-area-options{display:flex;flex-direction:column;gap:10px;margin:6px 0 4px;}
 .add-area-options .btn{width:100%;justify-content:center;}
 .agenda-note{color:var(--ink-faint);font-size:.85rem;margin:4px 0 16px;}
 .agenda-list{display:flex;flex-direction:column;gap:16px;}
 .agenda-head-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 6px;}
 .agenda-head-row h1{margin:0;}
+.agenda-head-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
 .urgent-banner{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;background:var(--gold-soft);border:1px solid var(--gold);border-radius:20px;color:var(--gold-dark);font-weight:700;font-size:.75rem;cursor:pointer;white-space:nowrap;}
 .urgent-banner svg{width:12px;height:12px;flex:none;}
 .urgent-banner:hover{filter:brightness(1.05);}
@@ -605,6 +661,11 @@ a{color:var(--pen);}
 .settings-row.centered .settings-label{text-align:center;}
 .settings-row.centered .settings-input{justify-content:center;flex-wrap:wrap;}
 .settings-row.column{flex-direction:column;align-items:flex-start;gap:12px;}
+.weekday-picker{display:flex;gap:6px;flex-wrap:wrap;}
+.wd-day{min-width:46px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink-soft);font-size:.82rem;font-weight:600;cursor:pointer;font-family:'IBM Plex Mono',monospace;}
+.wd-day:hover{border-color:var(--pen);}
+.wd-day.active{background:var(--pen);border-color:var(--pen);color:#fff;}
+.wd-count{color:var(--ink-soft);font-size:.82rem;padding:0 4px;}
 .settings-sub{background:var(--paper);border-bottom:1px solid var(--line);}
 .settings-sub .settings-row{padding-left:38px;}
 .settings-sub .settings-sub .settings-row{padding-left:64px;}
@@ -640,6 +701,13 @@ a{color:var(--pen);}
       <button class="agenda-nav" id="agendaNav" onclick="showAgendaView()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
         <span data-i18n="Agenda">Agenda</span>
+      </button>
+    </div>
+
+    <div class="sidebar-section">
+      <button class="calendar-nav" id="calendarNav" onclick="showCalendarView()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><circle cx="9" cy="15" r="1.4"/><circle cx="15" cy="15" r="1.4"/></svg>
+        <span data-i18n="Calendari">Calendari</span>
       </button>
     </div>
 
@@ -809,6 +877,65 @@ a{color:var(--pen);}
   </div>
 </div>
 
+<!-- Configuració de l'àrea modal -->
+<div class="modal-backdrop" id="area-config-modal" onclick="if(event.target===this)closeAreaConfigModal()">
+  <div class="modal">
+    <h2 data-i18n="Configuració de l'àrea">Configuració de l'àrea</h2>
+    <p class="hint" data-i18n="Opcions de configuració de l'àrea.">Opcions de configuració de l'àrea.</p>
+    <div id="area-config-body"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeAreaConfigModal()" data-i18n="Tanca">Tanca</button>
+    </div>
+  </div>
+</div>
+
+<!-- Calendari escolar modal -->
+<div class="modal-backdrop" id="cal-modal" onclick="if(event.target===this)closeCalModal()">
+  <div class="modal cal-modal">
+    <h2 data-i18n="Calendari escolar">Calendari escolar</h2>
+    <p class="hint" data-i18n="Marca els dies de festa al calendari, o enganxa una llista de dates.">Marca els dies de festa al calendari, o enganxa una llista de dates.</p>
+
+    <div class="cal-tabs">
+      <button class="cal-tab active" id="cal-tab-cal" onclick="calTab('cal')" data-i18n="Calendari">Calendari</button>
+      <button class="cal-tab" id="cal-tab-list" onclick="calTab('list')" data-i18n="Llista de dates">Llista de dates</button>
+    </div>
+
+    <div id="cal-pane-cal">
+      <div class="cal-controls">
+        <button class="btn btn-ghost btn-sm" onclick="calMonthShift(-1)">◀</button>
+        <select id="cal-month" onchange="calSetMonth(this.value)"></select>
+        <select id="cal-year" onchange="calSetYear(this.value)"></select>
+        <button class="btn btn-ghost btn-sm" onclick="calMonthShift(1)">▶</button>
+      </div>
+      <div class="cal-grid-wrap">
+        <div id="cal-grid"></div>
+      </div>
+      <div class="cal-grid-legend">
+        <span class="cal-legend cal-legend-weekend" data-i18n="cap de setmana">cap de setmana</span>
+        <span class="cal-legend cal-legend-holiday" data-i18n="festiu">festiu</span>
+        <span class="cal-legend" data-i18n="fes clic per marcar">fes clic per marcar</span>
+      </div>
+      <div id="cal-holidays-list"></div>
+    </div>
+
+    <div id="cal-pane-list" style="display:none">
+      <label class="cal-list-label" data-i18n="Enganxa el text del calendari: data d'inici i fi del curs i dies festius. El programa n'extreu les dates (ex. 'El curs comença el 8 de setembre i acaba el 30 de juny. Festius: 12 d'octubre, del 23 de desembre al 7 de gener…').">Enganxa el text del calendari: data d'inici i fi del curs i dies festius. El programa n'extreu les dates (ex. "El curs comença el 8 de setembre i acaba el 30 de juny. Festius: 12 d'octubre, del 23 de desembre al 7 de gener…").</label>
+      <textarea id="cal-list-input" rows="8" placeholder="El curs comença el 8 de setembre de 2026 i acaba el 30 de juny de 2027. Festius: 12 d'octubre, 1 de novembre, del 23 de desembre al 7 de gener…"></textarea>
+      <div class="cal-actions">
+        <button class="btn btn-primary btn-sm" onclick="calParseText()" data-i18n="Analitza el text">Analitza el text</button>
+      </div>
+      <div id="cal-list-result"></div>
+    </div>
+
+    <div id="cal-status"></div>
+
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeCalModal()" data-i18n="Cancel·la">Cancel·la</button>
+      <button class="btn btn-primary" onclick="calSave()" data-i18n="Desa el calendari">Desa el calendari</button>
+    </div>
+  </div>
+</div>
+
 <!-- Inicia sessió / crea compte modal -->
 <div class="modal-backdrop" id="auth-modal" onclick="if(event.target===this)closeAuthModal()">
   <div class="modal">
@@ -838,12 +965,14 @@ a{color:var(--pen);}
 let state = { areas: [], selectedAreaId: null };
 let editTarget = null;
 let showAgenda = true;
+let agendaShowAll = false;
 let showSettings = false;
 let showFiles = false;
 let showArchived = false;
 let showTrash = false;
 let showResources = false;
 let showReminder = false;
+let showCalendar = false;
 let resourcesAreaId = null;
 let attachTarget = null;
 let recursosUrgents = true;
@@ -951,6 +1080,67 @@ const I18N_ES = {
   'Color de l\'àrea': 'Color del área',
   'Tria un color per a la icona de l\'àrea.': 'Elige un color para el icono del área.',
   'Personalitzat': 'Personalizado',
+  'Calendari escolar': 'Calendario escolar',
+  'Dies de festa del curs i període escolar.': 'Días festivos del curso y periodo escolar.',
+  'Encara no has configurat el calendari del curs.': 'Todavía no has configurado el calendario del curso.',
+  'inici/fi de curs': 'inicio/fin de curso',
+  'Puja una imatge del calendari per detectar els festius del curs.': 'Sube una imagen del calendario para detectar los festivos del curso.',
+  'Importa calendari': 'Importar calendario',
+  'Marca els dies de festa del curs.': 'Marca los días festivos del curso.',
+  'Configura': 'Configurar',
+  '{n} festius desats.': '{n} festivos guardados.',
+  'Marca els dies de festa al calendari, o enganxa una llista de dates.': 'Marca los días festivos en el calendario, o pega una lista de fechas.',
+  'Calendari': 'Calendario',
+  'Llista de dates': 'Lista de fechas',
+  'Enganxa les dates de festa (una per línia o separades per comes). Formats admesos: 08/09/2026, 08-09-2026, 8/9/26.': 'Pega las fechas festivas (una por línea o separadas por comas). Formatos admitidos: 08/09/2026, 08-09-2026, 8/9/26.',
+  'Afegeix les dates': 'Añadir las fechas',
+  'Analitza el text': 'Analizar el texto',
+  'Enganxa el text del calendari: data d\'inici i fi del curs i dies festius. El programa n\'extreu les dates (ex. "El curs comença el 8 de setembre i acaba el 30 de juny. Festius: 12 d\'octubre, del 23 de desembre al 7 de gener…").': 'Pega el texto del calendario: fecha de inicio y fin del curso y días festivos. El programa extrae las fechas (ej. "El curso empieza el 8 de septiembre y acaba el 30 de junio. Festivos: 12 de octubre, del 23 de diciembre al 7 de enero…").',
+  'Inici: {s}. Fi: {e}. {n} festius. Revisa\'ls al calendari.': 'Inicio: {s}. Fin: {e}. {n} festivos. Revísalos en el calendario.',
+  'Afegides {n} dates de festa.': 'Añadidas {n} fechas festivas.',
+  'cap de setmana': 'fin de semana',
+  'festiu': 'festivo',
+  'fes clic per marcar': 'haz clic para marcar',
+  'Festius marcats ({n})': 'Festivos marcados ({n})',
+  'Encara no has marcat cap festiu.': 'Todavía no has marcado ningún festivo.',
+  '{n} festius detectats.': '{n} festivos detectados.',
+  'Modifica': 'Modificar',
+  'Esborra': 'Borrar',
+  'Vols esborrar les dades del calendari escolar?': '¿Quieres borrar los datos del calendario escolar?',
+  'Puja una imatge o un PDF del calendari.': 'Sube una imagen o un PDF del calendario.',
+  'Tria una imatge (PNG, JPG…) o un PDF del calendari.': 'Elige una imagen (PNG, JPG…) o un PDF del calendario.',
+  'La setmana comença en dilluns': 'La semana empieza en lunes',
+  'La setmana comença en diumenge': 'La semana empieza en domingo',
+  'Mes anterior': 'Mes anterior',
+  'Següent mes': 'Siguiente mes',
+  'Ajusta la graella:': 'Ajusta la cuadrícula:',
+  'Ample −': 'Ancho −', 'Ample +': 'Ancho +', 'Alt −': 'Alto −', 'Alt +': 'Alto +',
+  'Realinea': 'Realinear',
+  'Fes clic a la cantonada superior esquerra de la graella del mes (on comencen els dies) i, després, a la cantonada inferior dreta de l\'última cel·la de dies.': 'Haz clic en la esquina superior izquierda de la cuadrícula del mes (donde empiezan los días) y, después, en la esquina inferior derecha de la última celda de días.',
+  'Fes clic a la cantonada superior esquerra de la graella del nou mes.': 'Haz clic en la esquina superior izquierda de la cuadrícula del nuevo mes.',
+  'Fes clic a la cantonada superior esquerra de la graella del mes i, després, a la cantonada inferior dreta de l\'última cel·la de dies.': 'Haz clic en la esquina superior izquierda de la cuadrícula del mes y, después, en la esquina inferior derecha de la última celda de días.',
+  'Ara fes clic a la cantonada inferior dreta de l\'última cel·la de dies del mes.': 'Ahora haz clic en la esquina inferior derecha de la última celda de días del mes.',
+  'Detecta festius': 'Detectar festivos',
+  'Detecta des del text (PDF)': 'Detectar desde el texto (PDF)',
+  'El PDF té text seleccionable. Prem "Detecta des del text" per detectar els mesos i els dies automàticament.': 'El PDF tiene texto seleccionable. Pulsa "Detectar desde el texto" para detectar los meses y los días automáticamente.',
+  'No s\'ha pogut detectar cap mes al text del PDF.': 'No se ha podido detectar ningún mes en el texto del PDF.',
+  'Detectats {n} festius de tot l\'any des del text del PDF. Revisa la llista abans de desar.': 'Detectados {n} festivos de todo el año desde el texto del PDF. Revisa la lista antes de guardar.',
+  'No s\'han trobat dies al text del PDF.': 'No se han encontrado días en el texto del PDF.',
+  'Festius (gris i roig): {n}. Caps de setmana (groc): {w}. Inici/fi de curs (verd): {s}.': 'Festivos (gris y rojo): {n}. Fines de semana (amarillo): {w}. Inicio/fin de curso (verde): {s}.',
+  'Festius detectats ({n})': 'Festivos detectados ({n})',
+  'Cap festiu detectat.': 'Ningún festivo detectado.',
+  'No s\'ha pogut analitzar el text: {msg}': 'No se ha podido analizar el texto: {msg}',
+  'Desa el calendari': 'Guardar el calendario',
+  'Carregant imatge…': 'Cargando imagen…',
+  'Fes clic al cantó superior esquerre de la cel·la amb el número 1 del mes i, després, al cantó inferior dret de la mateixa cel·la.': 'Haz clic en la esquina superior izquierda de la celda con el número 1 del mes y, después, en la esquina inferior derecha de la misma celda.',
+  'Ara fes clic al cantó inferior dret de la mateixa cel·la.': 'Ahora haz clic en la esquina inferior derecha de la misma celda.',
+  'Graella definida. Prem "Detecta festius" o fes clic a les cel·les per marcar-les.': 'Cuadrícula definida. Pulsa "Detectar festivos" o haz clic en las celdas para marcarlas.',
+  'Fes clic a la cel·la del número 1 del mes seleccionat (després al cantó inferior dret de la mateixa cel·la si cal definir la mida).': 'Haz clic en la celda del número 1 del mes seleccionado (después en la esquina inferior derecha de la misma celda si hace falta definir el tamaño).',
+  'No s\'ha pogut carregar el calendari: {msg}': 'No se ha podido cargar el calendario: {msg}',
+  'Detectades {n} cel·les pintades al mes. Revisa-les i corregeix-les si cal.': 'Detectadas {n} celdas pintadas en el mes. Revísalas y corrígelas si hace falta.',
+  'Festius detectats': 'Festivos detectados',
+  'Cap festiu marcat en aquest mes.': 'Ningún festivo marcado en este mes.',
+  'gener': 'enero', 'febrer': 'febrero', 'març': 'marzo', 'abril': 'abril', 'maig': 'mayo', 'juny': 'junio', 'juliol': 'julio', 'agost': 'agosto', 'setembre': 'septiembre', 'octubre': 'octubre', 'novembre': 'noviembre', 'desembre': 'diciembre',
   'Configuració': 'Configuración',
   'Connexions': 'Conexiones',
   'Elements de la programació': 'Elementos de la programación',
@@ -1113,6 +1303,25 @@ const I18N_ES = {
   'ex: 1r ESO': 'ej: 1º ESO',
   '{n} sessions · {m} activitats': '{n} sesiones · {m} actividades',
   'Mostra aquesta àrea a l\'agenda': 'Muestra esta área en la agenda',
+  'Configuració de l\'àrea': 'Configuración del área',
+  'Opcions de configuració de l\'àrea.': 'Opciones de configuración del área.',
+  'Mostra a l\'agenda': 'Mostrar en la agenda',
+  'Activa l\'àrea perquè aparega a l\'agenda.': 'Activa el área para que aparezca en la agenda.',
+  'Sessions setmanals': 'Sesiones semanales',
+  'Nombre de sessions setmanals d\'aquesta àrea.': 'Número de sesiones semanales de esta área.',
+  'Curs al qual pertany l\'àrea.': 'Curso al que pertenece el área.',
+  'Dies de classe': 'Días de clase',
+  'Marca els dies de la setmana en què tens classe per calcular les sessions totals.': 'Marca los días de la semana en los que tienes clase para calcular las sesiones totales.',
+  '{n} sessions / setmana': '{n} sesiones / semana',
+  'Dilluns': 'Lunes', 'Dimarts': 'Martes', 'Dimecres': 'Miércoles', 'Dijous': 'Jueves', 'Divendres': 'Viernes', 'Dissabte': 'Sábado', 'Diumenge': 'Domingo',
+  'Detecció de dies': 'Detección de días',
+  'Mostra a l\'agenda només les àrees que toquen el dia de la setmana actual.': 'Muestra en la agenda solo las áreas que tocan el día de la semana actual.',
+  'Vore totes': 'Ver todas',
+  'Mostra totes les àrees actives indiferentment del dia.': 'Muestra todas las áreas activas independientemente del día.',
+  'Avui no tens cap àrea programada': 'Hoy no tienes ninguna área programada',
+  'Les àrees amb dies de classe que no coincideixen amb el dia d\'avui no es mostren.': 'Las áreas con días de clase que no coinciden con el día de hoy no se muestran.',
+  '{n} / {m} sessions': '{n} / {m} sesiones',
+  'Sessions programades / sessions necessàries segons el calendari escolar.': 'Sesiones programadas / sesiones necesarias según el calendario escolar.',
   'Arxiva la programació': 'Archiva la programación',
   'Elimina la programació (a la paperera)': 'Elimina la programación (a la papelera)',
   'Cap sessió en aquesta situació.': 'Ninguna sesión en esta situación.',
@@ -1646,6 +1855,8 @@ function renderSidebar(){
   document.getElementById('area-list').innerHTML = list || `<p class="empty-hint">${tr('Encara no tens cap àrea.')}</p>`;
   const nav = document.getElementById('agendaNav');
   if(nav) nav.classList.toggle('active', showAgenda);
+  const cNav = document.getElementById('calendarNav');
+  if(cNav) cNav.classList.toggle('active', showCalendar);
   const sNav = document.getElementById('settingsNav');
   if(sNav) sNav.classList.toggle('active', showSettings);
   const fNav = document.getElementById('filesNav');
@@ -1668,6 +1879,7 @@ function renderMain(){
   if(showFiles){ main.innerHTML = filesHTML(); return; }
   if(showResources){ main.innerHTML = recursosHTML(); return; }
   if(showReminder){ main.innerHTML = recordatoriHTML(); return; }
+  if(showCalendar){ main.innerHTML = calendariHTML(); return; }
   if(showAgenda){ main.innerHTML = agendaHTML(); return; }
   const area = state.areas.find(a=>a.id===state.selectedAreaId);
   if(!area){ showAgenda = true; renderSidebar(); main.innerHTML = agendaHTML(); return; }
@@ -1844,13 +2056,13 @@ function activityHTML(area, sa, session, act){
 
 function settingsHTML(){
   const d = (state.settings && state.settings.sessionDurationMinutes != null) ? state.settings.sessionDurationMinutes : 60;
-  const cw = (state.settings && state.settings.courseWeeks) ? state.settings.courseWeeks : 30;
   const dark = !!(state.settings && state.settings.darkMode);
   const de = durationsEnabled();
   const askDel = askDeleteFilesEnabled();
   const attPrev = attachmentPreviewEnabled();
   const l = lang();
   const elemOpen = programElementsEnabled();
+  const dd = dayDetectionEnabled();
   const eObj = sessionObjectiusEnabled();
   const eMet = sessionMetodologiaEnabled();
   const eSeg = sessionSeguimentEnabled();
@@ -1895,12 +2107,10 @@ function settingsHTML(){
     <div class="settings-card-title">${tr('Configuració')}</div>
     <div class="settings-row">
       <div class="settings-label">
-        <b>${tr('Durada del curs')}</b>
-        <small>${tr('Setmanes que dura el curs.')}</small>
+        <b>${tr('Detecció de dies')}</b>
+        <small>${tr('Mostra a l\'agenda només les àrees que toquen el dia de la setmana actual.')}</small>
       </div>
-      <div class="settings-input">
-        <input type="number" min="1" max="52" value="${cw}" onchange="setCourseWeeks(this.value)" aria-label="${tr('Durada del curs')}">
-      </div>
+      <label class="switch" title="${tr('Detecció de dies')}"><input type="checkbox" ${dd?'checked':''} onchange="setDayDetection(this.checked)"><span class="slider"></span></label>
     </div>
     <div class="settings-row">
       <div class="settings-label">
@@ -2024,6 +2234,15 @@ function setCourseWeeks(v){
   let n = parseInt(v,10); if(isNaN(n) || n <= 0) n = 30; if(n > 52) n = 52;
   state.settings.courseWeeks = n;
   saveState();
+}
+function dayDetectionEnabled(){
+  return !(state.settings && state.settings.dayDetection === false);
+}
+function setDayDetection(on){
+  if(!state.settings) state.settings = {};
+  state.settings.dayDetection = !!on;
+  if(!on) agendaShowAll = false;
+  saveState(); render();
 }
 
 /* --- Elements de la programació (Objectius, Metodologia, Seguiment, Recursos) --- */
@@ -3160,15 +3379,16 @@ function trashCardHTML(a){
 /* ---------------------------------------------------------
    AGENDA I MODE
 -------------------------------------------------------- */
-function showAgendaView(){ showAgenda = true; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; editTarget = null; render(); closeDrawerIfMobile(); }
-function showSettingsView(){ showAgenda = false; showSettings = true; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; render(); closeDrawerIfMobile(); }
-function showFilesView(){ showAgenda = false; showSettings = false; showFiles = true; showArchived = false; showTrash = false; showResources = false; showReminder = false; render(); pruneMissingDropboxFiles(); closeDrawerIfMobile(); enrichLinkTitles(); }
-function showArchivedView(){ showAgenda = false; showSettings = false; showFiles = false; showArchived = true; showTrash = false; showResources = false; showReminder = false; render(); closeDrawerIfMobile(); }
-function showTrashView(){ showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = true; showResources = false; showReminder = false; render(); closeDrawerIfMobile(); enrichLinkTitles(); }
-function showResourcesView(){ showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = true; showReminder = false; recursosUrgents = true; recursosChecked = false; render(); pruneMissingDropboxFiles(); closeDrawerIfMobile(); }
+function showAgendaView(){ showAgenda = true; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; agendaShowAll = false; editTarget = null; render(); closeDrawerIfMobile(); }
+function showCalendarView(){ showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = true; editTarget = null; render(); closeDrawerIfMobile(); }
+function showSettingsView(){ showAgenda = false; showSettings = true; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; render(); closeDrawerIfMobile(); }
+function showFilesView(){ showAgenda = false; showSettings = false; showFiles = true; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; render(); closeDrawerIfMobile(); pruneMissingDropboxFiles(); enrichLinkTitles(); }
+function showArchivedView(){ showAgenda = false; showSettings = false; showFiles = false; showArchived = true; showTrash = false; showResources = false; showReminder = false; showCalendar = false; render(); closeDrawerIfMobile(); }
+function showTrashView(){ showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = true; showResources = false; showReminder = false; showCalendar = false; render(); closeDrawerIfMobile(); enrichLinkTitles(); }
+function showResourcesView(){ showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = true; showReminder = false; showCalendar = false; recursosUrgents = true; recursosChecked = false; render(); pruneMissingDropboxFiles(); closeDrawerIfMobile(); }
 function openArea(id){
   const area = state.areas.find(a=>a.id===id); if(area) prepareAreaView(area);
-  state.selectedAreaId = id; showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; editTarget = null; saveState(); render(); closeDrawerIfMobile();
+  state.selectedAreaId = id; showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; editTarget = null; saveState(); render(); closeDrawerIfMobile();
 }
 
 function nextSession(id){
@@ -3240,12 +3460,30 @@ function expireDoneAreas(){
   return changed;
 }
 
+function areaClassesToday(a){
+  const days = Array.isArray(a.weekDays) ? a.weekDays : [];
+  if(!days.length) return true;
+  let dow = new Date().getDay();
+  if(dow === 0 || dow === 6) dow = 1;
+  return days.indexOf(dow) !== -1;
+}
 function agendaHTML(){
-  const active = state.areas.filter(a => a.active).sort((x, y) => (x.doneOn ? 1 : 0) - (y.doneOn ? 1 : 0));
-  const inactive = state.areas.length - active.length;
+  const dayFilter = dayDetectionEnabled() && !agendaShowAll;
+  const activeAll = state.areas.filter(a => a.active).sort((x, y) => (x.doneOn ? 1 : 0) - (y.doneOn ? 1 : 0));
+  const active = dayFilter ? activeAll.filter(areaClassesToday) : activeAll;
+  const inactive = state.areas.length - activeAll.length;
   let body;
   if(!state.areas.length){
     body = emptyStateHTML();
+  } else if(!active.length && activeAll.length){
+    body = `
+    <div class="empty-state">
+      <h2 class="display">${tr('Avui no tens cap àrea programada')}</h2>
+      <p>${tr('Les àrees amb dies de classe que no coincideixen amb el dia d\'avui no es mostren.')}</p>
+      <div class="actions">
+        <button class="btn btn-ghost" onclick="agendaShowAll = true; render()">${tr('Vore totes')}</button>
+      </div>
+    </div>`;
   } else if(!active.length){
     body = `
     <div class="empty-state">
@@ -3259,7 +3497,7 @@ function agendaHTML(){
     body = `<div class="agenda-list">${active.map(a => agendaCardHTML(a)).join('')}</div>`;
   }
   const note = inactive
-    ? `<p class="agenda-note">${trf('{n} àrees actives · {m} en pausa.', { n: active.length, m: inactive })}</p>`
+    ? `<p class="agenda-note">${trf('{n} àrees actives · {m} en pausa.', { n: activeAll.length, m: inactive })}</p>`
     : '';
   const urgentBanner = hasUrgentResources()
     ? `<button class="urgent-banner" title="${esc(tr('Tens recursos per preparar necessaris en menys de 2 setmanes.'))}" onclick="showResourcesView()">
@@ -3267,7 +3505,10 @@ function agendaHTML(){
         ${tr('Urgent')}
       </button>`
     : '';
-  return `<div class="agenda-head-row"><h1 class="display">${tr('Agenda')}</h1>${urgentBanner}</div>` + note + body;
+  const seeAllBtn = dayDetectionEnabled() && !agendaShowAll && activeAll.length
+    ? `<button class="btn btn-ghost btn-sm" title="${esc(tr('Mostra totes les àrees actives indiferentment del dia.'))}" onclick="agendaShowAll = true; render()">${tr('Vore totes')}</button>`
+    : '';
+  return `<div class="agenda-head-row"><h1 class="display">${tr('Agenda')}</h1><div class="agenda-head-actions">${urgentBanner}${seeAllBtn}</div></div>` + note + body;
 }
 
 function agendaCardHTML(a){
@@ -3331,6 +3572,11 @@ function agendaCardHTML(a){
 /* Vista (sols lectura) */
 function areaVistaHTML(area){
   const sas = area.situacions.map((sa,i) => saVistaHTML(area, sa, i)).join('') || `<p class="empty-hint">${tr('Aquesta àrea encara no té cap situació d\'aprenentatge.')}</p>`;
+  const totalSessions = countSessions(area);
+  const needed = areaSessionsNeeded(area);
+  const sessionsLabel = needed != null
+    ? `<span style="color:var(--ink-faint);font-size:.82rem" title="${tr('Sessions programades / sessions necessàries segons el calendari escolar.')}">${trf('{n} / {m} sessions', { n: totalSessions, m: needed })}</span>`
+    : `<span style="color:var(--ink-faint);font-size:.82rem">${trf('{n} sessions', { n: totalSessions })}</span>`;
   return `
   <div class="area-header">
     <div class="area-header-left">
@@ -3338,19 +3584,14 @@ function areaVistaHTML(area){
       <div style="flex:1;">
         <input class="area-title-input" style="--area-color:${area.color}" value="${esc(area.name)}" oninput="renameArea('${area.id}', this.value)">
         <div class="area-meta">
-          <span class="area-course-wrap" title="${tr('Curs')}">
-            <span class="area-course-label">${tr('Curs')}</span>
-            <input class="area-course" value="${esc(area.course||'')}" placeholder="${tr('ex: 1r ESO')}" oninput="renameCourse('${area.id}', this.value)">
-          </span>
-          <span style="color:var(--ink-faint);font-size:.82rem">${trf('{n} sessions', { n: countSessions(area) })}</span>
+          ${sessionsLabel}
         </div>
       </div>
     </div>
     <div class="area-header-right">
-      <span class="switch-wrap" title="${tr('Mostra aquesta àrea a l\'agenda')}">
-        <label class="switch" title="${tr('Activa/desactiva a l\'agenda')}"><input type="checkbox" ${area.active?'checked':''} onchange="toggleActive('${area.id}')"><span class="slider"></span></label>
-        <span class="switch-label">${tr('Agenda')}</span>
-      </span>
+      <button class="btn btn-ghost btn-icon" title="${tr('Configuració de l\'àrea')}" onclick="openAreaConfigModal('${area.id}')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.01a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.01a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.01a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </button>
       <button class="btn btn-ghost btn-icon" title="${tr('Arxiva la programació')}" onclick="archiveArea('${area.id}')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 8v13H3V8"/><path d="M1 3h22v5H1z"/><path d="M10 12h4"/></svg>
       </button>
@@ -3536,6 +3777,7 @@ function addArea(){
   showTrash = false;
   showResources = false;
   showReminder = false;
+  showCalendar = false;
   saveState(); render();
   closeDrawerIfMobile();
 }
@@ -3549,6 +3791,7 @@ function selectArea(id){
   showTrash = false;
   showResources = false;
   showReminder = false;
+  showCalendar = false;
   saveState(); render();
   closeDrawerIfMobile();
 }
@@ -3605,6 +3848,437 @@ function closeColorModal(){
   const m = document.getElementById('color-modal');
   if(m) m.classList.remove('open');
   colorTargetId = null;
+}
+
+let areaConfigTargetId = null;
+function openAreaConfigModal(id){
+  areaConfigTargetId = id;
+  const area = state.areas.find(a=>a.id===id); if(!area) return;
+  const body = document.getElementById('area-config-body');
+  if(body) body.innerHTML = `
+    <div class="settings-row">
+      <div class="settings-label">
+        <b>${tr('Mostra a l\'agenda')}</b>
+        <small>${tr('Activa l\'àrea perquè aparega a l\'agenda.')}</small>
+      </div>
+      <label class="switch" title="${tr('Activa/desactiva a l\'agenda')}"><input type="checkbox" ${area.active?'checked':''} onchange="setAreaActive('${area.id}', this.checked)"><span class="slider"></span></label>
+    </div>
+    <div class="settings-row">
+      <div class="settings-label">
+        <b>${tr('Curs')}</b>
+        <small>${tr('Curs al qual pertany l\'àrea.')}</small>
+      </div>
+      <div class="settings-input">
+        <input type="text" value="${esc(area.course||'')}" placeholder="${tr('ex: 1r ESO')}" onchange="renameCourse('${area.id}', this.value)">
+      </div>
+    </div>
+    <div class="settings-row column">
+      <div class="settings-label">
+        <b>${tr('Dies de classe')}</b>
+        <small>${tr('Marca els dies de la setmana en què tens classe per calcular les sessions totals.')}</small>
+      </div>
+      ${weekDayPickerHTML(area)}
+      <div class="settings-input"><span class="wd-count">${trf('{n} sessions / setmana', { n: areaWeeklySessions(area) })}</span></div>
+    </div>`;
+  const m = document.getElementById('area-config-modal');
+  if(m) m.classList.add('open');
+}
+function closeAreaConfigModal(){
+  const m = document.getElementById('area-config-modal');
+  if(m) m.classList.remove('open');
+  areaConfigTargetId = null;
+}
+function setAreaActive(id, on){
+  const area = state.areas.find(a=>a.id===id); if(!area) return;
+  area.active = !!on;
+  saveState(); render();
+  const m = document.getElementById('area-config-modal');
+  if(m && m.classList.contains('open')) openAreaConfigModal(id);
+}
+const AREA_WEEK_ORDER = [1,2,3,4,5];
+const AREA_WEEK_SHORT = { 1:'Dl', 2:'Dt', 3:'Dc', 4:'Dj', 5:'Dv', 6:'Ds', 0:'Dg' };
+const AREA_WEEK_LABELS = { 1:'Dilluns', 2:'Dimarts', 3:'Dimecres', 4:'Dijous', 5:'Divendres', 6:'Dissabte', 0:'Diumenge' };
+function weekDayPickerHTML(area){
+  const sel = new Set(Array.isArray(area.weekDays) ? area.weekDays : []);
+  return `<div class="weekday-picker">${AREA_WEEK_ORDER.map(d =>
+    `<button type="button" class="wd-day${sel.has(d)?' active':''}" title="${tr(AREA_WEEK_LABELS[d])}" onclick="toggleAreaWeekDay('${area.id}', ${d})">${AREA_WEEK_SHORT[d]}</button>`
+  ).join('')}</div>`;
+}
+function toggleAreaWeekDay(id, dow){
+  const area = state.areas.find(a=>a.id===id); if(!area) return;
+  if(!Array.isArray(area.weekDays)) area.weekDays = [];
+  const i = area.weekDays.indexOf(dow);
+  if(i >= 0) area.weekDays.splice(i,1); else area.weekDays.push(dow);
+  saveState(); render();
+  const m = document.getElementById('area-config-modal');
+  if(m && m.classList.contains('open')) openAreaConfigModal(id);
+}
+function areaWeeklySessions(area){
+  if(Array.isArray(area.weekDays) && area.weekDays.length) return area.weekDays.length;
+  return parseInt(area.weeklySessions,10) || 0;
+}
+function schoolDays(){
+  const cd = state.calendarData;
+  if(!cd || !cd.startDate || !cd.endDate) return null;
+  const start = new Date(cd.startDate + 'T00:00:00');
+  const end = new Date(cd.endDate + 'T00:00:00');
+  const holidays = new Set((cd.holidays || []).filter(h => h >= cd.startDate && h <= cd.endDate));
+  let days = 0;
+  const cur = new Date(start);
+  while(cur <= end){
+    const dow = cur.getDay();
+    if(dow !== 0 && dow !== 6){
+      if(!holidays.has(calLocalIso(cur))) days++;
+    }
+    cur.setDate(cur.getDate() + 1);
+  }
+  return days;
+}
+function areaSessionsNeeded(area){
+  const cd = state.calendarData;
+  if(!cd || !cd.startDate || !cd.endDate) return null;
+  const days = Array.isArray(area.weekDays) ? area.weekDays : [];
+  if(days.length){
+    const set = new Set(days);
+    const holidays = new Set((cd.holidays || []).filter(h => h >= cd.startDate && h <= cd.endDate));
+    const end = new Date(cd.endDate + 'T00:00:00');
+    let n = 0;
+    const cur = new Date(cd.startDate + 'T00:00:00');
+    while(cur <= end){
+      if(set.has(cur.getDay()) && !holidays.has(calLocalIso(cur))) n++;
+      cur.setDate(cur.getDate() + 1);
+    }
+    return n;
+  }
+  const ws = parseInt(area.weeklySessions, 10);
+  const sd = schoolDays();
+  if(!ws || sd == null) return null;
+  return Math.round(ws * sd / 5);
+}
+
+/* ---------------------------------------------------------
+   CALENDARI ESCOLAR (calendari interactiu + llista de dates)
+--------------------------------------------------------- */
+const CAL_MONTHS = ['gener','febrer','març','abril','maig','juny','juliol','agost','setembre','octubre','novembre','desembre'];
+let cal = null;
+function calDelete(){
+  if(!state.calendarData) return;
+  if(!confirm(tr('Vols esborrar les dades del calendari escolar?'))) return;
+  state.calendarData = null;
+  saveState(); render();
+}
+function calendariMonths(){
+  const cd = state.calendarData;
+  let y0, m0, y1, m1;
+  if(cd && cd.startDate){
+    const d0 = new Date(cd.startDate + 'T00:00:00');
+    y0 = d0.getFullYear(); m0 = d0.getMonth();
+    if(cd.endDate){
+      const d1 = new Date(cd.endDate + 'T00:00:00');
+      y1 = d1.getFullYear(); m1 = d1.getMonth();
+    }else{ y1 = y0 + 1; m1 = m0; }
+  }else{
+    const now = new Date();
+    let y = now.getFullYear();
+    if(now.getMonth() < 8) y -= 1;
+    y0 = y; m0 = 8; y1 = y + 1; m1 = 7;
+  }
+  const months = [];
+  let y = y0, m = m0;
+  while(y < y1 || (y === y1 && m <= m1)){
+    months.push({ y, m });
+    m++;
+    if(m > 11){ m = 0; y++; }
+  }
+  return months;
+}
+function calViewMonthHTML(y, m){
+  const cd = state.calendarData || {};
+  const holidays = new Set(Array.isArray(cd.holidays) ? cd.holidays : []);
+  const first = new Date(y, m, 1);
+  const dim = new Date(y, m+1, 0).getDate();
+  const colOf1 = (first.getDay()+6)%7;
+  const headers = ['Dl','Dt','Dc','Dj','Dv','Ds','Dg'];
+  let cells = '';
+  for(let i=0;i<colOf1;i++) cells += '<span class="cal-cell cal-cell-empty"></span>';
+  for(let d=1; d<=dim; d++){
+    const dow = new Date(y, m, d).getDay();
+    const isWeekend = (dow === 0 || dow === 6);
+    const iso = calDateIso(y, m, d);
+    const isH = iso && holidays.has(iso);
+    const isStart = iso && cd.startDate === iso;
+    const isEnd = iso && cd.endDate === iso;
+    const cls = ['cal-cell', isWeekend ? 'cal-cell-weekend' : '', isH ? 'cal-cell-holiday' : '', (isStart || isEnd) ? 'cal-cell-special' : ''].filter(Boolean).join(' ');
+    const marker = isStart ? 'I' : isEnd ? 'F' : '';
+    const content = marker ? `${d}<span class="cal-cell-mark">${marker}</span>` : d;
+    cells += `<span class="${cls}">${content}</span>`;
+  }
+  return `<div class="cal-view-month">
+    <div class="cal-view-month-title">${tr(CAL_MONTHS[m])} ${y}</div>
+    <div class="cal-grid-wrap"><div class="cal-grid-head">${headers.map(h=>`<span class="cal-grid-hd">${h}</span>`).join('')}</div><div class="cal-grid-body">${cells}</div></div>
+  </div>`;
+}
+function calendariHTML(){
+  const cd = state.calendarData;
+  const has = !!(cd && Array.isArray(cd.holidays) && cd.holidays.length);
+  const fmt = s => s ? new Date(s + 'T00:00:00').toLocaleDateString('ca-ES') : '—';
+  const summary = (cd && cd.startDate) ? `${fmt(cd.startDate)} — ${fmt(cd.endDate)}` : '';
+  const buttons = has
+    ? `<button class="btn btn-sm btn-ghost" onclick="openCalModal()">${tr('Modifica')}</button>
+       <button class="btn btn-sm btn-danger" onclick="calDelete()">${tr('Esborra')}</button>`
+    : `<button class="btn btn-sm btn-primary" onclick="openCalModal()">${tr('Configura')}</button>`;
+  return `
+  <div class="settings-header">
+    <h1 class="display">${tr('Calendari escolar')}</h1>
+    <p class="settings-note">${tr('Dies de festa del curs i període escolar.')}</p>
+  </div>
+  <div class="settings-card">
+    <div class="settings-row">
+      <div class="settings-label">
+        <b>${tr('Curs')}</b>
+        <small>${summary || tr('Encara no has configurat el calendari del curs.')}</small>
+      </div>
+      <div class="settings-input">${buttons}</div>
+    </div>
+    <div class="cal-view">${calendariMonths().map(mo => calViewMonthHTML(mo.y, mo.m)).join('')}</div>
+    <div class="cal-grid-legend">
+      <span class="cal-legend cal-legend-weekend">${tr('cap de setmana')}</span>
+      <span class="cal-legend cal-legend-holiday">${tr('festiu')}</span>
+      <span class="cal-legend">${tr('inici/fi de curs')}</span>
+    </div>
+  </div>`;
+}
+function openCalModal(){
+  const now = new Date();
+  let year = now.getFullYear();
+  if(now.getMonth() < 8) year -= 1;
+  cal = {
+    monthIdx: 8, year: year, weekStart: 'L',
+    startDate: (state.calendarData && state.calendarData.startDate) || null,
+    endDate: (state.calendarData && state.calendarData.endDate) || null,
+    allHolidays: new Set((state.calendarData && state.calendarData.holidays) || [])
+  };
+  fillCalSelects();
+  calTab('cal');
+  renderCalGrid();
+  renderCalHolidayList();
+  updateCalStatus('');
+  const m = document.getElementById('cal-modal');
+  if(m) m.classList.add('open');
+}
+function closeCalModal(){
+  const m = document.getElementById('cal-modal');
+  if(m) m.classList.remove('open');
+}
+function fillCalSelects(){
+  const selM = document.getElementById('cal-month');
+  if(selM) selM.innerHTML = CAL_MONTHS.map((n,i)=>`<option value="${i}" ${i===cal.monthIdx?'selected':''}>${tr(n)}</option>`).join('');
+  const selY = document.getElementById('cal-year');
+  if(selY){
+    selY.innerHTML = '';
+    for(let yy=cal.year-2; yy<=cal.year+2; yy++) selY.innerHTML += `<option value="${yy}" ${yy===cal.year?'selected':''}>${yy}</option>`;
+  }
+}
+function updateCalStatus(msg){
+  const el = document.getElementById('cal-status');
+  if(el) el.textContent = msg;
+}
+function calTab(which){
+  const paneCal = document.getElementById('cal-pane-cal');
+  const paneList = document.getElementById('cal-pane-list');
+  const tabCal = document.getElementById('cal-tab-cal');
+  const tabList = document.getElementById('cal-tab-list');
+  if(paneCal) paneCal.style.display = which==='cal' ? '' : 'none';
+  if(paneList) paneList.style.display = which==='list' ? '' : 'none';
+  if(tabCal) tabCal.classList.toggle('active', which==='cal');
+  if(tabList) tabList.classList.toggle('active', which==='list');
+}
+function calSetMonth(v){ cal.monthIdx = parseInt(v,10); renderCalGrid(); }
+function calSetYear(v){ cal.year = parseInt(v,10); renderCalGrid(); }
+function calMonthShift(delta){
+  cal.monthIdx += delta;
+  if(cal.monthIdx < 0){ cal.monthIdx = 11; cal.year--; }
+  if(cal.monthIdx > 11){ cal.monthIdx = 0; cal.year++; }
+  fillCalSelects();
+  renderCalGrid();
+}
+function calLocalIso(dt){
+  if(!dt || isNaN(dt)) return null;
+  return dt.getFullYear() + '-' + String(dt.getMonth()+1).padStart(2,'0') + '-' + String(dt.getDate()).padStart(2,'0');
+}
+function calDateIso(y, m, d){
+  const dt = new Date(y, m, d);
+  if(dt.getFullYear() !== y || dt.getMonth() !== m || dt.getDate() !== d) return null;
+  return calLocalIso(dt);
+}
+function renderCalGrid(){
+  const wrap = document.getElementById('cal-grid');
+  if(!wrap) return;
+  const year = cal.year, m = cal.monthIdx;
+  const first = new Date(year, m, 1);
+  const dim = new Date(year, m+1, 0).getDate();
+  const colOf1 = cal.weekStart === 'L' ? (first.getDay()+6)%7 : first.getDay();
+  const headers = cal.weekStart === 'L' ? ['Dl','Dt','Dc','Dj','Dv','Ds','Dg'] : ['Dg','Dl','Dt','Dc','Dj','Dv','Ds'];
+  let html = `<div class="cal-grid-head">${headers.map(h=>`<span class="cal-grid-hd">${h}</span>`).join('')}</div>`;
+  let cells = '';
+  for(let i=0;i<colOf1;i++) cells += '<span class="cal-cell cal-cell-empty"></span>';
+  for(let d=1; d<=dim; d++){
+    const dow = new Date(year, m, d).getDay();
+    const isWeekend = (dow === 0 || dow === 6);
+    const iso = calDateIso(year, m, d);
+    const isH = iso && cal.allHolidays.has(iso);
+    const isStart = iso && cal.startDate === iso;
+    const isEnd = iso && cal.endDate === iso;
+    const cls = ['cal-cell', isWeekend ? 'cal-cell-weekend' : '', isH ? 'cal-cell-holiday' : '', (isStart || isEnd) ? 'cal-cell-special' : ''].filter(Boolean).join(' ');
+    const marker = isStart ? 'I' : isEnd ? 'F' : '';
+    const content = marker ? `${d}<span class="cal-cell-mark">${marker}</span>` : d;
+    cells += isWeekend
+      ? `<span class="${cls}">${content}</span>`
+      : `<button class="${cls}" onclick="calToggleDate('${iso}')">${content}</button>`;
+  }
+  html += `<div class="cal-grid-body">${cells}</div>`;
+  wrap.innerHTML = html;
+}
+function calToggleDate(iso){
+  if(!iso) return;
+  if(cal.allHolidays.has(iso)) cal.allHolidays.delete(iso); else cal.allHolidays.add(iso);
+  renderCalGrid();
+  renderCalHolidayList();
+}
+function renderCalHolidayList(){
+  const el = document.getElementById('cal-holidays-list');
+  if(!el) return;
+  const dates = Array.from(cal.allHolidays).map(s => new Date(s + 'T00:00:00')).sort((a,b)=>a-b);
+  const fmt = s => s ? new Date(s + 'T00:00:00').toLocaleDateString('ca-ES') : '—';
+  let html = '';
+  if(cal.startDate || cal.endDate){
+    html += `<div class="cal-list-title">${tr('Curs')}: ${fmt(cal.startDate)} — ${fmt(cal.endDate)}</div>`;
+  }
+  html += dates.length
+    ? `<div class="cal-list-title">${trf('Festius marcats ({n})', { n: dates.length })}</div><div class="cal-chips">${dates.map(d=>`<span class="cal-chip">${d.toLocaleDateString('ca-ES')}</span>`).join('')}</div>`
+    : `<div class="cal-list-title">${tr('Encara no has marcat cap festiu.')}</div>`;
+  el.innerHTML = html;
+}
+function calParseList(){
+  const el = document.getElementById('cal-list-input');
+  const raw = el ? el.value : '';
+  const tokens = raw.split(/[\s,;\n]+/).map(s=>s.trim()).filter(Boolean);
+  let added = 0;
+  for(const t of tokens){
+    const m = t.match(/^(\d{1,2})[\/\-.](\d{1,2})(?:[\/\-.](\d{2,4}))?$/);
+    if(!m) continue;
+    const day = parseInt(m[1],10), month = parseInt(m[2],10);
+    let year = m[3] ? parseInt(m[3],10) : cal.year;
+    if(year < 100) year += 2000;
+    const iso = calDateIso(year, month-1, day);
+    if(!iso) continue;
+    cal.allHolidays.add(iso);
+    added++;
+  }
+  renderCalGrid();
+  renderCalHolidayList();
+  const res = document.getElementById('cal-list-result');
+  if(res) res.textContent = trf('Afegides {n} dates de festa.', { n: added });
+}
+const CAL_MONTH_NORM = {
+  gener:0,febrer:1,marc:2,abril:3,maig:4,juny:5,juliol:6,agost:7,setembre:8,octubre:9,novembre:10,desembre:11,
+  enero:0,febrero:1,marzo:2,abril:3,mayo:4,junio:5,julio:6,agosto:7,septiembre:8,octubre:9,noviembre:10,diciembre:11
+};
+function calParseText(){
+  const el = document.getElementById('cal-list-input');
+  const raw = (el ? el.value : '') || '';
+  const txt = raw.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  const MN = Object.keys(CAL_MONTH_NORM).join('|');
+  const dateTok = '\\d{1,2}\\s*(?:d[\'\\u2019]?\\s*|de\\s+|del\\s+)?(?:' + MN + ')(?:\\s*(?:de\\s+)?\\d{2,4})?|\\d{1,2}[/\\-.]\\d{1,2}(?:[/\\-.]\\d{2,4})?|\\d{1,2}(?=\\s+(?:al|a\\s*l|fins))';
+  const defYear = m => (m-1 < 8) ? cal.year + 1 : cal.year;
+  const parseTok = (s, hintMonth) => {
+    const q = String(s||'').trim();
+    if(!q) return null;
+    let day, month, year = null;
+    let m = q.match(/^(\d{1,2})\s*(?:d['’]?\s*|de\s+|del\s+)?([a-z]+)(?:\s*(?:de\s+)?(\d{2,4}))?$/);
+    if(m && CAL_MONTH_NORM[m[2]] != null){
+      day = parseInt(m[1],10); month = CAL_MONTH_NORM[m[2]] + 1; if(m[3]) year = parseInt(m[3],10);
+    }else{
+      m = q.match(/^(\d{1,2})[/\-.](\d{1,2})(?:[/\-.](\d{2,4}))?$/);
+      if(m){ day = parseInt(m[1],10); month = parseInt(m[2],10); if(m[3]) year = parseInt(m[3],10); }
+      else{
+        m = q.match(/^(\d{1,2})$/);
+        if(m){ day = parseInt(m[1],10); month = hintMonth || 0; }
+        else return null;
+      }
+    }
+    if(year == null) year = defYear(month);
+    if(year < 100) year += 2000;
+    return calDateIso(year, month-1, day);
+  };
+  const STARTER = /(?:comen[çc]a|començ|inicia|inici|empieza|comienza|inicio|principi|donem\s+inici)/;
+  const ENDER = /(?:acab[ae]|acabament|finalit|finaliza|termina|fi\s+del\s+curs|final\s+del\s+curs|\bfi\b|\bfin\b)/;
+  const HOLIDAY_CTX = /(?:vacanc|festiu|nadal|setmana\s+santa|pasqua|descans|dies\s+no|pont|puente|tancat|lliure)/;
+  const RANGE = new RegExp('(?:del|des\\s+del|entre)\\s+(' + dateTok + ')\\s+(?:al|a\\s*l[\'\\u2019]?|fins(?:\\s+(?:al|a\\s*l[\'\\u2019]?))?)\\s+(' + dateTok + ')', 'gi');
+  let start = null, end = null;
+  const holidays = new Set(cal.allHolidays);
+  let rangeHits = [];
+  let rm;
+  RANGE.lastIndex = 0;
+  while((rm = RANGE.exec(txt)) !== null){
+    rangeHits.push({ start: rm.index, end: rm.index + rm[0].length, a: rm[1], b: rm[2] });
+    if(rm[0].length === 0) RANGE.lastIndex++;
+  }
+  for(const rh of rangeHits){
+    const pre = txt.slice(Math.max(0, rh.start - 80), rh.start);
+    const b = parseTok(rh.b, null);
+    const a = parseTok(rh.a, b ? parseInt(b.slice(5,7),10) : null);
+    if(!a || !b) continue;
+    const isHolidayCtx = HOLIDAY_CTX.test(pre);
+    if(!isHolidayCtx && !start && !end){
+      start = a; end = b;
+    }else{
+      // afegir totes les dates del rang com a festives
+      const d1 = new Date(a + 'T00:00:00'), d2 = new Date(b + 'T00:00:00');
+      if(d2 >= d1){
+        const cur = new Date(d1);
+        while(cur <= d2){
+          holidays.add(calLocalIso(cur));
+          cur.setDate(cur.getDate() + 1);
+        }
+      }
+    }
+  }
+  // dates individuals fora dels rangs
+  const DATE = new RegExp('\\d{1,2}\\s*(?:d[\'\\u2019]?\\s*|de\\s+|del\\s+)?(?:' + MN + ')(?:\\s*(?:de\\s+)?\\d{2,4})?|\\d{1,2}[/\\-.]\\d{1,2}(?:[/\\-.]\\d{2,4})?', 'gi');
+  const singles = [];
+  let dm;
+  DATE.lastIndex = 0;
+  while((dm = DATE.exec(txt)) !== null){
+    if(rangeHits.some(rh => dm.index >= rh.start && dm.index < rh.end)){ if(dm[0].length === 0) DATE.lastIndex++; continue; }
+    singles.push({ index: dm.index, tok: dm });
+    if(dm[0].length === 0) DATE.lastIndex++;
+  }
+  for(const sg of singles){
+    const iso = parseTok(sg.tok[0], null);
+    if(!iso) continue;
+    const pre = txt.slice(Math.max(0, sg.index - 60), sg.index);
+    if(STARTER.test(pre) && !start){ start = iso; }
+    else if(ENDER.test(pre) && !end){ end = iso; }
+    else { holidays.add(iso); }
+  }
+  cal.startDate = start || cal.startDate || null;
+  cal.endDate = end || cal.endDate || null;
+  cal.allHolidays = holidays;
+  renderCalGrid();
+  renderCalHolidayList();
+  calTab('cal');
+  const res = document.getElementById('cal-list-result');
+  if(res) res.textContent = trf('Inici: {s}. Fi: {e}. {n} festius. Revisa\'ls al calendari.', { s: cal.startDate || '—', e: cal.endDate || '—', n: holidays.size });
+}
+function calSave(){
+  if(!cal) return;
+  const holidays = Array.from(cal.allHolidays).sort();
+  if(!state.calendarData) state.calendarData = {};
+  state.calendarData.holidays = holidays;
+  state.calendarData.startDate = cal.startDate || null;
+  state.calendarData.endDate = cal.endDate || null;
+  saveState(); render(); closeCalModal();
 }
 function removeFilesFromArea(area){
   area.situacions.forEach(sa => sa.sessions.forEach(se => se.activities.forEach(a => removeFilesFromStorage(a.files))));
@@ -3671,7 +4345,7 @@ function restoreArea(id){
   else state.trashAreas = state.trashAreas.filter(a=>a.id!==id);
   state.areas.push(area);
   state.selectedAreaId = area.id;
-  showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false;
+  showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false;
   prepareAreaView(area);
   editTarget = null;
   saveState(); render(); closeDrawerIfMobile();
@@ -3804,7 +4478,7 @@ function openAreaAtSession(areaId, saId, sessionId){
   const sa = area.situacions.find(x=>x.id===saId); if(!sa) return;
   const s = sa.sessions.find(x=>x.id===sessionId); if(!s) return;
   state.selectedAreaId = areaId;
-  showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false;
+  showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false;
   prepareAreaView(area);
   sa.open = true; s.open = true; saveState();
   editTarget = null;
