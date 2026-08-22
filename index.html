@@ -559,6 +559,10 @@ a{color:var(--pen);}
 .res-area-btn.active{background:var(--pen-soft);color:var(--pen-dark);border-color:var(--pen);}
 .res-trimestre{margin-bottom:22px;}
 .res-trimestre h3{font-size:.8rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-faint);margin:0 0 10px;}
+.res-sa{margin-bottom:14px;}
+.res-sa:last-of-type{margin-bottom:0;}
+.res-sa-title{display:flex;align-items:center;gap:8px;font-size:.92rem;font-family:'Fraunces',serif;font-weight:600;color:var(--ink);margin:0 0 8px;}
+.res-sa-title .sp-num{flex:none;align-self:auto;}
 .res-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
 @media(max-width:600px){.res-grid{grid-template-columns:minmax(0,1fr);}}
 .res-card{display:flex;align-items:center;gap:10px;background:var(--white);border:1px solid var(--line);border-radius:9px;padding:8px 10px;box-shadow:var(--shadow);min-width:0;}
@@ -2333,9 +2337,9 @@ function setFilesAreaFilter(v){ filesAreaFilter = v; renderFilesList(); }
 /* ---------------------------------------------------------
    RECURSOS (vista per trimestres)
 -------------------------------------------------------- */
-const NON_FILE_RES_RE = /(?:pissarra|ordinador|cartolina|comp[àa]s|llapis|bol[ií]graf|paper|quadern|llibreta|llibre|goma|tisores|col[àa]|calculadora|regle|regla|carpeta|motxilla|auriculars|tablet|tauleta|projector|can[oó]|pissarra\s+digital|internet|wifi|m[oò]bil|tel[èe]fon)/i;
+const NON_FILE_RES_RE = /(?:pissarra|ordinador|cartolina|comp[àa]s|llapis|bol[ií]graf|retolador|paper|quadern|llibreta|llibre|goma|tisores|col[àa]|calculadora|regle|regla|carpeta|motxilla|auriculars|tablet|tauleta|projector|can[oó]|pissarra\s+digital|internet|wifi|m[oò]bil|tel[èe]fon|post[\s\-]?it|tipex|tipic)/i;
 function isNonFileResource(text){ return NON_FILE_RES_RE.test(String(text||'')); }
-const RES_FILTER_RE = /\b(?:pissarra digital|pdi|pissarra|ordinador|cartolina|comp[àa]s|llapis|bol[ií]graf|paper|quadern|llibreta|llibre|goma|tisores|col[àa]|calculadora|regle|regla|carpeta|motxilla|auriculars|tablet|tauleta|projector|can[oó]|internet|wifi|m[oò]bil|tel[èe]fon)s?\b/gi;
+const RES_FILTER_RE = /\b(?:pissarra digital|pdi|pissarra|ordinador|cartolina|comp[àa]s|llapis|bol[ií]graf|retolador|paper|quadern|llibreta|llibre|goma|tisores|col[àa]|calculadora|regle|regla|carpeta|motxilla|auriculars|tablet|tauleta|projector|can[oó]|internet|wifi|m[oò]bil|tel[èe]fon|post[\s\-]?its?|tipex|tipic)s?\b/gi;
 function cleanResourceText(text){
   const raw = String(text||'').trim();
   if(!raw) return '';
@@ -2515,9 +2519,25 @@ function areaResourcesHTML(area){
   }
   return groups.map((g, i) => {
     if(!g.length) return '';
+    const bySA = new Map();
+    for(const r of g){
+      if(!bySA.has(r.sa.id)) bySA.set(r.sa.id, []);
+      bySA.get(r.sa.id).push(r);
+    }
+    const saBlocks = [];
+    for(const [saId, items] of bySA){
+      const sa = area.situacions.find(x => x.id === saId);
+      if(!sa) continue;
+      const spIdx = area.situacions.indexOf(sa) + 1;
+      saBlocks.push(`
+      <div class="res-sa">
+        <h4 class="res-sa-title"><span class="sp-num">SA${spIdx}</span>${esc(sa.name)}</h4>
+        <div class="res-grid">${items.map(r => resourceCardHTML(area, r)).join('')}</div>
+      </div>`);
+    }
     return `<div class="res-trimestre">
       <h3>${labels[i]}</h3>
-      <div class="res-grid">${g.map(r => resourceCardHTML(area, r)).join('')}</div>
+      ${saBlocks.join('')}
     </div>`;
   }).join('');
 }
@@ -2531,7 +2551,6 @@ function resourceCardHTML(area, r){
       </button>`;
   return `
   <div class="res-card" id="res-card-${r.actId}">
-    <span class="sp-num">SA${r.sp}</span>
     <span class="session-num" onclick="openResSession('${area.id}','${r.sa.id}','${r.se.id}')" title="${tr('Obre la sessió')}">S${r.s}</span>
     <span class="res-name" onclick="openResSession('${area.id}','${r.sa.id}','${r.se.id}')" title="${esc(r.resource)}">${esc(r.resource)}</span>
     <button class="res-btn" title="${tr('Adjunta fitxers o enllaços')}" onclick="openAttachModal('${area.id}','${r.sa.id}','${r.se.id}','${r.actId}')">
@@ -2817,28 +2836,42 @@ function areaReminderHTML(area, cw){
   if(!upcoming.length) return '';
   const rows = [];
   for(const { sa, se } of upcoming){
-    const spIdx = area.situacions.indexOf(sa) + 1;
     const sIdx = sa.sessions.indexOf(se) + 1;
     for(const act of se.activities){
       const res = cleanResourceText(act.resources);
       if(res && !act.resourceDone && !hasAttachments(act)){
-        rows.push({ s: sIdx, sp: spIdx, resource: res, actId: act.id, areaId: area.id, saId: sa.id, seId: se.id });
+        rows.push({ s: sIdx, resource: res, actId: act.id, areaId: area.id, saId: sa.id, seId: se.id, sa });
       }
     }
   }
   if(!rows.length) return '';
+  const bySA = new Map();
+  for(const r of rows){
+    if(!bySA.has(r.saId)) bySA.set(r.saId, []);
+    bySA.get(r.saId).push(r);
+  }
+  const saBlocks = [];
+  for(const [saId, items] of bySA){
+    const sa = area.situacions.find(x => x.id === saId);
+    if(!sa) continue;
+    const spIdx = area.situacions.indexOf(sa) + 1;
+    saBlocks.push(`
+    <div class="res-sa">
+      <h4 class="res-sa-title"><span class="sp-num">SA${spIdx}</span>${esc(sa.name)}</h4>
+      <div class="res-grid">${items.map(r => reminderCardHTML(r)).join('')}</div>
+    </div>`);
+  }
   return `
   <div class="rem-area">
     <h3>${esc(area.name)}</h3>
     <p class="rem-note">${trf('Properes 2 setmanes · {n} sessió(ns) des de la S{m}', { n: sessions2w, m: start + 1 })}</p>
-    <div class="res-grid">${rows.map(r => reminderCardHTML(r)).join('')}</div>
+    ${saBlocks.join('')}
   </div>`;
 }
 function reminderCardHTML(r){
   const open = `openResSession('${r.areaId}','${r.saId}','${r.seId}')`;
   return `
   <div class="res-card" id="res-card-${r.actId}">
-    <span class="sp-num">SA${r.sp}</span>
     <span class="session-num" onclick="${open}" title="${tr('Obre la sessió')}">S${r.s}</span>
     <span class="res-name" onclick="${open}" title="${esc(r.resource)}">${esc(r.resource)}</span>
     <button class="res-btn" title="${tr('Adjunta fitxers o enllaços')}" onclick="openAttachModal('${r.areaId}','${r.saId}','${r.seId}','${r.actId}')">
@@ -4221,7 +4254,7 @@ function splitActivityLine(line){
     ranges.push({ index: m.index, minutes: (b > a) ? (b - a) : null, span: m[0] });
   }
   if (!ranges.length) return null;
-  const label = line.slice(0, ranges[0].index).replace(/[:\-\–—\s]+$/,'').trim();
+  const label = line.slice(0, ranges[0].index).replace(/^[\s•◦▪‣⁃∙⋅»>·*–—]+/, '').replace(/[:\-\–—\s]+$/,'').trim();
   const isHeader = !label || /^(?:temps|temps\s+total|activitat|act|hora|hores|duraci[oó]n|minuts?)\b/i.test(label);
   const segs = [];
   for (let i=0;i<ranges.length;i++){
@@ -4260,6 +4293,9 @@ function inventTitle(text){
 function splitActivityName(text){
   let t = String(text||'').trim();
   if (!t) return { title: '', description: '' };
+  t = t.replace(/^[\s•◦▪‣⁃∙⋅»>·*–—]+/, '').trim();
+  if (!t) return { title: '', description: '' };
+  if (/^(?:activitats?|actividades?|activitats?\s+d['’]?\s*aprenentatge)\s*:?$/i.test(t)) return { title: '', description: '' };
   t = t.replace(/^(?:activitat\s*\d*|act\.?\s*\d*)\s*[:\-–—\.]?\s*/i, '').trim();
   if (!t) return { title: '', description: '' };
   const ci = t.indexOf(':');
@@ -4280,7 +4316,7 @@ function generateSessionTitle(ses){
 }
 
 function parseProgramacio(text){
-  const lines = text.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+  const lines = text.split(/\r?\n/).map(l => l.replace(/^[\s•◦▪‣⁃∙⋅»>·*–—]+/, '').trim()).filter(Boolean);
   const sas = [];
   let areaName = null, cur = null, curSes = null, inRes = false;
 
@@ -4322,6 +4358,8 @@ function parseProgramacio(text){
     return t.trim() || line.trim();
   };
   const isRes = line => /^(?:recursos|materials?|material|recursos\s+i\s+materials?)\s*[:\-]?/i.test(line);
+  const isActHeader = line => /^(?:activitats?|actividades?)\s*:?$/i.test(line) ||
+    /^(?:activitats?\s+d['’]?\s*aprenentatge|activitats?\s+de\s+la\s+sessi[oó]n|activitats?\s+previstes?|desenvolupament(?:\s+de\s+la\s+sessi[oó]n)?|temporitzaci[oó]n|seqü[èe]ncia)\s*:?$/i.test(line);
   const ensureCurSes = () => {
     if(!curSes){ curSes = { id: uid(), name: tr("Sessió 1"), activities: [], resources: [] }; }
     return curSes;
@@ -4368,6 +4406,7 @@ function parseProgramacio(text){
       if(!isNonFileResource(line)) ensureCurSes().resources.push(line);
       continue;
     }
+    if (isActHeader(line)) { inRes = false; continue; }
     if (!curSes) {
       const segs = splitActivityLine(line);
       const { minutes } = extractMinutes(line);
@@ -4378,11 +4417,15 @@ function parseProgramacio(text){
     if (segs && segs.length){
       for (const s of segs){
         if (!s.text && s.minutes == null) continue;
-        curSes.activities.push({ id: uid(), text: s.text || '', minutes: s.minutes });
+        const st = String(s.text || '').trim();
+        if (st && /^[•◦▪‣⁃∙⋅»>·*]+$/.test(st)) continue;
+        curSes.activities.push({ id: uid(), text: st || '', minutes: s.minutes });
       }
     } else {
       const { minutes, cleaned } = extractMinutes(line);
-      curSes.activities.push({ id: uid(), text: cleaned || line, minutes });
+      const st = (cleaned || line).trim();
+      if (st && /^[•◦▪‣⁃∙⋅»>·*]+$/.test(st)) continue;
+      curSes.activities.push({ id: uid(), text: st, minutes });
     }
   }
   if (curSes && cur) cur.sessions.push(curSes);
@@ -4404,6 +4447,11 @@ function sameFamily(a, b){
   if(a.length < 4 || b.length < 4) return a === b;
   return a === b || a.slice(0,4) === b.slice(0,4);
 }
+function capFirst(s){
+  const t = String(s||'').trim();
+  if(!t) return t;
+  return t.charAt(0).toUpperCase() + t.slice(1);
+}
 function distributeResources(acts, resources){
   const items = (resources||[]).map(r => String(r).trim()).filter(Boolean).filter(r => !isNonFileResource(r));
   const perAct = acts.map(() => []);
@@ -4424,7 +4472,7 @@ function distributeResources(acts, resources){
       }
       if(score > bestScore){ bestScore = score; best = i; }
     });
-    perAct[best].push(r);
+    perAct[best].push(capFirst(r));
   }
   return perAct.map(list => list.join('\n'));
 }
@@ -4446,6 +4494,11 @@ function parseTextToStructure(text){
       const acts = se.activities.map(a => {
         const sp = splitActivityName(a.text || '');
         return { title: sp.title, minutes: a.minutes || 0, description: sp.description, resources: '' };
+      }).filter(a => {
+        const ti = (a.title || '').trim(), de = (a.description || '').trim();
+        if (!ti && !de) return false;
+        if (a.minutes <= 0 && ti.length <= 1 && de.length <= 1) return false;
+        return true;
       });
       const resPerAct = distributeResources(acts, se.resources);
       acts.forEach((a, j) => { a.resources = resPerAct[j]; });
