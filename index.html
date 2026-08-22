@@ -270,6 +270,16 @@ a{color:var(--pen);}
 .session-toggle svg{width:14px;height:14px;transition:transform .15s ease;}
 .session-card.open .session-toggle svg{transform:rotate(90deg);}
 
+/* Session elements (Objectius, Metodologia, Seguiment) */
+.session-elem{margin-top:12px;}
+.session-elem-label{display:block;font-size:.68rem;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-faint);font-weight:600;margin-bottom:4px;}
+.session-elem textarea{
+  width:100%;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:.85rem;
+  background:var(--paper);font-family:inherit;resize:vertical;min-height:44px;
+}
+.session-elem textarea:focus{outline:none;border-color:var(--pen);}
+.session-elem-text{font-size:.85rem;color:var(--ink-soft);line-height:1.5;white-space:pre-wrap;}
+
 /* Activity rows */
 .activities-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start;}
 @media(max-width:900px){.activities-grid{grid-template-columns:1fr;}}
@@ -378,6 +388,26 @@ a{color:var(--pen);}
 #import-preview .imp-sa strong{font-family:'Fraunces',serif;}
 #import-preview ul{margin:4px 0 0 0;padding-left:18px;color:var(--ink-soft);}
 .modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:18px;}
+#file-preview-modal .modal{
+  max-width:860px;
+  display:flex;flex-direction:column;
+  overflow:hidden;
+}
+.file-preview-head{
+  flex:none;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  padding-bottom:10px;
+  border-bottom:1px solid var(--line);
+}
+.file-preview-head-text{flex:1;min-width:0;}
+.file-preview-head-text h2{word-break:break-word;font-size:1.05rem;margin-bottom:2px;}
+.file-preview-head .modal-actions{margin:0;flex:none;}
+#file-preview-sub{color:var(--ink-soft);font-size:.72rem;margin-top:0;}
+#file-preview-body{flex:1;min-height:120px;overflow-y:auto;margin-top:14px;}
+#file-preview-body img{max-width:100%;border-radius:9px;display:block;margin:0 auto;}
+#file-preview-body iframe{width:100%;height:62vh;border:1px solid var(--line);border-radius:9px;background:var(--paper);}
+#file-preview-body pre{background:var(--paper-alt);border:1px solid var(--line);border-radius:9px;padding:14px 16px;max-height:62vh;overflow:auto;font-size:.82rem;line-height:1.5;white-space:pre-wrap;word-break:break-word;margin:0;}
+.file-preview-note{background:var(--paper-alt);border:1px dashed var(--line);border-radius:9px;padding:28px 20px;text-align:center;color:var(--ink-soft);font-size:.9rem;}
 #attach-dropzone{border:2px dashed var(--line);border-radius:9px;padding:12px 14px;}
 #attach-dropzone.dragover{border-color:var(--pen);background:var(--pen-soft);}
 #attach-drop-hint{font-size:.78rem;color:var(--ink-faint);margin-top:6px;}
@@ -422,6 +452,11 @@ a{color:var(--pen);}
 .add-area-options .btn{width:100%;justify-content:center;}
 .agenda-note{color:var(--ink-faint);font-size:.85rem;margin:4px 0 16px;}
 .agenda-list{display:flex;flex-direction:column;gap:16px;}
+.agenda-head-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 6px;}
+.agenda-head-row h1{margin:0;}
+.urgent-banner{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;background:var(--gold-soft);border:1px solid var(--gold);border-radius:20px;color:var(--gold-dark);font-weight:700;font-size:.75rem;cursor:pointer;white-space:nowrap;}
+.urgent-banner svg{width:12px;height:12px;flex:none;}
+.urgent-banner:hover{filter:brightness(1.05);}
 .agenda-card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;}
 .agenda-head{display:flex;align-items:center;gap:12px;padding:9px 18px;border-bottom:1px solid var(--line);}
 .agenda-color-badge{width:36px;height:36px;border-radius:9px;background:var(--area-color);flex:none;}
@@ -477,6 +512,7 @@ a{color:var(--pen);}
 .settings-header h1{margin:0 0 4px;}
 .settings-note{color:var(--ink-soft);font-size:.9rem;margin:0;}
 .settings-card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;max-width:680px;}
+.settings-card-title{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-faint);font-weight:600;padding:16px 18px 0;}
 .files-toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:18px;}
 .files-search{flex:1 1 220px;min-width:180px;border:1px solid var(--line);border-radius:8px;background:var(--white);padding:9px 12px;font-size:.9rem;color:var(--ink);}
 .files-search:focus{outline:none;border-color:var(--pen);}
@@ -488,12 +524,17 @@ a{color:var(--pen);}
 .file-thumb{width:46px;height:46px;border-radius:9px;overflow:hidden;flex:none;display:flex;align-items:center;justify-content:center;background:var(--paper-alt);}
 .file-thumb img{width:100%;height:100%;object-fit:cover;}
 .files-ext{font-family:'IBM Plex Mono',monospace;font-size:.6rem;font-weight:700;color:var(--pen-dark);background:var(--pen-soft);padding:4px 6px;border-radius:6px;text-transform:uppercase;}
+.files-ic{display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:var(--pen-dark);background:var(--pen-soft);}
+.files-ic svg{width:22px;height:22px;}
 .file-info{flex:1;min-width:0;}
 .file-info a{display:block;font-weight:600;color:var(--ink);text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .file-info a:hover{color:var(--pen);text-decoration:underline;}
 .file-info small{display:block;color:var(--ink-faint);font-size:.78rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .file-info .file-size{color:var(--ink-soft);}
-.bin-toolbar{margin:4px 0 16px;}
+.bin-toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:4px 0 16px;}
+.bin-toolbar .btn-toolbar-right{margin-left:auto;}
+.bin-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:900px;}
+@media(max-width:640px){.bin-grid{grid-template-columns:1fr;}}
 .bin-section-title{font-family:'Fraunces',serif;font-size:1.05rem;color:var(--ink-soft);margin:18px 0 10px;font-weight:600;}
 .bin-badge{width:38px;height:38px;border-radius:9px;background:var(--area-color);flex:none;overflow:hidden;}
 .bin-list{display:flex;flex-direction:column;gap:12px;max-width:760px;}
@@ -502,6 +543,16 @@ a{color:var(--pen);}
 .bin-info b{display:block;font-size:1rem;}
 .bin-info small{display:block;color:var(--ink-faint);font-size:.8rem;}
 .bin-actions{display:flex;gap:8px;flex-wrap:wrap;}
+.links-trash-list{display:flex;flex-direction:column;gap:8px;max-width:860px;}
+.link-trash-row{display:flex;align-items:center;gap:12px;background:var(--white);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);padding:8px 14px;flex-wrap:wrap;}
+.link-trash-ic{width:30px;height:30px;border-radius:7px;background:var(--pen-soft);color:var(--pen-dark);display:flex;align-items:center;justify-content:center;flex:none;}
+.link-trash-ic svg{width:16px;height:16px;}
+.link-trash-ic.vid{background:var(--gold-soft);color:var(--gold-dark);}
+.link-trash-main{flex:1;min-width:220px;}
+.link-trash-label{display:block;font-weight:600;color:var(--ink);text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.link-trash-label:hover{color:var(--pen);text-decoration:underline;}
+.link-trash-url{display:block;font-family:'IBM Plex Mono',monospace;font-size:.72rem;color:var(--pen);word-break:break-all;}
+.link-trash-meta{display:block;color:var(--ink-faint);font-size:.72rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .res-areas{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;}
 .res-area-btn{display:inline-flex;align-items:center;gap:8px;background:var(--white);border:1px solid var(--line);border-radius:9px;padding:8px 12px;font-size:.88rem;color:var(--ink-soft);font-weight:600;cursor:pointer;}
 .res-area-btn:hover{background:var(--paper-alt);}
@@ -531,6 +582,7 @@ a{color:var(--pen);}
 .settings-input input[type=number]:focus{outline:none;border-color:var(--pen);}
 .settings-sub{background:var(--paper);border-bottom:1px solid var(--line);}
 .settings-sub .settings-row{padding-left:38px;}
+.settings-sub .settings-sub .settings-row{padding-left:64px;}
 .settings-sub .settings-row:last-of-type{border-bottom:none;}
 .hidden{display:none !important;}
 </style>
@@ -538,7 +590,7 @@ a{color:var(--pen);}
 <body>
 
 <div id="topbar">
-  <button id="hamburger" onclick="toggleDrawer()" aria-label="Obri el menú">
+  <button id="hamburger" onclick="toggleDrawer()" data-i18n-aria="Obri el menú" aria-label="Obri el menú">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
   </button>
   <span class="brand-link" onclick="showAgendaView()" role="button" tabindex="0">
@@ -555,41 +607,41 @@ a{color:var(--pen);}
       <svg class="logo-mark" viewBox="0 0 100 100"><rect width="100" height="100" rx="18" fill="#33507A"/><path d="M30 20h30a8 8 0 0 1 8 8v52H30z" fill="#F3F6F3"/><line x1="38" y1="36" x2="58" y2="36" stroke="#33507A" stroke-width="3"/><line x1="38" y1="48" x2="58" y2="48" stroke="#33507A" stroke-width="3"/><line x1="38" y1="60" x2="52" y2="60" stroke="#33507A" stroke-width="3"/></svg>
       <div>
         <div class="app-name display">Quadern docent</div>
-        <div class="app-sub">Programació de curs</div>
+        <div class="app-sub" data-i18n="Programació de curs">Programació de curs</div>
       </div>
     </div>
 
     <div class="sidebar-section">
       <button class="agenda-nav" id="agendaNav" onclick="showAgendaView()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        <span>Agenda</span>
+        <span data-i18n="Agenda">Agenda</span>
       </button>
     </div>
 
     <div class="sidebar-section">
-      <div class="sidebar-label">Àrees</div>
+      <div class="sidebar-label" data-i18n="Àrees">Àrees</div>
       <div id="area-list"></div>
-      <button class="btn btn-ghost btn-block btn-sm" id="addAreaBtn" onclick="addAreaPrompt()">+ Nova àrea</button>
+      <button class="btn btn-ghost btn-block btn-sm" id="addAreaBtn" onclick="addAreaPrompt()" data-i18n="+ Nova àrea">+ Nova àrea</button>
     </div>
 
     <div class="sidebar-section">
       <button class="files-nav" id="resourcesNav" onclick="showResourcesView()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-        <span>Pendents</span>
+        <span data-i18n="Pendents">Pendents</span>
       </button>
     </div>
 
     <div class="sidebar-section">
       <button class="files-nav" id="filesNav" onclick="showFilesView()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-        <span>Recursos</span>
+        <span data-i18n="Recursos">Recursos</span>
       </button>
     </div>
 
     <div class="sidebar-section">
       <button class="settings-nav" id="settingsNav" onclick="showSettingsView()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.01a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.01a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.01a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-        <span>Ajustos</span>
+        <span data-i18n="Ajustos">Ajustos</span>
       </button>
     </div>
 
@@ -597,21 +649,20 @@ a{color:var(--pen);}
       <div class="sidebar-section">
         <button class="files-nav" id="archivedNav" onclick="showArchivedView()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 8v13H3V8"/><path d="M1 3h22v5H1z"/><path d="M10 12h4"/></svg>
-          <span>Arxivats</span>
+          <span data-i18n="Arxivats">Arxivats</span>
         </button>
       </div>
       <div class="sidebar-section">
         <button class="files-nav" id="trashNav" onclick="showTrashView()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M9 7V4h6v3m-8 0 1 13h8l1-13"/></svg>
-          <span>Paperera</span>
+          <span data-i18n="Paperera">Paperera</span>
         </button>
       </div>
     </div>
 
     <div id="sidebar-footer">
-      <p class="foot-note" id="sync-status">Sincronitzant…</p>
+      <p class="foot-note" id="sync-status" data-i18n="Sincronitzant…">Sincronitzant…</p>
       <button class="files-nav" id="auth-nav-btn" onclick="if(loggedIn())signOut();else openAuthModal()" style="display:none;border-left-color:transparent;"></button>
-      <p class="foot-note">Les dades es sincronitzen al núvol i es guarden en aquest navegador per poder treballar sense connexió.</p>
     </div>
   </aside>
 
@@ -623,34 +674,34 @@ a{color:var(--pen);}
 <!-- Import modal -->
 <div class="modal-backdrop" id="import-modal">
   <div class="modal">
-    <h2>Importa una programació</h2>
-    <p class="hint">Puja un document (.txt, .docx, .odt o .pdf) amb la programació d'una àrea. L'aplicació intentarà reconèixer les situacions d'aprenentatge, les sessions i les activitats. Revisa sempre el resultat abans de confirmar: podràs editar-ho tot després.</p>
+    <h2 data-i18n="Importa una programació">Importa una programació</h2>
+    <p class="hint" data-i18n="Puja un document (.txt, .docx, .odt o .pdf) amb la programació d'una àrea. L'aplicació intentarà reconèixer les situacions d'aprenentatge, les sessions i les activitats. Revisa sempre el resultat abans de confirmar: podràs editar-ho tot després.">Puja un document (.txt, .docx, .odt o .pdf) amb la programació d'una àrea. L'aplicació intentarà reconèixer les situacions d'aprenentatge, les sessions i les activitats. Revisa sempre el resultat abans de confirmar: podràs editar-ho tot després.</p>
 
     <div class="modal-field" id="import-dropzone">
-      <label>Document</label>
+      <label data-i18n="Document">Document</label>
       <input type="file" id="import-file" accept=".txt,.docx,.odt,.pdf">
-      <div class="drop-hint" id="drop-hint">…o arrossega el document aquí i deixa'l anar</div>
+      <div class="drop-hint" id="drop-hint" data-i18n="…o arrossega el document aquí i deixa'l anar">…o arrossega el document aquí i deixa'l anar</div>
     </div>
 
     <div class="modal-field">
-      <button class="btn btn-primary" onclick="handleAnalyze()">Analitza el document</button>
+      <button class="btn btn-primary" onclick="handleAnalyze()" data-i18n="Analitza el document">Analitza el document</button>
       <div id="import-status"></div>
     </div>
 
     <div id="import-preview"></div>
 
     <div class="modal-field">
-      <label>Destí</label>
+      <label data-i18n="Destí">Destí</label>
       <select id="import-target"></select>
     </div>
     <div class="modal-field" id="import-name-field">
-      <label>Nom de l'àrea nova</label>
-      <input type="text" id="import-area-name" placeholder="p. ex. Matemàtiques">
+      <label data-i18n="Nom de l'àrea nova">Nom de l'àrea nova</label>
+      <input type="text" id="import-area-name" placeholder="p. ex. Matemàtiques" data-i18n-ph="p. ex. Matemàtiques">
     </div>
 
     <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeImportModal()">Cancel·la</button>
-      <button class="btn btn-primary" id="import-confirm-btn" disabled onclick="confirmImport()">Importa</button>
+      <button class="btn btn-ghost" onclick="closeImportModal()" data-i18n="Cancel·la">Cancel·la</button>
+      <button class="btn btn-primary" id="import-confirm-btn" disabled onclick="confirmImport()" data-i18n="Importa">Importa</button>
     </div>
   </div>
 </div>
@@ -658,14 +709,14 @@ a{color:var(--pen);}
 <!-- Nova àrea modal -->
 <div class="modal-backdrop" id="add-area-modal" onclick="if(event.target===this)closeAddAreaModal()">
   <div class="modal">
-    <h2>Nova àrea</h2>
-    <p class="hint">Tria com vols crear la programació d'aquesta àrea.</p>
+    <h2 data-i18n="Nova àrea">Nova àrea</h2>
+    <p class="hint" data-i18n="Tria com vols crear la programació d'aquesta àrea.">Tria com vols crear la programació d'aquesta àrea.</p>
     <div class="add-area-options">
-      <button class="btn btn-primary" onclick="closeAddAreaModal();addArea()">+ Crear-la manualment</button>
-      <button class="btn btn-gold" onclick="closeAddAreaModal();openImportModal()">Importar un document</button>
+      <button class="btn btn-primary" onclick="closeAddAreaModal();addArea()" data-i18n="+ Crear-la manualment">+ Crear-la manualment</button>
+      <button class="btn btn-gold" onclick="closeAddAreaModal();openImportModal()" data-i18n="Importar un document">Importar un document</button>
     </div>
     <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeAddAreaModal()">Cancel·la</button>
+      <button class="btn btn-ghost" onclick="closeAddAreaModal()" data-i18n="Cancel·la">Cancel·la</button>
     </div>
   </div>
 </div>
@@ -673,25 +724,25 @@ a{color:var(--pen);}
 <!-- Adjunta recursos modal -->
 <div class="modal-backdrop" id="attach-modal" onclick="if(event.target===this)closeAttachModal()">
   <div class="modal">
-    <h2>Adjunta recursos</h2>
-    <p class="hint">Tria fitxers de l'ordinador o arrossega'ls ací, i/o enganxa enllaços. Pots afegir tants com vulgues, en aquesta finestra o en una altra.</p>
+    <h2 data-i18n="Adjunta recursos">Adjunta recursos</h2>
+    <p class="hint" data-i18n="Tria fitxers de l'ordinador o arrossega'ls ací, i/o enganxa enllaços. Pots afegir tants com vulgues, en aquesta finestra o en una altra.">Tria fitxers de l'ordinador o arrossega'ls ací, i/o enganxa enllaços. Pots afegir tants com vulgues, en aquesta finestra o en una altra.</p>
 
     <div class="modal-field" id="attach-dropzone">
-      <label>Fitxers</label>
+      <label data-i18n="Fitxers">Fitxers</label>
       <input type="file" id="attach-file-input" multiple onchange="attachFilesChosen(this)">
-      <div id="attach-drop-hint">…o arrossega els fitxers ací i deixa'ls anar</div>
+      <div id="attach-drop-hint" data-i18n="…o arrossega els fitxers ací i deixa'ls anar">…o arrossega els fitxers ací i deixa'ls anar</div>
     </div>
 
     <div class="modal-field">
-      <label>Fitxers adjuntats</label>
+      <label data-i18n="Fitxers adjuntats">Fitxers adjuntats</label>
       <div class="attachments" id="attach-files-list"></div>
     </div>
 
     <div class="modal-field">
-      <label>Enllaç</label>
+      <label data-i18n="Enllaç">Enllaç</label>
       <div class="attach-link-row">
         <input type="text" id="attach-link-input" placeholder="https://…">
-        <button class="btn btn-primary btn-sm" onclick="attachAddLink()">Afegeix</button>
+        <button class="btn btn-primary btn-sm" onclick="attachAddLink()" data-i18n="Afegeix">Afegeix</button>
       </div>
       <div class="attachments" id="attach-links-list"></div>
     </div>
@@ -699,29 +750,46 @@ a{color:var(--pen);}
     <div id="attach-status"></div>
 
     <div class="modal-actions">
-      <button class="btn btn-primary" onclick="closeAttachModal()">Fet</button>
+      <button class="btn btn-primary" onclick="closeAttachModal()" data-i18n="Fet">Fet</button>
     </div>
+  </div>
+</div>
+
+<!-- Previsualitza arxiu modal -->
+<div class="modal-backdrop" id="file-preview-modal" onclick="if(event.target===this)closeFilePreview()">
+  <div class="modal">
+    <div class="file-preview-head">
+      <div class="file-preview-head-text">
+        <h2 id="file-preview-title">Arxiu</h2>
+        <p class="hint" id="file-preview-sub"></p>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-sm btn-ghost" onclick="closeFilePreview()" data-i18n="Tanca">Tanca</button>
+        <button class="btn btn-sm btn-primary" id="file-preview-download" onclick="downloadCurrentPreview()" data-i18n="Descarrega">Descarrega</button>
+      </div>
+    </div>
+    <div id="file-preview-body"></div>
   </div>
 </div>
 
 <!-- Inicia sessió / crea compte modal -->
 <div class="modal-backdrop" id="auth-modal" onclick="if(event.target===this)closeAuthModal()">
   <div class="modal">
-    <h2 id="auth-modal-title">Inicia sessió</h2>
-    <p class="hint" id="auth-modal-hint">Entra amb el teu compte per sincronitzar i protegir les dades.</p>
+    <h2 id="auth-modal-title" data-i18n="Inicia sessió">Inicia sessió</h2>
+    <p class="hint" id="auth-modal-hint" data-i18n="Entra amb el teu compte per sincronitzar i protegir les dades.">Entra amb el teu compte per sincronitzar i protegir les dades.</p>
     <div class="modal-field">
-      <label>Correu electrònic</label>
-      <input type="email" id="auth-email" placeholder="tu@exemple.cat" autocomplete="email">
+      <label data-i18n="Correu electrònic">Correu electrònic</label>
+      <input type="email" id="auth-email" placeholder="tu@exemple.cat" data-i18n-ph="tu@exemple.cat" autocomplete="email">
     </div>
     <div class="modal-field">
-      <label>Contrasenya</label>
+      <label data-i18n="Contrasenya">Contrasenya</label>
       <input type="password" id="auth-password" placeholder="••••••••" autocomplete="current-password">
     </div>
     <div id="auth-status"></div>
     <div class="modal-actions">
-      <button class="btn btn-primary" id="auth-submit" onclick="authSubmit()">Entra</button>
-      <button class="btn btn-ghost" id="auth-toggle" onclick="authToggleMode()">Crea un compte</button>
-      <button class="btn btn-ghost" onclick="closeAuthModal()">Cancel·la</button>
+      <button class="btn btn-primary" id="auth-submit" onclick="authSubmit()" data-i18n="Entra">Entra</button>
+      <button class="btn btn-ghost" id="auth-toggle" onclick="authToggleMode()" data-i18n="Crea un compte">Crea un compte</button>
+      <button class="btn btn-ghost" onclick="closeAuthModal()" data-i18n="Cancel·la">Cancel·la</button>
     </div>
   </div>
 </div>
@@ -749,11 +817,327 @@ let authSession = null;
 let filesQuery = '';
 let filesFilter = 'all';
 let filesAreaFilter = 'all';
+let trashQuery = '';
+let trashTypeFilter = 'all';
 let parsedAreaName = '';
 
 const AREA_COLORS = ['#33507A','#B0523F','#6B8F71','#7A5980','#3C8C8C','#B9860F','#55707A','#8A5B3F'];
 
 const LS_STATE = 'quadernAulaState';
+
+/* ---------------------------------------------------------
+   INTERNACIONALITZACIÓ (Valencià per defecte, Castellà opcional)
+   Només es tradueix la interfície; el contingut introduït per
+   la persona usuària es mostra tal qual.
+--------------------------------------------------------- */
+function lang(){ return (state.settings && state.settings.lang) || 'ca'; }
+function tr(s){ return lang()==='es' ? (I18N_ES[s] || s) : s; }
+function trf(s, vars){
+  let out = tr(s);
+  if(vars){ out = out.replace(/\{(\w+)\}/g, (_,k) => (vars[k]!=null ? vars[k] : '')); }
+  return out;
+}
+function applyI18n(){
+  document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = tr(el.getAttribute('data-i18n')); });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => { el.setAttribute('placeholder', tr(el.getAttribute('data-i18n-ph'))); });
+  document.querySelectorAll('[data-i18n-title]').forEach(el => { el.setAttribute('title', tr(el.getAttribute('data-i18n-title'))); });
+  document.querySelectorAll('[data-i18n-aria]').forEach(el => { el.setAttribute('aria-label', tr(el.getAttribute('data-i18n-aria'))); });
+  document.title = tr('Quadern docent — Programació d\'aula');
+}
+function setLang(v){
+  if(!state.settings) state.settings = {};
+  state.settings.lang = (v === 'es' ? 'es' : 'ca');
+  saveState(); render(); applyI18n();
+}
+const I18N_ES = {
+  'Quadern docent — Programació d\'aula': 'Quadern docent — Programación de aula',
+  'Programació de curs': 'Programación del curso',
+  'Agenda': 'Agenda',
+  'Àrees': 'Áreas',
+  '+ Nova àrea': '+ Nueva área',
+  'Pendents': 'Pendientes',
+  'Recursos': 'Recursos',
+  'Ajustos': 'Ajustes',
+  'Arxivats': 'Archivados',
+  'Paperera': 'Papelera',
+  'Les dades es sincronitzen al núvol i es guarden en aquest navegador per poder treballar sense connexió.': 'Los datos se sincronizan en la nube y se guardan en este navegador para poder trabajar sin conexión.',
+  'Sincronitzant…': 'Sincronizando…',
+  'Sense núvol': 'Sin nube',
+  'Núvol sincronitzat': 'Nube sincronizada',
+  'Núvol: dades noves': 'Nube: datos nuevos',
+  'Núvol no connectat': 'Nube no conectada',
+  'Desant…': 'Guardando…',
+  'Error en desar al núvol': 'Error al guardar en la nube',
+  'Sense núvol configurat': 'Sin nube configurada',
+  'Sessió tancada': 'Sesión cerrada',
+  'Inicia sessió per sincronitzar': 'Inicia sesión para sincronizar',
+  'Inicia sessió': 'Inicia sesión',
+  'Tanca sessió': 'Cerrar sesión',
+  'Compte': 'Cuenta',
+  'Inicia sessió per protegir i sincronitzar les teues dades al núvol.': 'Inicia sesión para proteger y sincronizar tus datos en la nube.',
+  'Connectat com a ': 'Conectado como ',
+  'Llengua': 'Idioma',
+  'Llengua de la interfície del programa.': 'Idioma de la interfaz del programa.',
+  'Valencià': 'Valenciano',
+  'Castellà': 'Castellano',
+  'Configuració general de l\'aplicació.': 'Configuración general de la aplicación.',
+  'Durada de les sessions': 'Duración de las sesiones',
+  'Activa o desactiva l\'opció d\'establir la durada de les activitats i les sessions a les programacions.': 'Activa o desactiva la opción de establecer la duración de las actividades y las sesiones en las programaciones.',
+  'Minuts per sessió': 'Minutos por sesión',
+  'Durada per defecte d\'una sessió.': 'Duración por defecto de una sesión.',
+  'minuts': 'minutos',
+  'Aplica a totes les sessions': 'Aplicar a todas las sesiones',
+  'Canvia totes les sessions programades que no duren els minuts configurats.': 'Cambia todas las sesiones programadas que no duren los minutos configurados.',
+  'Aplica a totes': 'Aplicar a todas',
+  'Mode fosc': 'Modo oscuro',
+  'Canvia l\'aparença de l\'aplicació.': 'Cambia la apariencia de la aplicación.',
+  'Preguntar per eliminar arxius': 'Preguntar al eliminar archivos',
+  'Demana confirmació quan envies un recurs a la paperera o l\'elimines definitivament.': 'Pide confirmación cuando envías un recurso a la papelera o lo eliminas definitivamente.',
+  'Arxius adjuntats': 'Archivos adjuntos',
+  'Quan fas clic a un document adjuntat, tria si es descarrega directament o s\'obri una previsualització a l\'app.': 'Cuando haces clic en un documento adjunto, elige si se descarga directamente o se abre una vista previa en la app.',
+  'Descarrega sempre': 'Descargar siempre',
+  'Previsualitza abans de descarregar': 'Previsualizar antes de descargar',
+  'Tanca': 'Cerrar',
+  'Descarrega': 'Descargar',
+  'Carregant…': 'Cargando…',
+  'No es pot previsualitzar aquest tipus d\'arxiu. Descarrega\'l per veure\'l.': 'No se puede previsualizar este tipo de archivo. Descárgalo para verlo.',
+  'No s\'ha pogut previsualitzar aquest arxiu. Descarrega\'l per veure\'l.': 'No se ha podido previsualizar este archivo. Descárgalo para verlo.',
+  'No s\'ha pogut descarregar "{name}".': 'No se ha podido descargar "{name}".',
+  'Durada del curs': 'Duración del curso',
+  'Setmanes que sol durar el curs (per calcular el recordatori de les properes 2 setmanes).': 'Semanas que suele durar el curso (para calcular el recordatorio de las próximas 2 semanas).',
+  'setmanes': 'semanas',
+  'General': 'General',
+  'Configuració': 'Configuración',
+  'Connexions': 'Conexiones',
+  'Elements de la programació': 'Elementos de la programación',
+  'Tria quins elements apareixen a les sessions de la programació.': 'Elige qué elementos aparecen en las sesiones de la programación.',
+  'Objectius': 'Objetivos',
+  'Casella per als objectius de la sessió.': 'Casilla para los objetivos de la sesión.',
+  'Metodologia': 'Metodología',
+  'Casella per a la metodologia de la sessió.': 'Casilla para la metodología de la sesión.',
+  'Seguiment': 'Seguimiento',
+  'Casella per al seguiment de la sessió.': 'Casilla para el seguimiento de la sesión.',
+  'Mostra les caselles de recursos a les activitats.': 'Muestra las casillas de recursos en las actividades.',
+  'Còpia de seguretat': 'Copia de seguridad',
+  'Descarrega o restaura una còpia de totes les dades.': 'Descarga o restaura una copia de todos los datos.',
+  'Descarrega còpia': 'Descargar copia',
+  'Restaura còpia': 'Restaurar copia',
+  'Adreça de connexió (redirect URI)': 'Dirección de conexión (redirect URI)',
+  'Registra aquesta adreça exacta a la consola de Dropbox (secció OAuth 2): ': 'Registra esta dirección exacta en la consola de Dropbox (sección OAuth 2): ',
+  'Arxius adjunts (Dropbox)': 'Archivos adjuntos (Dropbox)',
+  'Per guardar els arxius al teu Dropbox personal (fins als teus GB) cal configurar l\'App Key al codi: DROPBOX_APP_KEY.': 'Para guardar los archivos en tu Dropbox personal (hasta tus GB) debes configurar la App Key en el código: DROPBOX_APP_KEY.',
+  'No configurat': 'No configurado',
+  'Els arxius que adjuntes es guarden al teu Dropbox personal. ': 'Los archivos que adjuntas se guardan en tu Dropbox personal. ',
+  'Els nous arxius aniran al teu Dropbox.': 'Los nuevos archivos irán a tu Dropbox.',
+  'Connecta el teu compte per guardar-hi els arxius.': 'Conecta tu cuenta para guardar ahí los archivos.',
+  'Connectat': 'Conectado',
+  'No connectat': 'No conectado',
+  'Desconnecta': 'Desconectar',
+  'Connecta amb Dropbox': 'Conectar con Dropbox',
+  'Desconnectar Dropbox? Els arxius nous es guardaran a Supabase o al dispositiu. Els ja pujats continuaran visibles.': '¿Desconectar Dropbox? Los archivos nuevos se guardarán en Supabase o en el dispositivo. Los ya subidos seguirán visibles.',
+  'Primer has de configurar l\'App Key de Dropbox al codi (DROPBOX_APP_KEY) i publicar l\'app.': 'Primero debes configurar la App Key de Dropbox en el código (DROPBOX_APP_KEY) y publicar la app.',
+  'Per connectar Dropbox cal obrir l\'app des d\'una adreça HTTPS o http://localhost (no es pot des d\'un fitxer local).': 'Para conectar Dropbox debes abrir la app desde una dirección HTTPS o http://localhost (no se puede desde un archivo local).',
+  'No es pot determinar l\'adreça d\'aquesta pàgina per a la connexió amb Dropbox.': 'No se puede determinar la dirección de esta página para la conexión con Dropbox.',
+  'No s\'ha pogut iniciar la connexió amb Dropbox: ': 'No se ha podido iniciar la conexión con Dropbox: ',
+  'No s\'ha pogut completar la connexió amb Dropbox: ': 'No se ha podido completar la conexión con Dropbox: ',
+  'No s\'ha pogut carregar l\'estat guardat': 'No se ha podido cargar el estado guardado',
+  'No s\'ha pogut guardar l\'estat': 'No se ha podido guardar el estado',
+  'No s\'ha pogut restaurar la sessió': 'No se ha podido restaurar la sesión',
+  'No s\'ha pogut llegir del núvol': 'No se ha podido leer de la nube',
+  'No s\'ha pogut desar al núvol': 'No se ha podido guardar en la nube',
+  'Error d\'autenticació': 'Error de autenticación',
+  'Primer has de configurar Supabase al codi (SUPABASE_URL i SUPABASE_ANON_KEY) i publicar l\'app.': 'Primero debes configurar Supabase en el código (SUPABASE_URL y SUPABASE_ANON_KEY) y publicar la app.',
+  'Omple el correu i la contrasenya.': 'Rellena el correo y la contraseña.',
+  'Compte creat. Revisa el teu correu per confirmar-lo i després inicia sessió.': 'Cuenta creada. Revisa tu correo para confirmarla y luego inicia sesión.',
+  'Entra': 'Entrar',
+  'Crea un compte': 'Crea una cuenta',
+  'Crea el compte': 'Crear la cuenta',
+  'Ja tinc un compte': 'Ya tengo una cuenta',
+  'Entra amb el teu compte per sincronitzar i protegir les dades.': 'Entra con tu cuenta para sincronizar y proteger los datos.',
+  'Crea un compte nou per protegir les teues dades al núvol.': 'Crea una cuenta nueva para proteger tus datos en la nube.',
+  'No s\'ha pogut iniciar sessió.': 'No se ha podido iniciar sesión.',
+  'Correu electrònic': 'Correo electrónico',
+  'Contrasenya': 'Contraseña',
+  'tu@exemple.cat': 'tu@ejemplo.es',
+  '• • • • • • • •': '• • • • • • • •',
+  'Cancel·la': 'Cancelar',
+  'Comencem la programació': 'Empecemos la programación',
+  'Crea una àrea (per exemple, Matemàtiques o Llengua) i dins seu afig les situacions d\'aprenentatge del curs, amb les seues sessions i activitats. També pots importar un document ja escrit i deixar que l\'aplicació en propose l\'estructura.': 'Crea un área (por ejemplo, Matemáticas o Lengua) y dentro añade las situaciones de aprendizaje del curso, con sus sesiones y actividades. También puedes importar un documento ya escrito y dejar que la aplicación te proponga la estructura.',
+  'Importa un document': 'Importa un documento',
+  'Encara no tens cap àrea.': 'Todavía no tienes ninguna área.',
+  'Encara no hi ha cap situació d\'aprenentatge en aquesta àrea.': 'Todavía no hay ninguna situación de aprendizaje en esta área.',
+  'Elimina àrea': 'Eliminar área',
+  '+ Nova situació d\'aprenentatge': '+ Nueva situación de aprendizaje',
+  'Cap sessió encara. Canvia el número de sessions per afegir-ne.': 'Ninguna sesión todavía. Cambia el número de sesiones para añadir.',
+  'Sessions': 'Sesiones',
+  'Cap activitat encara.': 'Ninguna actividad todavía.',
+  '+ Activitat': '+ Actividad',
+  'Fet': 'Hecho',
+  '+ Sessió': '+ Sesión',
+  'Activitat': 'Actividad',
+  'Què es farà…': '¿Qué se hará…',
+  'Minuts': 'Minutos',
+  'Descripció': 'Descripción',
+  'Detall de l\'activitat…': 'Detalle de la actividad…',
+  'Descriu o enganxa els recursos…': 'Describe o pega los recursos…',
+  'Adjunta': 'Adjuntar',
+  'Adjunta fitxers o enllaços': 'Adjuntar archivos o enlaces',
+  'totals': 'en total',
+  'min': 'min',
+  'h i ': 'h y ',
+  'desconegut': 'desconocido',
+  'Totes les àrees': 'Todas las áreas',
+  'Tots els recursos pujats a les activitats, en un sol lloc.': 'Todos los recursos subidos a las actividades, en un solo lugar.',
+  'Cerca per nom…': 'Buscar por nombre…',
+  'Tots els tipus': 'Todos los tipos',
+  'Imatges': 'Imágenes',
+  'Vídeo': 'Vídeo',
+  'Àudio': 'Audio',
+  'Documents': 'Documentos',
+  'Enllaços': 'Enlaces',
+  'Altres': 'Otros',
+  '{n} recursos': '{n} recursos',
+  'Cap recurs no coincideix amb els filtres.': 'Ningún recurso coincide con los filtros.',
+  'Elimina el recurs (va a la paperera)': 'Elimina el recurso (va a la papelera)',
+  'Elimina recurs': 'Eliminar recurso',
+  'Recursos pendents de pujar': 'Recursos pendientes de subir',
+  'Recursos que has marcat amb el check, per revisar-los i pujar-los.': 'Recursos que has marcado con el check, para revisarlos y subirlos.',
+  'Urgents': 'Urgentes',
+  'Tens recursos per preparar necessaris en menys de 2 setmanes.': 'Tienes recursos por preparar necesarios en menos de 2 semanas.',
+  'Tanca': 'Cerrar',
+  'No tens cap àrea activa a l\'agenda.': 'No tienes ninguna área activa en la agenda.',
+  'Recursos marcats': 'Recursos marcados',
+  'Ací tens els recursos que has marcat amb el check, per revisar-los i adjuntar-los si cal. Per tornar a la llista de pendents, prem una àrea o Urgents a dalt.': 'Aquí tienes los recursos que has marcado con el check, para revisarlos y adjuntarlos si hace falta. Para volver a la lista de pendientes, pulsa un área o Urgentes arriba.',
+  'Tornar tots els recursos a pendents': 'Volver a poner todos los recursos como pendientes',
+  'Sense àrees actives': 'Sin áreas activas',
+  'Activa una àrea a l\'agenda per veure el recordatori de recursos de les properes 2 setmanes.': 'Activa un área en la agenda para ver el recordatorio de recursos de las próximas 2 semanas.',
+  'Cap recurs marcat.': 'Ningún recurso marcado.',
+  'Cap activitat té recursos pendents en aquesta àrea.': 'Ninguna actividad tiene recursos pendientes en esta área.',
+  '1r trimestre': '1er trimestre',
+  '2n trimestre': '2º trimestre',
+  '3r trimestre': '3er trimestre',
+  'Obre la sessió': 'Abrir la sesión',
+  'Marca com a fet (encara que no estiga pujat)': 'Marcar como hecho (aunque no esté subido)',
+  'Lleva el check i torna a pendents': 'Quitar el check y volver a pendientes',
+  'Adjunta recursos': 'Adjuntar recursos',
+  'Tria fitxers de l\'ordinador o arrossega\'ls ací, i/o enganxa enllaços. Pots afegir tants com vulgues, en aquesta finestra o en una altra.': 'Elige archivos del ordenador o arrástralos aquí, y/o pega enlaces. Puedes añadir tantos como quieras, en esta ventana o en otra.',
+  'Fitxers': 'Archivos',
+  'Fitxers adjuntats': 'Archivos adjuntos',
+  'Enllaç': 'Enlace',
+  'Afegeix': 'Añadir',
+  '…o arrossega els fitxers ací i deixa\'ls anar': '…o arrastra los archivos aquí y suéltalos',
+  'Encara no hi ha fitxers adjuntats.': 'Todavía no hay archivos adjuntos.',
+  'Encara no hi ha enllaços afegits.': 'Todavía no hay enlaces añadidos.',
+  '{n} fitxer(s) adjuntat(s).': '{n} archivo(s) adjuntado(s).',
+  'Recordatori': 'Recordatorio',
+  'Recursos que caldran en les properes 2 setmanes, a partir de la sessió actual de l\'agenda de cada àrea.': 'Recursos que se necesitarán en las próximas 2 semanas, a partir de la sesión actual de la agenda de cada área.',
+  'Properes 2 setmanes · {n} sessió(ns) des de la S{m}': 'Próximas 2 semanas · {n} sesión(es) desde la S{m}',
+  'Res d\'arxivat': 'Nada archivado',
+  'Arxiva una programació des de la seua capçalera per guardar-la fora de les àrees actives.': 'Archiva una programación desde su cabecera para guardarla fuera de las áreas activas.',
+  'Programacions guardades, fora de l\'agenda i de les àrees actives.': 'Programaciones guardadas, fuera de la agenda y de las áreas activas.',
+  'Creat: {d}': 'Creado: {d}',
+  'Arxivat: {d}': 'Archivado: {d}',
+  'Eliminat: {d}': 'Eliminado: {d}',
+  'Restaura': 'Restaurar',
+  'Elimina': 'Eliminar',
+  'Les àrees eliminades es conserven 1 any i els arxius 30 dies abans de suprimir-se definitivament.': 'Las áreas eliminadas se conservan 1 año y los archivos 30 días antes de eliminarse definitivamente.',
+  'Buidar la paperera': 'Vaciar la papelera',
+  'Àrees eliminades': 'Áreas eliminadas',
+  'Arxius eliminats': 'Archivos eliminados',
+  'Enllaços eliminats': 'Enlaces eliminados',
+  'Arxius': 'Archivos',
+  'Cerca a la paperera': 'Buscar en la papelera',
+  'Àrees': 'Áreas',
+  'Vídeo Youtube': 'Video Youtube',
+  'Paperera buida': 'Papelera vacía',
+  'Res eliminat per ara.': 'Nada eliminado por ahora.',
+  'Elimina definitivament': 'Eliminar definitivamente',
+  'No tens cap àrea activa': 'No tienes ninguna área activa',
+  'Activa una àrea des de Configuració (o crea\'n una) perquè aparega ací la seua sessió actual.': 'Activa un área desde Configuración (o crea una) para que aparezca aquí su sesión actual.',
+  '{n} àrees actives · {m} en pausa.': '{n} áreas activas · {m} en pausa.',
+  'La sessió actual de cada àrea, una per una.': 'La sesión actual de cada área, una a una.',
+  'Reprendre': 'Reanudar',
+  '{n} sessions': '{n} sesiones',
+  'Totes les sessions completades': 'Todas las sesiones completadas',
+  'Reinicia': 'Reiniciar',
+  'Sense activitats.': 'Sin actividades.',
+  'Sessió {a} de {b}': 'Sesión {a} de {b}',
+  'Sessió anterior': 'Sesión anterior',
+  'Sessió següent': 'Sesión siguiente',
+  'Aquesta àrea encara no té cap situació d\'aprenentatge.': 'Esta área todavía no tiene ninguna situación de aprendizaje.',
+  'Curs': 'Curso',
+  'ex: 1r ESO': 'ej: 1º ESO',
+  '{n} sessions · {m} activitats': '{n} sesiones · {m} actividades',
+  'Mostra aquesta àrea a l\'agenda': 'Muestra esta área en la agenda',
+  'Arxiva la programació': 'Archiva la programación',
+  'Elimina la programació (a la paperera)': 'Elimina la programación (a la papelera)',
+  'Cap sessió en aquesta situació.': 'Ninguna sesión en esta situación.',
+  'Cap activitat.': 'Ninguna actividad.',
+  'Edita la sessió': 'Edita la sesión',
+  'Nova àrea': 'Nueva área',
+  'Tria com vols crear la programació d\'aquesta àrea.': 'Elige cómo quieres crear la programación de esta área.',
+  '+ Crear-la manualment': '+ Crearla manualmente',
+  'Importar un document': 'Importar un documento',
+  'Importa una programació': 'Importa una programación',
+  'Puja un document (.txt, .docx, .odt o .pdf) amb la programació d\'una àrea. L\'aplicació intentarà reconèixer les situacions d\'aprenentatge, les sessions i les activitats. Revisa sempre el resultat abans de confirmar: podràs editar-ho tot després.': 'Sube un documento (.txt, .docx, .odt o .pdf) con la programación de un área. La aplicación intentará reconocer las situaciones de aprendizaje, las sesiones y las actividades. Revisa siempre el resultado antes de confirmar: podrás editarlo todo después.',
+  'Document': 'Documento',
+  '…o arrossega el document aquí i deixa\'l anar': '…o arrastra el documento aquí y suéltalo',
+  'Analitza el document': 'Analiza el documento',
+  'Destí': 'Destino',
+  'Nom de l\'àrea nova': 'Nombre del área nueva',
+  'p. ex. Matemàtiques': 'p. ej. Matemáticas',
+  'Importa': 'Importar',
+  'Selecciona o arrossega primer un document.': 'Selecciona o arrastra primero un documento.',
+  'Llegint el document…': 'Leyendo el documento…',
+  'Analitzant l\'estructura…': 'Analizando la estructura…',
+  'No s\'ha detectat cap estructura de situacions ni sessions. El document ha d\'indicar \'Situació d\'aprenentatge\'/\'Sessió 1\' o \'Setmana 1\' per poder-la importar.': 'No se ha detectado ninguna estructura de situaciones ni sesiones. El documento debe indicar "Situación de aprendizaje"/"Sesión 1" o "Semana 1" para poder importarla.',
+  'Trobades {a} situació(ns) d\'aprenentatge i {b} sessió(ns). Revisa-ho abans d\'importar.': 'Encontradas {a} situación(es) de aprendizaje y {b} sesión(es). Revísalo antes de importar.',
+  'No s\'ha pogut llegir el document: {msg}': 'No se ha podido leer el documento: {msg}',
+  'Crea una àrea nova': 'Crear un área nueva',
+  'Afig a: {name}': 'Añadir a: {name}',
+  'Àrea importada': 'Área importada',
+  '{n} activitat(s), {m} min': '{n} actividad(es), {m} min',
+  'Document arrossegat: {name}': 'Documento arrastrado: {name}',
+  'Es canviaran totes les sessions programades que no duren els minuts configurats. Continues?': 'Se cambiarán todas las sesiones programadas que no duren los minutos configurados. ¿Continúas?',
+  '{n} sessions actualitzades.': '{n} sesiones actualizadas.',
+  'Cap sessió necessitava canvis.': 'Ninguna sesión necesitaba cambios.',
+  'Enviar "{name}" a la paperera?': '¿Enviar "{name}" a la papelera?',
+  'Eliminar definitivament "{name}"? Aquesta acció no es pot desfer.': '¿Eliminar definitivamente "{name}"? Esta acción no se puede deshacer.',
+  'No s\'ha pogut restaurar el recurs: la ubicació original ja no existeix (potser l\'àrea s\'ha eliminat).': 'No se ha podido restaurar el recurso: la ubicación original ya no existe (quizás el área se ha eliminado).',
+  'Aquest recurs ja és present a la seua activitat.': 'Este recurso ya está presente en su actividad.',
+  'Segur que vols enviar a la paperera l\'àrea "{name}" i tot el seu contingut?': '¿Seguro que quieres enviar a la papelera el área "{name}" y todo su contenido?',
+  'Segur que vols enviar a la paperera l\'àrea arxivada "{name}"?': '¿Seguro que quieres enviar a la papelera el área archivada "{name}"?',
+  'Buidar la paperera? S\'eliminaran definitivament {n} element(s).': '¿Vaciar la papelera? Se eliminarán definitivamente {n} elemento(s).',
+  'Segur que vols eliminar aquesta situació d\'aprenentatge?': '¿Seguro que quieres eliminar esta situación de aprendizaje?',
+  'Algunes de les sessions que s\'eliminarien tenen activitats. Vols continuar?': 'Algunas de las sesiones que se eliminarían tienen actividades. ¿Quieres continuar?',
+  'Aquesta sessió té activitats. Segur que la vols eliminar?': 'Esta sesión tiene actividades. ¿Seguro que quieres eliminarla?',
+  '"{name}" és un vídeo i no es permeten arxius de vídeo.': '"{name}" es un vídeo y no se permiten archivos de vídeo.',
+  '"{name}" és massa gran (màxim 20 MB).': '"{name}" es demasiado grande (máximo 20 MB).',
+  'No s\'ha pogut pujar "{name}". Comprova la connexió{extra}.': 'No se ha podido subir "{name}". Comprueba la conexión{extra}.',
+  ' i la teua sessió de Dropbox': ' y tu sesión de Dropbox',
+  ' i el bucket': ' y el bucket',
+  'Detall: {d}': 'Detalle: {d}',
+  'El fitxer no té el format esperat.': 'El archivo no tiene el formato esperado.',
+  'Això substituirà totes les dades actuals per les de la còpia de seguretat. Vols continuar?': 'Esto sustituirá todos los datos actuales por los de la copia de seguridad. ¿Quieres continuar?',
+  'No s\'ha pogut restaurar la còpia de seguretat: {msg}': 'No se ha podido restaurar la copia de seguridad: {msg}',
+  'Error inesperat en analitzar: {msg}': 'Error inesperado al analizar: {msg}',
+  'Sessió {n}': 'Sesión {n}',
+  'Situació d\'aprenentatge {n}': 'Situación de aprendizaje {n}',
+  'Situació d\'aprenentatge {n} — {t}': 'Situación de aprendizaje {n} — {t}',
+  'Setmana {n}': 'Semana {n}',
+  'Sessió 1': 'Sesión 1',
+  'Nova àrea': 'Nueva área',
+  'Elimina arxiu': 'Eliminar archivo',
+  'Elimina enllaç': 'Eliminar enlace',
+  'Elimina situació': 'Eliminar situación',
+  'Elimina sessió': 'Eliminar sesión',
+  'Elimina activitat': 'Eliminar actividad',
+  'Tria color {c}': 'Elegir color {c}',
+  'Activa/desactiva a l\'agenda': 'Activa/desactiva en la agenda',
+  'Desplega': 'Desplegar',
+  'Desplega sessió': 'Desplegar sesión',
+  'Activitat': 'Actividad'
+};
 
 /* Supabase: sincronització entre dispositius + autenticació.
    Crea un projecte a https://supabase.com i enganxa ací la URL i la clau anònima
@@ -842,12 +1226,12 @@ function initDropbox(){
 }
 async function startDropboxLogin(){
   if(!window.isSecureContext){
-    alert('Per connectar Dropbox cal obrir l\'app des d\'una adreça HTTPS o http://localhost (no es pot des d\'un fitxer local).');
+    alert(tr('Per connectar Dropbox cal obrir l\'app des d\'una adreça HTTPS o http://localhost (no es pot des d\'un fitxer local).'));
     return;
   }
   const redirect = dropboxRedirectUri();
   if(!redirect){
-    alert('No es pot determinar l\'adreça d\'aquesta pàgina per a la connexió amb Dropbox.');
+    alert(tr('No es pot determinar l\'adreça d\'aquesta pàgina per a la connexió amb Dropbox.'));
     return;
   }
   try{
@@ -857,7 +1241,7 @@ async function startDropboxLogin(){
     window.location.href = authUrl;
   }catch(e){
     console.warn('Error iniciant sessió de Dropbox', e);
-    alert('No s\'ha pogut iniciar la connexió amb Dropbox: ' + (e && e.message ? e.message : e));
+    alert(tr('No s\'ha pogut iniciar la connexió amb Dropbox: ') + (e && e.message ? e.message : e));
   }
 }
 async function handleDropboxRedirect(){
@@ -881,17 +1265,17 @@ async function handleDropboxRedirect(){
     try{ sessionStorage.removeItem('quadernDbxVerifier'); }catch(e){}
   }catch(e){
     console.warn('Error bescanviant el codi de Dropbox', e);
-    alert('No s\'ha pogut completar la connexió amb Dropbox: ' + (e && e.message ? e.message : e));
+    alert(tr('No s\'ha pogut completar la connexió amb Dropbox: ') + (e && e.message ? e.message : e));
   }
   try{ history.replaceState({}, '', window.location.pathname); }catch(e){}
 }
 async function dbxToggle(){
   if(!dropboxConfigured()){
-    alert('Primer has de configurar l\'App Key de Dropbox al codi (DROPBOX_APP_KEY) i publicar l\'app.');
+    alert(tr('Primer has de configurar l\'App Key de Dropbox al codi (DROPBOX_APP_KEY) i publicar l\'app.'));
     return;
   }
   if(dropboxEnabled()){
-    if(!confirm('Desconnectar Dropbox? Els arxius nous es guardaran a Supabase o al dispositiu. Els ja pujats continuaran visibles.')) return;
+    if(!confirm(tr('Desconnectar Dropbox? Els arxius nous es guardaran a Supabase o al dispositiu. Els ja pujats continuaran visibles.'))) return;
     dbx = null;
     clearDropboxSession();
     render();
@@ -903,30 +1287,30 @@ function dropboxSettingsHTML(){
   const redirectRow = `<div class="settings-sub">
     <div class="settings-row">
       <div class="settings-label">
-        <b>Adreça de connexió (redirect URI)</b>
-        <small>Registra aquesta adreça exacta a la consola de Dropbox (secció OAuth 2): <span class="mono" style="font-size:.7rem">${esc(dropboxRedirectUri())}</span></small>
+        <b>${tr('Adreça de connexió (redirect URI)')}</b>
+        <small>${tr('Registra aquesta adreça exacta a la consola de Dropbox (secció OAuth 2): ')}<span class="mono" style="font-size:.7rem">${esc(dropboxRedirectUri())}</span></small>
       </div>
     </div>
   </div>`;
   if(!dropboxConfigured()){
     return `<div class="settings-row">
       <div class="settings-label">
-        <b>Arxius adjunts (Dropbox)</b>
-        <small>Per guardar els arxius al teu Dropbox personal (fins als teus GB) cal configurar l'App Key al codi: DROPBOX_APP_KEY.</small>
+        <b>${tr('Arxius adjunts (Dropbox)')}</b>
+        <small>${tr('Per guardar els arxius al teu Dropbox personal (fins als teus GB) cal configurar l\'App Key al codi: DROPBOX_APP_KEY.')}</small>
       </div>
-      <div class="settings-input"><span class="mono" style="font-size:.72rem">No configurat</span></div>
+      <div class="settings-input"><span class="mono" style="font-size:.72rem">${tr('No configurat')}</span></div>
     </div>
     ${redirectRow}`;
   }
   const connected = dropboxEnabled();
   return `<div class="settings-row">
     <div class="settings-label">
-      <b>Arxius adjunts (Dropbox)</b>
-      <small>Els arxius que adjuntes es guarden al teu Dropbox personal. ${connected ? 'Els nous arxius aniran al teu Dropbox.' : 'Connecta el teu compte per guardar-hi els arxius.'}</small>
+      <b>${tr('Arxius adjunts (Dropbox)')}</b>
+      <small>${tr('Els arxius que adjuntes es guarden al teu Dropbox personal. ')}${connected ? tr('Els nous arxius aniran al teu Dropbox.') : tr('Connecta el teu compte per guardar-hi els arxius.')}</small>
     </div>
     <div class="settings-input">
-      <span class="mono" style="font-size:.72rem">${connected ? 'Connectat' : 'No connectat'}</span>
-      <button class="btn btn-sm ${connected ? 'btn-danger' : 'btn-primary'}" onclick="dbxToggle()">${connected ? 'Desconnecta' : 'Connecta amb Dropbox'}</button>
+      <span class="mono" style="font-size:.72rem">${connected ? tr('Connectat') : tr('No connectat')}</span>
+      <button class="btn btn-sm ${connected ? 'btn-danger' : 'btn-primary'}" onclick="dbxToggle()">${connected ? tr('Desconnecta') : tr('Connecta amb Dropbox')}</button>
     </div>
   </div>
   ${redirectRow}`;
@@ -999,12 +1383,12 @@ function updateAuthUI(){
   const st = document.getElementById('sync-status');
   if(st){
     if(!remoteEnabled()){
-      st.textContent = 'Sense núvol configurat';
+      st.textContent = tr('Sense núvol configurat');
     }else if(loggedIn()){
-      st.textContent = 'Núvol sincronitzat';
+      st.textContent = tr('Núvol sincronitzat');
       st.classList.add('ok');
     }else{
-      st.textContent = 'Inicia sessió per sincronitzar';
+      st.textContent = tr('Inicia sessió per sincronitzar');
       st.classList.remove('ok');
     }
   }
@@ -1012,21 +1396,20 @@ function updateAuthUI(){
   if(acc){
     if(loggedIn()){
       acc.innerHTML = `
-        <div class="settings-label"><b>Compte</b><small>Connectat com a <span class="mono">${esc(authSession.user.email || '')}</span>.</small></div>
-        <div class="settings-input"><button class="btn btn-sm btn-danger" onclick="signOut()">Tanca sessió</button></div>`;
+        <div class="settings-label"><b>${tr('Compte')}</b><small>${tr('Connectat com a ')}<span class="mono">${esc(authSession.user.email || '')}</span>.</small></div>
+        <div class="settings-input"><button class="btn btn-sm btn-danger" onclick="signOut()">${tr('Tanca sessió')}</button></div>`;
     }else{
       acc.innerHTML = `
-        <div class="settings-label"><b>Compte</b><small>Inicia sessió per protegir i sincronitzar les teues dades al núvol.</small></div>
-        <div class="settings-input"><button class="btn btn-sm btn-primary" onclick="openAuthModal()">Inicia sessió</button></div>`;
+        <div class="settings-label"><b>${tr('Compte')}</b><small>${tr('Inicia sessió per protegir i sincronitzar les teues dades al núvol.')}</small></div>
+        <div class="settings-input"><button class="btn btn-sm btn-primary" onclick="openAuthModal()">${tr('Inicia sessió')}</button></div>`;
     }
   }
   const nav = document.getElementById('auth-nav-btn');
   if(nav){
     if(loggedIn()){
-      nav.textContent = 'Tanca sessió (' + (authSession.user.email || '') + ')';
-      nav.style.display = 'flex';
+      nav.style.display = 'none';
     }else if(remoteEnabled()){
-      nav.textContent = 'Inicia sessió';
+      nav.textContent = tr('Inicia sessió');
       nav.style.display = 'flex';
     }else{
       nav.style.display = 'none';
@@ -1035,7 +1418,7 @@ function updateAuthUI(){
 }
 
 async function loadRemoteState(){
-  if(!remoteEnabled()){ setSyncStatus('Sense núvol'); return; }
+  if(!remoteEnabled()){ setSyncStatus(tr('Sense núvol')); return; }
   if(!loggedIn()){ updateAuthUI(); return; }
   try{
     const { data, error } = await supabaseClient
@@ -1051,14 +1434,15 @@ async function loadRemoteState(){
       try{ localStorage.setItem(LS_STATE, JSON.stringify(state)); }catch(e){}
       applyTheme();
       render();
-      setSyncStatus('Núvol sincronitzat', true);
+      applyI18n();
+      setSyncStatus(tr('Núvol sincronitzat'), true);
     } else {
       queueRemoteSave();
-      setSyncStatus('Núvol: dades noves', true);
+      setSyncStatus(tr('Núvol: dades noves'), true);
     }
   }catch(e){
     console.warn("No s'ha pogut llegir del núvol", e);
-    setSyncStatus('Núvol no connectat');
+    setSyncStatus(tr('Núvol no connectat'));
   }
 }
 
@@ -1066,7 +1450,7 @@ let remoteSaveTimer = null;
 function queueRemoteSave(){
   if(!remoteEnabled() || !loggedIn()) return;
   clearTimeout(remoteSaveTimer);
-  setSyncStatus('Desant…');
+  setSyncStatus(tr('Desant…'));
   remoteSaveTimer = setTimeout(pushRemoteState, 500);
 }
 async function pushRemoteState(){
@@ -1076,10 +1460,10 @@ async function pushRemoteState(){
       .from(SUPABASE_TABLE)
       .upsert({ id: 1, data: state, owner_uid: currentUserId(), updated_at: new Date().toISOString() }, { onConflict: 'id' });
     if(error) throw error;
-    setSyncStatus('Núvol sincronitzat', true);
+    setSyncStatus(tr('Núvol sincronitzat'), true);
   }catch(e){
     console.warn("No s'ha pogut desar al núvol", e);
-    setSyncStatus('Error en desar al núvol');
+    setSyncStatus(tr('Error en desar al núvol'));
   }
 }
 
@@ -1087,7 +1471,7 @@ async function pushRemoteState(){
 let authMode = 'login';
 function openAuthModal(mode){
   if(!remoteEnabled()){
-    alert('Primer has de configurar Supabase al codi (SUPABASE_URL i SUPABASE_ANON_KEY) i publicar l\'app.');
+    alert(tr('Primer has de configurar Supabase al codi (SUPABASE_URL i SUPABASE_ANON_KEY) i publicar l\'app.'));
     return;
   }
   authMode = mode || 'login';
@@ -1095,12 +1479,12 @@ function openAuthModal(mode){
   const hint = document.getElementById('auth-modal-hint');
   const submit = document.getElementById('auth-submit');
   const toggle = document.getElementById('auth-toggle');
-  if(title) title.textContent = authMode === 'login' ? 'Inicia sessió' : 'Crea un compte';
+  if(title) title.textContent = authMode === 'login' ? tr('Inicia sessió') : tr('Crea un compte');
   if(hint) hint.textContent = authMode === 'login'
-    ? 'Entra amb el teu compte per sincronitzar i protegir les dades.'
-    : 'Crea un compte nou per protegir les teues dades al núvol.';
-  if(submit) submit.textContent = authMode === 'login' ? 'Entra' : 'Crea el compte';
-  if(toggle) toggle.textContent = authMode === 'login' ? 'Crea un compte' : 'Ja tinc un compte';
+    ? tr('Entra amb el teu compte per sincronitzar i protegir les dades.')
+    : tr('Crea un compte nou per protegir les teues dades al núvol.');
+  if(submit) submit.textContent = authMode === 'login' ? tr('Entra') : tr('Crea el compte');
+  if(toggle) toggle.textContent = authMode === 'login' ? tr('Crea un compte') : tr('Ja tinc un compte');
   setAuthStatus('');
   const m = document.getElementById('auth-modal');
   if(m) m.classList.add('open');
@@ -1129,7 +1513,7 @@ async function authSubmit(){
   const passEl = document.getElementById('auth-password');
   const email = (emailEl && emailEl.value || '').trim();
   const pass = passEl ? passEl.value : '';
-  if(!email || !pass){ setAuthStatus('Omple el correu i la contrasenya.'); return; }
+  if(!email || !pass){ setAuthStatus(tr('Omple el correu i la contrasenya.')); return; }
   try{
     if(authMode === 'signup'){
       const res = await supabaseClient.auth.signUp({ email, password: pass });
@@ -1139,12 +1523,12 @@ async function authSubmit(){
         await loadRemoteState();
         return;
       }
-      setAuthStatus('Compte creat. Revisa el teu correu per confirmar-lo i després inicia sessió.', true);
+      setAuthStatus(tr('Compte creat. Revisa el teu correu per confirmar-lo i després inicia sessió.'), true);
       authMode = 'login';
       const submit = document.getElementById('auth-submit');
-      if(submit) submit.textContent = 'Entra';
+      if(submit) submit.textContent = tr('Entra');
       const toggle = document.getElementById('auth-toggle');
-      if(toggle) toggle.textContent = 'Crea un compte';
+      if(toggle) toggle.textContent = tr('Crea un compte');
       return;
     }
     const res = await supabaseClient.auth.signInWithPassword({ email, password: pass });
@@ -1153,7 +1537,7 @@ async function authSubmit(){
     await loadRemoteState();
   }catch(e){
     console.warn('Error d\'autenticació', e);
-    const msg = (e && (e.message || e.error_description)) || 'No s\'ha pogut iniciar sessió.';
+    const msg = (e && (e.message || e.error_description)) || tr('No s\'ha pogut iniciar sessió.');
     setAuthStatus(msg);
   }
 }
@@ -1163,7 +1547,7 @@ async function signOut(){
   }
   authSession = null;
   updateAuthUI();
-  setSyncStatus('Sessió tancada');
+  setSyncStatus(tr('Sessió tancada'));
   render();
 }
 function colorForNewArea(){ return AREA_COLORS[state.areas.length % AREA_COLORS.length]; }
@@ -1204,7 +1588,7 @@ function renderSidebar(){
       <span class="area-dot"></span>
       <span class="area-name" id="area-nav-name-${a.id}">${esc(a.name)}</span>
     </button>`).join('');
-  document.getElementById('area-list').innerHTML = list || `<p class="empty-hint">Encara no tens cap àrea.</p>`;
+  document.getElementById('area-list').innerHTML = list || `<p class="empty-hint">${tr('Encara no tens cap àrea.')}</p>`;
   const nav = document.getElementById('agendaNav');
   if(nav) nav.classList.toggle('active', showAgenda);
   const sNav = document.getElementById('settingsNav');
@@ -1238,20 +1622,18 @@ function renderMain(){
 function emptyStateHTML(){
   return `
   <div class="empty-state">
-    <h2 class="display">Comencem la programació</h2>
-    <p>Crea una àrea (per exemple, Matemàtiques o Llengua) i dins seu afig les situacions d'aprenentatge del curs, amb les seues sessions i activitats. També pots importar un document ja escrit i deixar que l'aplicació en propose l'estructura.</p>
+    <h2 class="display">${tr('Comencem la programació')}</h2>
+    <p>${tr('Crea una àrea (per exemple, Matemàtiques o Llengua) i dins seu afig les situacions d\'aprenentatge del curs, amb les seues sessions i activitats. També pots importar un document ja escrit i deixar que l\'aplicació en propose l\'estructura.')}</p>
     <div class="actions">
       <button class="btn btn-primary" onclick="addAreaPrompt()">+ Nova àrea</button>
-      <button class="btn btn-ghost" onclick="openImportModal()">Importa un document</button>
+      <button class="btn btn-ghost" onclick="openImportModal()">${tr('Importa un document')}</button>
     </div>
   </div>`;
 }
 
 function areaHTML(area){
-  const totalMin = area.situacions.reduce((s,sa)=> s + sa.sessions.reduce((s2,se)=> s2+sumMinutes(se.activities),0), 0);
   const swatches = AREA_COLORS.map(c=>`<button class="swatch ${c===area.color?'active':''}" style="background:${c}" onclick="recolorArea('${area.id}','${c}')" aria-label="Tria color ${c}"></button>`).join('');
-  const sas = area.situacions.map((sa,i)=>saHTML(area, sa, i)).join('') || `<p class="empty-hint">Encara no hi ha cap situació d'aprenentatge en aquesta àrea.</p>`;
-  const totBadge = durationsEnabled() ? `<span class="sa-total-badge mono">${fmtDuration(totalMin)} totals</span>` : '';
+  const sas = area.situacions.map((sa,i)=>saHTML(area, sa, i)).join('') || `<p class="empty-hint">${tr('Encara no hi ha cap situació d\'aprenentatge en aquesta àrea.')}</p>`;
   return `
   <div class="area-header">
     <div class="area-header-left">
@@ -1260,18 +1642,17 @@ function areaHTML(area){
         <input class="area-title-input" style="--area-color:${area.color}" value="${esc(area.name)}" oninput="renameArea('${area.id}', this.value)">
         <div class="area-meta">
           <div class="color-swatches">${swatches}</div>
-          ${totBadge}
         </div>
       </div>
     </div>
     <div class="area-header-right">
-      <label class="switch" title="Activa/desactiva a l'agenda"><input type="checkbox" ${area.active?'checked':''} onclick="toggleActive('${area.id}')"><span class="slider"></span></label>
-      <button class="btn btn-danger btn-sm" onclick="deleteArea('${area.id}')">Elimina àrea</button>
+      <label class="switch" title="${tr('Activa/desactiva a l\'agenda')}"><input type="checkbox" ${area.active?'checked':''} onclick="toggleActive('${area.id}')"><span class="slider"></span></label>
+      <button class="btn btn-danger btn-sm" onclick="deleteArea('${area.id}')">${tr('Elimina àrea')}</button>
     </div>
   </div>
 
   <div class="sa-add-row">
-    <button class="btn btn-primary btn-sm" onclick="addSA('${area.id}')">+ Nova situació d'aprenentatge</button>
+    <button class="btn btn-primary btn-sm" onclick="addSA('${area.id}')">${tr('+ Nova situació d\'aprenentatge')}</button>
   </div>
 
   <div id="sa-list">${sas}</div>
@@ -1279,24 +1660,21 @@ function areaHTML(area){
 }
 
 function saHTML(area, sa, index){
-  const totalMin = sa.sessions.reduce((s,se)=> s+sumMinutes(se.activities), 0);
-  const sessions = sa.sessions.map((se,i)=> sessionHTML(area, sa, se, i)).join('') || `<p class="empty-hint">Cap sessió encara. Canvia el número de sessions per afegir-ne.</p>`;
-  const totBadge = durationsEnabled() ? `<span class="sa-total-badge mono" id="sa-total-${sa.id}">${fmtDuration(totalMin)}</span>` : '';
+  const sessions = sa.sessions.map((se,i)=> sessionHTML(area, sa, se, i)).join('') || `<p class="empty-hint">${tr('Cap sessió encara. Canvia el número de sessions per afegir-ne.')}</p>`;
   return `
   <div class="sa-card ${sa.open?'open':''}" id="sa-${sa.id}">
     <div class="sa-header" style="--area-color:${area.color};background:${hexToRgba(area.color,0.08)}">
-      <button class="sa-toggle" onclick="toggleSA('${area.id}','${sa.id}')" aria-label="Desplega">
+      <button class="sa-toggle" onclick="toggleSA('${area.id}','${sa.id}')" aria-label="${tr('Desplega')}">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="9 6 15 12 9 18"/></svg>
       </button>
       <span class="sa-num">SA${index+1}</span>
       <input class="sa-title-input" id="sa-title-${sa.id}" value="${esc(sa.name)}" oninput="renameSA('${area.id}','${sa.id}', this.value)">
       <div class="sa-stats">
         <div class="sessions-count-field">
-          <span>Sessions</span>
+          <span>${tr('Sessions')}</span>
           <input type="number" min="0" max="60" value="${sa.sessions.length}" onchange="setSessionCount('${area.id}','${sa.id}', this.value)">
         </div>
-        ${totBadge}
-        <button class="btn btn-danger btn-icon" onclick="deleteSA('${area.id}','${sa.id}')" aria-label="Elimina situació">
+        <button class="btn btn-danger btn-icon" onclick="deleteSA('${area.id}','${sa.id}')" aria-label="${tr('Elimina situació')}">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M9 7V4h6v3m-8 0 1 13h8l1-13"/></svg>
         </button>
       </div>
@@ -1308,7 +1686,7 @@ function saHTML(area, sa, index){
 function sessionHTML(area, sa, session, index){
   const total = sumMinutes(session.activities);
   const bar = durationBarHTML(area, session);
-  const activities = session.activities.map(act => activityHTML(area, sa, session, act)).join('') || `<p class="empty-hint">Cap activitat encara.</p>`;
+  const activities = session.activities.map(act => activityHTML(area, sa, session, act)).join('') || `<p class="empty-hint">${tr('Cap activitat encara.')}</p>`;
   const editing = editTarget && editTarget.areaId===area.id && editTarget.saId===sa.id && editTarget.sessionId===session.id;
   const dur = durationsEnabled()
     ? `<div class="duration-bar-wrap">
@@ -1319,7 +1697,7 @@ function sessionHTML(area, sa, session, index){
   return `
   <div class="session-card ${session.open?'open':''}${editing?' session-editing':''}" id="session-${session.id}">
     <div class="session-header">
-      <button class="session-toggle btn-icon" style="background:none;border:none;color:var(--ink-faint);width:22px;height:22px;padding:0;" onclick="toggleSession('${area.id}','${sa.id}','${session.id}')" aria-label="Desplega sessió">
+      <button class="session-toggle btn-icon" style="background:none;border:none;color:var(--ink-faint);width:22px;height:22px;padding:0;" onclick="toggleSession('${area.id}','${sa.id}','${session.id}')" aria-label="${tr('Desplega sessió')}">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="9 6 15 12 9 18"/></svg>
       </button>
       <span class="session-num">S${index + 1}</span>
@@ -1328,11 +1706,12 @@ function sessionHTML(area, sa, session, index){
     </div>
     <div class="session-body">
       <div id="activities-${session.id}" class="activities-grid">${activities}</div>
+      ${sessionElementFieldsHTML(area, sa, session, false)}
       <div class="session-actions-bottom">
-        <button class="btn btn-ghost btn-sm" onclick="addActivity('${area.id}','${sa.id}','${session.id}')">+ Activitat</button>
-        <button class="btn btn-primary btn-sm" onclick="stopEditing()">Fet</button>
-        <button class="btn btn-ghost btn-sm" onclick="addSession('${area.id}','${sa.id}')">+ Sessió</button>
-        <button class="btn btn-danger btn-icon" onclick="deleteSession('${area.id}','${sa.id}','${session.id}')" aria-label="Elimina sessió">
+        <button class="btn btn-ghost btn-sm" onclick="addActivity('${area.id}','${sa.id}','${session.id}')">${tr('+ Activitat')}</button>
+        <button class="btn btn-primary btn-sm" onclick="stopEditing()">${tr('Fet')}</button>
+        <button class="btn btn-ghost btn-sm" onclick="addSession('${area.id}','${sa.id}')">${tr('+ Sessió')}</button>
+        <button class="btn btn-danger btn-icon" onclick="deleteSession('${area.id}','${sa.id}','${session.id}')" aria-label="${tr('Elimina sessió')}">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M9 7V4h6v3m-8 0 1 13h8l1-13"/></svg>
         </button>
       </div>
@@ -1348,7 +1727,7 @@ function durationBarHTML(area, session){
     if(m<=0) return '';
     const pct = (m/total*100).toFixed(2);
     const op = 0.30 + ((i%5)*0.18);
-    return `<div class="seg" style="width:${pct}%;background:${hexToRgba(area.color, Math.min(op,1))}" title="${esc(a.title||'Activitat')} — ${m} min"></div>`;
+    return `<div class="seg" style="width:${pct}%;background:${hexToRgba(area.color, Math.min(op,1))}" title="${esc(a.title||tr('Activitat'))} — ${m} min"></div>`;
   }).join('');
 }
 function hexToRgba(hex, alpha){
@@ -1363,47 +1742,48 @@ function activityHTML(area, sa, session, act){
     const icon = isImg
       ? `<img src="${esc(fileUrl(f))}" alt="">`
       : `<span class="att-ext">${esc(extOf(f.name))}</span>`;
-    const link = isImg
-      ? `<a href="${esc(fileUrl(f))}" target="_blank" rel="noopener">${esc(f.name)}</a>`
-      : `<a href="${esc(fileUrl(f,true))}" download="${esc(f.name)}">${esc(f.name)}</a>`;
-    return `<span class="att-chip">${icon}${link}<button class="att-remove" onclick="removeActivityFile('${area.id}','${sa.id}','${session.id}','${act.id}','${f.id}')" aria-label="Elimina arxiu">&times;</button></span>`;
+    const link = fileAnchorHTML(f);
+    return `<span class="att-chip">${icon}${link}<button class="att-remove" onclick="removeActivityFile('${area.id}','${sa.id}','${session.id}','${act.id}','${f.id}')" aria-label="${tr('Elimina arxiu')}">&times;</button></span>`;
   }).join('');
   const links = (act.links||[]).map(l =>
-    `<span class="att-chip"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" style="flex:none"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label||l.url)}</a><button class="att-remove" onclick="removeActivityLink('${area.id}','${sa.id}','${session.id}','${act.id}','${l.id}')" aria-label="Elimina enllaç">&times;</button></span>`
+    `<span class="att-chip"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" style="flex:none"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label||l.url)}</a><button class="att-remove" onclick="removeActivityLink('${area.id}','${sa.id}','${session.id}','${act.id}','${l.id}')" aria-label="${tr('Elimina enllaç')}">&times;</button></span>`
   ).join('');
   const minCell = durationsEnabled()
     ? `<div class="activity-min-cell">
-        <label>Minuts</label>
+        <label>${tr('Minuts')}</label>
         <input type="number" min="0" max="600" value="${act.minutes||0}" oninput="updateActivityMinutes('${area.id}','${sa.id}','${session.id}','${act.id}', this.value)">
+      </div>`
+    : '';
+  const resCell = sessionRecursosEnabled()
+    ? `<div class="activity-res-cell">
+        <label>${tr('Recursos')}</label>
+        <textarea rows="2" placeholder="${tr('Descriu o enganxa els recursos…')}" oninput="updateActivityField('${area.id}','${sa.id}','${session.id}','${act.id}','resources', this.value)">${esc(act.resources)}</textarea>
+        <div class="attachments">${files}${links}</div>
+        <div class="res-actions">
+          <button class="res-btn" title="${tr('Adjunta fitxers o enllaços')}" onclick="openAttachModal('${area.id}','${sa.id}','${session.id}','${act.id}')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+            ${tr('Adjunta')}
+          </button>
+        </div>
       </div>`
     : '';
   return `
   <div class="activity-row" id="activity-${act.id}">
     <div class="activity-title-cell">
-      <label>Activitat</label>
-      <input type="text" value="${esc(act.title)}" placeholder="Què es farà…" oninput="updateActivityField('${area.id}','${sa.id}','${session.id}','${act.id}','title', this.value)">
+      <label>${tr('Activitat')}</label>
+      <input type="text" value="${esc(act.title)}" placeholder="${tr('Què es farà…')}" oninput="updateActivityField('${area.id}','${sa.id}','${session.id}','${act.id}','title', this.value)">
     </div>
     ${minCell}
     <div class="activity-del-cell">
-      <button class="btn btn-danger btn-icon" onclick="deleteActivity('${area.id}','${sa.id}','${session.id}','${act.id}')" aria-label="Elimina activitat">
+      <button class="btn btn-danger btn-icon" onclick="deleteActivity('${area.id}','${sa.id}','${session.id}','${act.id}')" aria-label="${tr('Elimina activitat')}">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M9 7V4h6v3m-8 0 1 13h8l1-13"/></svg>
       </button>
     </div>
     <div class="activity-desc-cell">
-      <label>Descripció</label>
-      <textarea placeholder="Detall de l'activitat…" oninput="updateActivityField('${area.id}','${sa.id}','${session.id}','${act.id}','description', this.value)">${esc(act.description)}</textarea>
+      <label>${tr('Descripció')}</label>
+      <textarea placeholder="${tr('Detall de l\'activitat…')}" oninput="updateActivityField('${area.id}','${sa.id}','${session.id}','${act.id}','description', this.value)">${esc(act.description)}</textarea>
     </div>
-    <div class="activity-res-cell">
-      <label>Recursos</label>
-      <textarea rows="2" placeholder="Descriu o enganxa els recursos…" oninput="updateActivityField('${area.id}','${sa.id}','${session.id}','${act.id}','resources', this.value)">${esc(act.resources)}</textarea>
-      <div class="attachments">${files}${links}</div>
-      <div class="res-actions">
-        <button class="res-btn" title="Adjunta fitxers o enllaços" onclick="openAttachModal('${area.id}','${sa.id}','${session.id}','${act.id}')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
-          Adjunta
-        </button>
-      </div>
-    </div>
+    ${resCell}
   </div>`;
 }
 
@@ -1412,77 +1792,162 @@ function settingsHTML(){
   const cw = (state.settings && state.settings.courseWeeks) ? state.settings.courseWeeks : 30;
   const dark = !!(state.settings && state.settings.darkMode);
   const de = durationsEnabled();
+  const askDel = askDeleteFilesEnabled();
+  const attPrev = attachmentPreviewEnabled();
+  const l = lang();
+  const elemOpen = programElementsEnabled();
+  const eObj = sessionObjectiusEnabled();
+  const eMet = sessionMetodologiaEnabled();
+  const eSeg = sessionSeguimentEnabled();
+  const eRec = sessionRecursosEnabled();
   return `
   <div class="settings-header">
-    <h1 class="display">Ajustos</h1>
-    <p class="settings-note">Configuració general de l'aplicació.</p>
+    <h1 class="display">${tr('Ajustos')}</h1>
+    <p class="settings-note">${tr('Configuració general de l\'aplicació.')}</p>
   </div>
+
+  <div class="settings-card">
+    <div class="settings-card-title">${tr('General')}</div>
+    <div class="settings-row">
+      <div class="settings-label">
+        <b>${tr('Llengua')}</b>
+        <small>${tr('Llengua de la interfície del programa.')}</small>
+      </div>
+      <div class="settings-input">
+        <select onchange="setLang(this.value)" aria-label="${tr('Llengua')}">
+          <option value="ca" ${l==='ca'?'selected':''}>${tr('Valencià')}</option>
+          <option value="es" ${l==='es'?'selected':''}>${tr('Castellà')}</option>
+        </select>
+      </div>
+    </div>
+    <div class="settings-row">
+      <div class="settings-label">
+        <b>${tr('Preguntar per eliminar arxius')}</b>
+        <small>${tr('Demana confirmació quan envies un recurs a la paperera o l\'elimines definitivament.')}</small>
+      </div>
+      <label class="switch" title="${tr('Preguntar per eliminar arxius')}"><input type="checkbox" ${askDel?'checked':''} onchange="setAskDeleteFiles(this.checked)"><span class="slider"></span></label>
+    </div>
+    <div class="settings-row">
+      <div class="settings-label">
+        <b>${tr('Mode fosc')}</b>
+        <small>${tr('Canvia l\'aparença de l\'aplicació.')}</small>
+      </div>
+      <label class="switch" title="${tr('Mode fosc')}"><input type="checkbox" ${dark?'checked':''} onchange="setDarkMode(this.checked)"><span class="slider"></span></label>
+    </div>
+  </div>
+
+  <div class="settings-card">
+    <div class="settings-card-title">${tr('Configuració')}</div>
+    <div class="settings-row">
+      <div class="settings-label">
+        <b>${tr('Durada del curs')}</b>
+        <small>${tr('Setmanes que sol durar el curs (per calcular el recordatori de les properes 2 setmanes).')}</small>
+      </div>
+      <div class="settings-input">
+        <input type="number" min="1" max="52" value="${cw}" onchange="setCourseWeeks(this.value)" aria-label="${tr('Durada del curs')}">
+        <span>${tr('setmanes')}</span>
+      </div>
+    </div>
+    <div class="settings-row">
+      <div class="settings-label">
+        <b>${tr('Arxius adjuntats')}</b>
+        <small>${tr('Quan fas clic a un document adjuntat, tria si es descarrega directament o s\'obri una previsualització a l\'app.')}</small>
+      </div>
+      <div class="settings-input">
+        <select onchange="setAttachmentPreview(this.value)" aria-label="${tr('Arxius adjuntats')}">
+          <option value="download" ${attPrev?'':'selected'}>${tr('Descarrega sempre')}</option>
+          <option value="preview" ${attPrev?'selected':''}>${tr('Previsualitza abans de descarregar')}</option>
+        </select>
+      </div>
+    </div>
+    <div class="settings-row">
+      <div class="settings-label">
+        <b>${tr('Elements de la programació')}</b>
+        <small>${tr('Tria quins elements apareixen a les sessions de la programació.')}</small>
+      </div>
+      <label class="switch" title="${tr('Elements de la programació')}"><input type="checkbox" ${elemOpen?'checked':''} onchange="setProgramElements(this.checked)"><span class="slider"></span></label>
+    </div>
+    <div class="settings-sub ${elemOpen?'':'hidden'}">
+      <div class="settings-row">
+        <div class="settings-label">
+          <b>${tr('Durada de les sessions')}</b>
+          <small>${tr('Activa o desactiva l\'opció d\'establir la durada de les activitats i les sessions a les programacions.')}</small>
+        </div>
+        <label class="switch" title="${tr('Activa/desactiva a l\'agenda')}"><input type="checkbox" ${de?'checked':''} onchange="setSessionDurationEnabled(this.checked)"><span class="slider"></span></label>
+      </div>
+      <div class="settings-sub ${de?'':'hidden'}">
+        <div class="settings-row">
+          <div class="settings-label">
+            <b>${tr('Minuts per sessió')}</b>
+            <small>${tr('Durada per defecte d\'una sessió.')}</small>
+          </div>
+          <div class="settings-input">
+            <input type="number" min="0" max="600" value="${d}" onchange="setSessionDuration(this.value)" aria-label="${tr('Minuts per sessió')}">
+            <span>${tr('minuts')}</span>
+          </div>
+        </div>
+        <div class="settings-row">
+          <div class="settings-label">
+            <b>${tr('Aplica a totes les sessions')}</b>
+            <small>${tr('Canvia totes les sessions programades que no duren els minuts configurats.')}</small>
+          </div>
+          <div class="settings-input">
+            <button class="btn btn-ghost btn-sm" onclick="applySessionDurationToAll()">${tr('Aplica a totes')}</button>
+          </div>
+        </div>
+      </div>
+      <div class="settings-row">
+        <div class="settings-label">
+          <b>${tr('Objectius')}</b>
+          <small>${tr('Casella per als objectius de la sessió.')}</small>
+        </div>
+        <label class="switch" title="${tr('Objectius')}"><input type="checkbox" ${eObj?'checked':''} onchange="setSessionElem('Objectius', this.checked)"><span class="slider"></span></label>
+      </div>
+      <div class="settings-row">
+        <div class="settings-label">
+          <b>${tr('Metodologia')}</b>
+          <small>${tr('Casella per a la metodologia de la sessió.')}</small>
+        </div>
+        <label class="switch" title="${tr('Metodologia')}"><input type="checkbox" ${eMet?'checked':''} onchange="setSessionElem('Metodologia', this.checked)"><span class="slider"></span></label>
+      </div>
+      <div class="settings-row">
+        <div class="settings-label">
+          <b>${tr('Seguiment')}</b>
+          <small>${tr('Casella per al seguiment de la sessió.')}</small>
+        </div>
+        <label class="switch" title="${tr('Seguiment')}"><input type="checkbox" ${eSeg?'checked':''} onchange="setSessionElem('Seguiment', this.checked)"><span class="slider"></span></label>
+      </div>
+      <div class="settings-row">
+        <div class="settings-label">
+          <b>${tr('Recursos')}</b>
+          <small>${tr('Mostra les caselles de recursos a les activitats.')}</small>
+        </div>
+        <label class="switch" title="${tr('Recursos')}"><input type="checkbox" ${eRec?'checked':''} onchange="setSessionElem('Recursos', this.checked)"><span class="slider"></span></label>
+      </div>
+    </div>
+  </div>
+
+  <div class="settings-card">
+    <div class="settings-card-title">${tr('Connexions')}</div>
+    <div class="settings-row" id="account-row">
+      <div class="settings-label"><b>${tr('Compte')}</b><small>${tr('Inicia sessió per protegir i sincronitzar les teues dades al núvol.')}</small></div>
+      <div class="settings-input"><button class="btn btn-sm btn-primary" onclick="openAuthModal()">${tr('Inicia sessió')}</button></div>
+    </div>
+    ${dropboxSettingsHTML()}
+  </div>
+
   <div class="settings-card">
     <div class="settings-row">
       <div class="settings-label">
-        <b>Durada de les sessions</b>
-        <small>Activa o desactiva l'opció d'establir la durada de les activitats i les sessions a les programacions.</small>
-      </div>
-      <label class="switch" title="Activa/desactiva les durades de les sessions"><input type="checkbox" ${de?'checked':''} onchange="setSessionDurationEnabled(this.checked)"><span class="slider"></span></label>
-    </div>
-    <div class="settings-sub ${de?'':'hidden'}">
-      <div class="settings-row">
-        <div class="settings-label">
-          <b>Minuts per sessió</b>
-          <small>Durada per defecte d'una sessió.</small>
-        </div>
-        <div class="settings-input">
-          <input type="number" min="0" max="600" value="${d}" onchange="setSessionDuration(this.value)" aria-label="Duració de les sessions en minuts">
-          <span>minuts</span>
-        </div>
-      </div>
-      <div class="settings-row">
-        <div class="settings-label">
-          <b>Aplica a totes les sessions</b>
-          <small>Canvia totes les sessions programades que no duren els minuts configurats.</small>
-        </div>
-        <div class="settings-input">
-          <button class="btn btn-ghost btn-sm" onclick="applySessionDurationToAll()">Aplica a totes</button>
-        </div>
-      </div>
-    </div>
-    <div class="settings-row">
-      <div class="settings-label">
-        <b>Mode fosc</b>
-        <small>Canvia l'aparença de l'aplicació.</small>
-      </div>
-      <label class="switch" title="Activa/desactiva el mode fosc"><input type="checkbox" ${dark?'checked':''} onchange="setDarkMode(this.checked)"><span class="slider"></span></label>
-    </div>
-    <div class="settings-row">
-      <div class="settings-label">
-        <b>Durada del curs</b>
-        <small>Setmanes que sol durar el curs (per calcular el recordatori de les properes 2 setmanes).</small>
+        <b>${tr('Còpia de seguretat')}</b>
+        <small>${tr('Descarrega o restaura una còpia de totes les dades.')}</small>
       </div>
       <div class="settings-input">
-        <input type="number" min="1" max="52" value="${cw}" onchange="setCourseWeeks(this.value)" aria-label="Setmanes del curs">
-        <span>setmanes</span>
-      </div>
-    </div>
-    <div class="settings-row">
-      <div class="settings-label">
-        <b>Còpia de seguretat</b>
-        <small>Descarrega o restaura una còpia de totes les dades.</small>
-      </div>
-      <div class="settings-input">
-        <button class="btn btn-ghost btn-sm" onclick="exportBackup()">Descarrega còpia</button>
-        <button class="btn btn-ghost btn-sm" onclick="triggerImportBackup()">Restaura còpia</button>
+        <button class="btn btn-ghost btn-sm" onclick="exportBackup()">${tr('Descarrega còpia')}</button>
+        <button class="btn btn-ghost btn-sm" onclick="triggerImportBackup()">${tr('Restaura còpia')}</button>
         <input type="file" id="backup-file-input" accept="application/json" style="display:none" onchange="handleBackupFile(event)">
       </div>
     </div>
-  </div>
-  <div class="settings-card">
-    <div class="settings-row" id="account-row">
-      <div class="settings-label"><b>Compte</b><small>Inicia sessió per protegir i sincronitzar les teues dades al núvol.</small></div>
-      <div class="settings-input"><button class="btn btn-sm btn-primary" onclick="openAuthModal()">Inicia sessió</button></div>
-    </div>
-  </div>
-  <div class="settings-card">
-    ${dropboxSettingsHTML()}
   </div>`;
 }
 
@@ -1492,11 +1957,183 @@ function setDarkMode(on){
   applyTheme();
   saveState();
 }
+function askDeleteFilesEnabled(){
+  return !(state.settings && state.settings.askDeleteFiles === false);
+}
+function setAskDeleteFiles(on){
+  if(!state.settings) state.settings = {};
+  state.settings.askDeleteFiles = !!on;
+  saveState(); render();
+}
 function setCourseWeeks(v){
   if(!state.settings) state.settings = {};
   let n = parseInt(v,10); if(isNaN(n) || n <= 0) n = 30; if(n > 52) n = 52;
   state.settings.courseWeeks = n;
   saveState();
+}
+
+/* --- Elements de la programació (Objectius, Metodologia, Seguiment, Recursos) --- */
+function programElementsEnabled(){
+  return !(state.settings && state.settings.programElements === false);
+}
+function setProgramElements(on){
+  if(!state.settings) state.settings = {};
+  state.settings.programElements = !!on;
+  saveState(); render();
+}
+function sessionObjectiusEnabled(){ return !!(state.settings && state.settings.sessionElemObjectius); }
+function sessionMetodologiaEnabled(){ return !!(state.settings && state.settings.sessionElemMetodologia); }
+function sessionSeguimentEnabled(){ return !!(state.settings && state.settings.sessionElemSeguiment); }
+function sessionRecursosEnabled(){ return !(state.settings && state.settings.sessionElemRecursos === false); }
+function setSessionElem(field, on){
+  if(!state.settings) state.settings = {};
+  state.settings['sessionElem' + field] = !!on;
+  saveState(); render();
+}
+function updateSessionField(areaId, saId, sessionId, field, value){
+  const s = findSession(areaId, saId, sessionId); if(!s) return;
+  s[field] = value;
+  saveState();
+}
+function sessionElementFieldsHTML(area, sa, se, readonly){
+  const parts = [];
+  if(sessionObjectiusEnabled()) parts.push(sessionFieldHTML('objectius', tr('Objectius'), se.objectius || '', area, sa, se, readonly));
+  if(sessionMetodologiaEnabled()) parts.push(sessionFieldHTML('metodologia', tr('Metodologia'), se.metodologia || '', area, sa, se, readonly));
+  if(sessionSeguimentEnabled()) parts.push(sessionFieldHTML('seguiment', tr('Seguiment'), se.seguiment || '', area, sa, se, readonly));
+  return parts.join('');
+}
+function sessionFieldHTML(field, label, value, area, sa, se, readonly){
+  const id = `se-${se.id}-${field}`;
+  if(readonly){
+    return value
+      ? `<div class="session-elem session-elem-${field}"><label class="session-elem-label">${label}</label><div class="session-elem-text">${esc(value)}</div></div>`
+      : '';
+  }
+  return `<div class="session-elem session-elem-${field}">
+    <label class="session-elem-label" for="${id}">${label}</label>
+    <textarea id="${id}" rows="2" placeholder="${esc(label + '…')}" oninput="updateSessionField('${area.id}','${sa.id}','${se.id}','${field}', this.value)">${esc(value)}</textarea>
+  </div>`;
+}
+
+/* --- Previsualització d'arxius adjuntats --- */
+const previewFileById = {};
+let previewCurrentFileId = null;
+function attachmentPreviewEnabled(){
+  return !!(state.settings && state.settings.attachmentPreview);
+}
+function setAttachmentPreview(v){
+  if(!state.settings) state.settings = {};
+  state.settings.attachmentPreview = (v === 'preview');
+  saveState(); render();
+}
+function registerPreviewFile(f){ if(f && f.id) previewFileById[f.id] = f; }
+function fileAnchorHTML(f, extraAttr){
+  const name = esc(f.name);
+  if(attachmentPreviewEnabled()){
+    registerPreviewFile(f);
+    return `<a href="javascript:void(0)" onclick="openFilePreview('${f.id}')" ${extraAttr||''}>${name}</a>`;
+  }
+  if((f.type||'').startsWith('image/')) return `<a href="${esc(fileUrl(f))}" target="_blank" rel="noopener" ${extraAttr||''}>${name}</a>`;
+  registerPreviewFile(f);
+  return `<a href="javascript:void(0)" onclick="downloadFile('${f.id}')" ${extraAttr||''}>${name}</a>`;
+}
+async function downloadFile(fileId){
+  const f = previewFileById[fileId];
+  if(!f) return;
+  try{
+    const res = await fetch(fileUrl(f,true));
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = f.name;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 15000);
+  }catch(e){
+    console.warn("No s'ha pogut descarregar l'arxiu", e);
+    alert(trf('No s\'ha pogut descarregar "{name}".', { name: f.name }));
+  }
+}
+function openFilePreview(fileId){
+  const f = previewFileById[fileId];
+  if(!f) return;
+  previewCurrentFileId = fileId;
+  const dl = document.getElementById('file-preview-download');
+  dl.disabled = false;
+  dl.textContent = tr('Descarrega');
+  const title = document.getElementById('file-preview-title');
+  title.textContent = f.name;
+  const sub = document.getElementById('file-preview-sub');
+  sub.textContent = (f.type || tr('desconegut')) + ' · ' + formatBytes(f.size);
+  const body = document.getElementById('file-preview-body');
+  body.innerHTML = '';
+  const url = fileUrl(f,false);
+  const ext = extOf(f.name).toLowerCase();
+  const isImg = (f.type||'').startsWith('image/');
+  if(isImg){
+    body.innerHTML = `<img src="${esc(url)}" alt="${esc(f.name)}">`;
+  }else if(f.type === 'application/pdf' || ext === 'pdf'){
+    body.innerHTML = `<p class="hint">${tr('Carregant…')}</p>`;
+    renderPdfPreview(url, body).catch(() => {
+      body.innerHTML = `<div class="file-preview-note">${tr('No s\'ha pogut previsualitzar aquest arxiu. Descarrega\'l per veure\'l.')}</div>`;
+    });
+  }else if(['txt','md','csv','json','log','html','css','js'].includes(ext)){
+    body.innerHTML = `<p class="hint">${tr('Carregant…')}</p>`;
+    fetchTextFile(url).then(text => {
+      body.innerHTML = `<pre>${esc(text.slice(0, 200000))}</pre>`;
+    }).catch(() => {
+      body.innerHTML = `<div class="file-preview-note">${tr('No s\'ha pogut previsualitzar aquest arxiu. Descarrega\'l per veure\'l.')}</div>`;
+    });
+  }else{
+    body.innerHTML = `<div class="file-preview-note">${tr('No es pot previsualitzar aquest tipus d\'arxiu. Descarrega\'l per veure\'l.')}</div>`;
+  }
+  document.getElementById('file-preview-modal').classList.add('open');
+}
+function closeFilePreview(){
+  const m = document.getElementById('file-preview-modal');
+  if(!m) return;
+  m.classList.remove('open');
+  const body = document.getElementById('file-preview-body');
+  if(body) body.innerHTML = '';
+  previewCurrentFileId = null;
+}
+function downloadCurrentPreview(){
+  if(previewCurrentFileId) downloadFile(previewCurrentFileId);
+}
+async function fetchFileBlob(url){
+  const res = await fetch(url);
+  if(!res.ok) throw new Error('Error ' + res.status);
+  return await res.arrayBuffer();
+}
+async function fetchTextFile(url){
+  const res = await fetch(url);
+  if(!res.ok) throw new Error('Error ' + res.status);
+  return await res.text();
+}
+async function renderPdfPreview(url, container){
+  if(!window.pdfjsLib) throw new Error('Cal connexió a Internet per a llegir el PDF.');
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  const buf = await fetchFileBlob(url);
+  const doc = await pdfjsLib.getDocument({ data: buf }).promise;
+  container.innerHTML = '';
+  const base = Math.min(container.clientWidth || 700, 760);
+  for(let i=1; i<=doc.numPages; i++){
+    const page = await doc.getPage(i);
+    const v0 = page.getViewport({ scale: 1 });
+    const scale = base / v0.width;
+    const viewport = page.getViewport({ scale });
+    const canvas = document.createElement('canvas');
+    canvas.style.width = '100%';
+    canvas.style.height = 'auto';
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
+    container.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+    await page.render({ canvasContext: ctx, viewport }).promise;
+  }
 }
 function durationsEnabled(){
   return !(state.settings && state.settings.sessionDurationEnabled === false);
@@ -1516,7 +2153,7 @@ function applySessionDurationToAll(){
   const D = (state.settings && state.settings.sessionDurationMinutes != null && state.settings.sessionDurationMinutes > 0)
     ? state.settings.sessionDurationMinutes : 60;
   if(D <= 0) return;
-  if(!confirm('Es canviaran totes les sessions programades que no duren els minuts configurats. Continues?')) return;
+  if(!confirm(tr('Es canviaran totes les sessions programades que no duren els minuts configurats. Continues?'))) return;
   let count = 0;
   for(const area of state.areas){
     for(const sa of area.situacions){
@@ -1535,7 +2172,7 @@ function applySessionDurationToAll(){
     }
   }
   saveState(); render();
-  alert(count ? count + ' sessions actualitzades.' : 'Cap sessió necessitava canvis.');
+  alert(count ? trf('{n} sessions actualitzades.', { n: count }) : tr('Cap sessió necessitava canvis.'));
 }
 function applyTheme(){
   const dark = !!(state.settings && state.settings.darkMode);
@@ -1552,13 +2189,22 @@ function allFiles(){
       for(const se of sa.sessions){
         for(const act of se.activities){
           for(const f of (act.files||[])) out.push({ area, sa, se, act, f });
+          for(const l of (act.links||[])) out.push({ area, sa, se, act, f: { id: l.id, name: l.label || l.url, url: l.url, isLink: true, type: 'link', size: null } });
         }
       }
     }
   }
   return out;
 }
+const VIDEO_LINK_EXT_RE = /\.(mp4|mov|avi|mkv|webm|m4v|mpg|mpeg|wmv|flv|3gp|ogv|ts|mts|m2ts|vob)(?:[?#]|$)/i;
+const VIDEO_LINK_HOST_RE = [/(?:^|\.)youtube\.com\//i, /youtu\.be\//i, /(?:^|\.)youtube-nocookie\.com\//i, /(?:^|\.)vimeo\.com\//i, /(?:^|\.)dailymotion\.com\//i, /(?:^|\.)twitch\.tv\//i, /(?:^|\.)tiktok\.com\//i, /(?:^|\.)facebook\.com\/.*\/video/i, /(?:^|\.)instagram\.com\/.*\/(reel|reels)/i];
+function isVideoLink(url){
+  const u = String(url||'');
+  if(VIDEO_LINK_EXT_RE.test(u)) return true;
+  return VIDEO_LINK_HOST_RE.some(re => re.test(u));
+}
 function fileCategory(f){
+  if(f && f.isLink) return isVideoLink(f.url) ? 'video' : 'link';
   const t = (f.type||'');
   if(t.startsWith('image/')) return 'image';
   if(t.startsWith('audio/')) return 'audio';
@@ -1582,33 +2228,34 @@ function fmtDuration(min){
   min = parseInt(min,10)||0;
   const h = Math.floor(min/60);
   const m = min%60;
-  if(h===0) return m + ' min';
+  if(h===0) return m + ' ' + tr('min');
   if(m===0) return h + 'h';
-  return h + 'h i ' + m + 'min';
+  return h + tr('h i ') + m + tr('min');
 }
 function filesHTML(){
-  const areaOpts = ['<option value="all">Totes les àrees</option>']
+  const areaOpts = ['<option value="all">' + tr('Totes les àrees') + '</option>']
     .concat(state.areas.map(a => `<option value="${a.id}" ${filesAreaFilter===a.id?'selected':''}>${esc(a.name)}</option>`)).join('');
   const count = filesFilteredList().length;
   return `
   <div class="settings-header">
-    <h1 class="display">Recursos</h1>
-    <p class="settings-note">Tots els recursos pujats a les activitats, en un sol lloc.</p>
+    <h1 class="display">${tr('Recursos')}</h1>
+    <p class="settings-note">${tr('Tots els recursos pujats a les activitats, en un sol lloc.')}</p>
   </div>
   <div class="files-toolbar">
-    <input class="files-search" type="text" placeholder="Cerca per nom…" value="${esc(filesQuery)}" oninput="setFilesQuery(this.value)" aria-label="Cerca recursos">
+    <input class="files-search" type="text" placeholder="${tr('Cerca per nom…')}" value="${esc(filesQuery)}" oninput="setFilesQuery(this.value)" aria-label="Cerca recursos">
     <select class="files-filter" onchange="setFilesAreaFilter(this.value)" aria-label="Filtra per àrea">
       ${areaOpts}
     </select>
     <select class="files-filter" onchange="setFilesFilter(this.value)" aria-label="Filtra per tipus">
-      <option value="all" ${filesFilter==='all'?'selected':''}>Tots els tipus</option>
-      <option value="image" ${filesFilter==='image'?'selected':''}>Imatges</option>
-      <option value="video" ${filesFilter==='video'?'selected':''}>Vídeo</option>
-      <option value="audio" ${filesFilter==='audio'?'selected':''}>Àudio</option>
-      <option value="document" ${filesFilter==='document'?'selected':''}>Documents</option>
-      <option value="other" ${filesFilter==='other'?'selected':''}>Altres</option>
+      <option value="all" ${filesFilter==='all'?'selected':''}>${tr('Tots els tipus')}</option>
+      <option value="image" ${filesFilter==='image'?'selected':''}>${tr('Imatges')}</option>
+      <option value="video" ${filesFilter==='video'?'selected':''}>${tr('Vídeo')}</option>
+      <option value="audio" ${filesFilter==='audio'?'selected':''}>${tr('Àudio')}</option>
+      <option value="document" ${filesFilter==='document'?'selected':''}>${tr('Documents')}</option>
+      <option value="link" ${filesFilter==='link'?'selected':''}>${tr('Enllaços')}</option>
+      <option value="other" ${filesFilter==='other'?'selected':''}>${tr('Altres')}</option>
     </select>
-    <span class="files-count" id="files-count">${count} recursos</span>
+    <span class="files-count" id="files-count">${trf('{n} recursos', { n: count })}</span>
   </div>
   <div class="files-list" id="files-list">${filesListHTML()}</div>`;
 }
@@ -1629,38 +2276,47 @@ function fileTypeMatches(f, filter){
     case 'video': return c === 'video';
     case 'audio': return c === 'audio';
     case 'document': return ['pdf','text','sheet','slides'].includes(c);
+    case 'link': return c === 'link';
     default: return c === 'other' || c === 'archive';
   }
 }
 function filesListHTML(){
   const list = filesFilteredList();
-  if(!list.length) return `<p class="empty-hint">Cap recurs no coincideix amb els filtres.</p>`;
+  if(!list.length) return `<p class="empty-hint">${tr('Cap recurs no coincideix amb els filtres.')}</p>`;
   return `<div class="files-grid">${list.map(x => fileCardHTML(x)).join('')}</div>`;
 }
 function renderFilesList(){
   const el = document.getElementById('files-list');
   if(el) el.innerHTML = filesListHTML();
   const cnt = document.getElementById('files-count');
-  if(cnt) cnt.textContent = filesFilteredList().length + ' recursos';
+  if(cnt) cnt.textContent = trf('{n} recursos', { n: filesFilteredList().length });
 }
 function fileCardHTML({ area, sa, se, act, f }){
   const isImg = (f.type||'').startsWith('image/');
-  const thumb = isImg
-    ? `<img src="${esc(fileUrl(f))}" alt="">`
-    : `<span class="files-ext">${esc(extOf(f.name))}</span>`;
+  const isLink = !!(f.isLink);
+  let thumb, link, size;
+  if(isLink){
+    const typeLabel = linkTypeLabel(f.url);
+    thumb = `<span class="files-ic" title="${typeLabel}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${isVideoLink(f.url) ? '<path d="M10 15.5v-7l6 3.5z"/><rect x="2.5" y="4" width="19" height="16" rx="3"/>' : '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>'}</svg></span>`;
+    link = `<a href="${esc(f.url)}" target="_blank" rel="noopener" title="${esc(f.url)}">${esc(f.name)}</a>`;
+    size = typeLabel;
+  }else{
+    thumb = isImg
+      ? `<img src="${esc(fileUrl(f))}" alt="">`
+      : `<span class="files-ext">${esc(extOf(f.name))}</span>`;
+    link = fileAnchorHTML(f, `title="${esc(f.name)}"`);
+    size = `${esc(f.type||tr('desconegut'))} · ${formatBytes(f.size)}`;
+  }
   const ctx = `${esc(area.name)} · ${esc(sa.name)} · ${esc(se.name)}`;
-  const link = isImg
-    ? `<a href="${esc(fileUrl(f))}" target="_blank" rel="noopener" title="${esc(f.name)}">${esc(f.name)}</a>`
-    : `<a href="${esc(fileUrl(f,true))}" download="${esc(f.name)}" title="${esc(f.name)}">${esc(f.name)}</a>`;
   return `
   <div class="file-card">
     <div class="file-thumb">${thumb}</div>
     <div class="file-info">
       ${link}
       <small>${ctx}</small>
-      <small class="file-size">${esc(f.type||'desconegut')} · ${formatBytes(f.size)}</small>
+      <small class="file-size">${size}</small>
     </div>
-    <button class="btn btn-danger btn-icon" onclick="trashFile('${area.id}','${sa.id}','${se.id}','${act.id}','${f.id}')" aria-label="Elimina recurs" title="Elimina el recurs (va a la paperera)">
+    <button class="btn btn-danger btn-icon" onclick="trashFile('${area.id}','${sa.id}','${se.id}','${act.id}','${f.id}',${isLink})" aria-label="${tr('Elimina recurs')}" title="${tr('Elimina el recurs (va a la paperera)')}">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M9 7V4h6v3m-8 0 1 13h8l1-13"/></svg>
     </button>
   </div>`;
@@ -1756,26 +2412,26 @@ function markFirstAttach(areaId, saId, sessionId, actId, a){
 }
 function recursosHTML(){
   const areaSelected = !recursosUrgents && resourcesAreaId && state.areas.some(a => a.id === resourcesAreaId && a.active);
-  const note = areaSelected ? (recursosChecked ? 'Recursos que has marcat amb el check, per revisar-los i pujar-los.' : 'Recursos pendents de pujar') : '';
+  const note = areaSelected ? (recursosChecked ? tr('Recursos que has marcat amb el check, per revisar-los i pujar-los.') : tr('Recursos pendents de pujar')) : '';
   return `
   <div class="settings-header">
-    <h1 class="display">Pendents</h1>
+    <h1 class="display">${tr('Pendents')}</h1>
     ${note ? `<p class="settings-note">${note}</p>` : ''}
   </div>
   ${pendentsBodyHTML()}
   <div class="modal-backdrop" id="res-session-modal" onclick="if(event.target===this)closeResModal()">
     <div class="modal">
       <div id="res-session-body"></div>
-      <div class="modal-actions"><button class="btn btn-ghost" onclick="closeResModal()">Tanca</button></div>
+      <div class="modal-actions"><button class="btn btn-ghost" onclick="closeResModal()">${tr('Tanca')}</button></div>
     </div>
   </div>`;
 }
 function pendentsBodyHTML(){
-  const urgentBtn = `<button class="res-area-btn rec-urgents-btn ${recursosUrgents?'active':''}" onclick="toggleRecursosUrgents()">Urgents</button>`;
+  const urgentBtn = `<button class="res-area-btn rec-urgents-btn ${recursosUrgents?'active':''}" onclick="toggleRecursosUrgents()">${tr('Urgents')}</button>`;
   const activeAreas = state.areas.filter(a => a.active);
   const areaBtns = activeAreas.length
     ? activeAreas.map(a => `<button class="res-area-btn ${resourcesAreaId===a.id?'active':''}" style="--area-color:${a.color}" onclick="selectResourcesArea('${a.id}')"><span class="area-dot"></span><span>${esc(a.name)}</span></button>`).join('')
-    : `<p class="empty-hint">No tens cap àrea activa a l'agenda.</p>`;
+    : `<p class="empty-hint">${tr('No tens cap àrea activa a l\'agenda.')}</p>`;
   const areaRow = `<div class="res-areas">${urgentBtn}${areaBtns}</div>`;
   if(recursosUrgents) return areaRow + urgentContentHTML();
   const area = resourcesAreaId ? state.areas.find(a => a.id === resourcesAreaId && a.active) : null;
@@ -1803,21 +2459,21 @@ function resCheckedButtonHTML(){
   return `
   <button class="btn btn-ghost btn-sm res-checked-btn" onclick="toggleRecursosChecked()">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-    Recursos marcats
+    ${tr('Recursos marcats')}
   </button>`;
 }
 function resCheckedHeaderHTML(){
   return `
   <div class="res-checked-header">
-    <h2 class="display">Recursos marcats</h2>
-    <p>Ací tens els recursos que has marcat amb el check, per revisar-los i adjuntar-los si cal. Per tornar a la llista de pendents, prem una àrea o Urgents a dalt.</p>
+    <h2 class="display">${tr('Recursos marcats')}</h2>
+    <p>${tr('Ací tens els recursos que has marcat amb el check, per revisar-los i adjuntar-los si cal. Per tornar a la llista de pendents, prem una àrea o Urgents a dalt.')}</p>
   </div>`;
 }
 function resBackPendingBtnHTML(area){
   return `
   <button class="btn btn-ghost btn-sm res-back-pending" onclick="uncheckAllResources('${area.id}')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-    Tornar tots els recursos a pendents
+    ${tr('Tornar tots els recursos a pendents')}
   </button>`;
 }
 function urgentContentHTML(){
@@ -1825,7 +2481,7 @@ function urgentContentHTML(){
   const activeAreas = state.areas.filter(a => a.active);
   const body = activeAreas.length
     ? activeAreas.map(a => areaReminderHTML(a, cw)).join('')
-    : `<div class="empty-state"><h2 class="display">Sense àrees actives</h2><p>Activa una àrea a l'agenda per veure el recordatori de recursos de les properes 2 setmanes.</p></div>`;
+    : `<div class="empty-state"><h2 class="display">${tr('Sense àrees actives')}</h2><p>${tr('Activa una àrea a l\'agenda per veure el recordatori de recursos de les properes 2 setmanes.')}</p></div>`;
   return body;
 }
 function areaResourcesHTML(area){
@@ -1844,10 +2500,10 @@ function areaResourcesHTML(area){
   }
   const kept = rows;
   if(!kept.length) return recursosChecked
-    ? `<p class="empty-hint">Cap recurs marcat.</p>`
-    : `<p class="empty-hint">Cap activitat té recursos pendents en aquesta àrea.</p>`;
+    ? `<p class="empty-hint">${tr('Cap recurs marcat.')}</p>`
+    : `<p class="empty-hint">${tr('Cap activitat té recursos pendents en aquesta àrea.')}</p>`;
   const ts = Math.max(1, Math.ceil(flat.length / 3));
-  const labels = ['1r trimestre', '2n trimestre', '3r trimestre'];
+  const labels = [tr('1r trimestre'), tr('2n trimestre'), tr('3r trimestre')];
   const groups = [[], [], []];
   for(const r of kept){
     groups[Math.min(2, Math.floor(r.pos / ts))].push(r);
@@ -1862,18 +2518,18 @@ function areaResourcesHTML(area){
 }
 function resourceCardHTML(area, r){
   const doneBtn = recursosChecked
-    ? `<button class="res-btn res-btn-uncheck" title="Lleva el check i torna a pendents" onclick="toggleResourceDone('${area.id}','${r.sa.id}','${r.se.id}','${r.actId}')">
+    ? `<button class="res-btn res-btn-uncheck" title="${tr('Lleva el check i torna a pendents')}" onclick="toggleResourceDone('${area.id}','${r.sa.id}','${r.se.id}','${r.actId}')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
       </button>`
-    : `<button class="res-btn res-btn-done" title="Marca com a fet (encara que no estiga pujat)" onclick="toggleResourceDone('${area.id}','${r.sa.id}','${r.se.id}','${r.actId}')">
+    : `<button class="res-btn res-btn-done" title="${tr('Marca com a fet (encara que no estiga pujat)')}" onclick="toggleResourceDone('${area.id}','${r.sa.id}','${r.se.id}','${r.actId}')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
       </button>`;
   return `
   <div class="res-card" id="res-card-${r.actId}">
     <span class="sp-num">SA${r.sp}</span>
-    <span class="session-num" onclick="openResSession('${area.id}','${r.sa.id}','${r.se.id}')" title="Obre la sessió">S${r.s}</span>
+    <span class="session-num" onclick="openResSession('${area.id}','${r.sa.id}','${r.se.id}')" title="${tr('Obre la sessió')}">S${r.s}</span>
     <span class="res-name" onclick="openResSession('${area.id}','${r.sa.id}','${r.se.id}')" title="${esc(r.resource)}">${esc(r.resource)}</span>
-    <button class="res-btn" title="Adjunta fitxers o enllaços" onclick="openAttachModal('${area.id}','${r.sa.id}','${r.se.id}','${r.actId}')">
+    <button class="res-btn" title="${tr('Adjunta fitxers o enllaços')}" onclick="openAttachModal('${area.id}','${r.sa.id}','${r.se.id}','${r.actId}')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
     </button>
     ${doneBtn}
@@ -1926,7 +2582,7 @@ async function attachFilesChosen(input){
   const t = attachTarget;
   const n = (input.files||[]).length;
   await handleActivityFiles(t.areaId, t.saId, t.sessionId, t.actId, input);
-  setAttachStatus(n ? n + ' fitxer(s) adjuntat(s).' : '');
+  setAttachStatus(n ? trf('{n} fitxer(s) adjuntat(s).', { n }) : '');
   renderAttachFiles();
 }
 function attachDropFiles(files){
@@ -1934,7 +2590,7 @@ function attachDropFiles(files){
   const t = attachTarget;
   const n = files.length;
   handleActivityFiles(t.areaId, t.saId, t.sessionId, t.actId, files).then(() => {
-    setAttachStatus(n + ' fitxer(s) adjuntat(s).');
+    setAttachStatus(trf('{n} fitxer(s) adjuntat(s).', { n }));
     renderAttachFiles();
   });
 }
@@ -1948,9 +2604,9 @@ function renderAttachFiles(){
   const list = (a.files||[]).map(f => {
     const isImg = (f.type||'').startsWith('image/');
     const icon = isImg ? `<img src="${esc(fileUrl(f))}" alt="">` : `<span class="att-ext">${esc(extOf(f.name))}</span>`;
-    return `<span class="att-chip">${icon}<span class="att-name">${esc(f.name)}</span><button class="att-remove" onclick="attachRemoveFile('${f.id}')" aria-label="Elimina arxiu">&times;</button></span>`;
+    return `<span class="att-chip">${icon}<span class="att-name">${esc(f.name)}</span><button class="att-remove" onclick="attachRemoveFile('${f.id}')" aria-label="${tr('Elimina arxiu')}">&times;</button></span>`;
   }).join('');
-  box.innerHTML = list || `<p class="empty-hint">Encara no hi ha fitxers adjuntats.</p>`;
+  box.innerHTML = list || `<p class="empty-hint">${tr('Encara no hi ha fitxers adjuntats.')}</p>`;
 }
 function attachRemoveFile(fileId){
   if(!attachTarget) return;
@@ -1973,11 +2629,84 @@ function attachAddLink(){
   let label = '';
   const m = url.match(/^[a-z]+:\/\/([^/]+)/i);
   if(m) label = m[1];
-  a.links.push({ id: uid(), label: label || url, url });
+  const linkId = uid();
+  a.links.push({ id: linkId, label: label || url, url });
   saveState();
   if(wasEmpty) markFirstAttach(t.areaId, t.saId, t.sessionId, t.actId, a);
   inp.value = '';
   renderAttachLinks();
+  fetchLinkTitle(t.areaId, t.saId, t.sessionId, t.actId, linkId, url);
+}
+function linkHost(url){
+  const m = String(url||'').match(/^[a-z]+:\/\/([^/]+)/i);
+  return m ? m[1] : String(url||'');
+}
+async function fetchPageTitle(url){
+  const u = String(url||'');
+  const endpoints = [];
+  if(/(?:^|\.)youtube\.com\//i.test(u) || /youtu\.be\//i.test(u) || /(?:^|\.)youtube-nocookie\.com\//i.test(u)){
+    endpoints.push('https://www.youtube.com/oembed?url=' + encodeURIComponent(u) + '&format=json');
+  }else if(/(?:^|\.)vimeo\.com\//i.test(u)){
+    endpoints.push('https://vimeo.com/api/oembed.json?url=' + encodeURIComponent(u));
+  }else if(/(?:^|\.)dailymotion\.com\//i.test(u)){
+    endpoints.push('https://www.dailymotion.com/services/oembed?url=' + encodeURIComponent(u));
+  }
+  endpoints.push('https://noembed.com/embed?url=' + encodeURIComponent(u));
+  for(const ep of endpoints){
+    try{
+      const res = await fetch(ep);
+      if(!res.ok) continue;
+      const data = await res.json();
+      if(data && data.title) return String(data.title).trim();
+    }catch(e){}
+  }
+  return null;
+}
+async function fetchLinkTitle(areaId, saId, sessionId, actId, linkId, url){
+  const title = await fetchPageTitle(url);
+  const s = findSession(areaId, saId, sessionId); if(!s) return;
+  const a = s.activities.find(x=>x.id===actId); if(!a) return;
+  const l = (a.links||[]).find(x=>x.id===linkId);
+  if(!l) return;
+  const before = l.label;
+  l.titleTried = true;
+  if(title) l.label = title;
+  saveState();
+  if(l.label === before) return;
+  if(attachTarget && attachTarget.areaId === areaId && attachTarget.saId === saId && attachTarget.sessionId === sessionId && attachTarget.actId === actId) renderAttachLinks();
+  render();
+}
+async function enrichLinkTitles(){
+  const targets = [];
+  const tryPush = l => { if(l && !l.titleTried && l.label === linkHost(l.url)) targets.push(l); };
+  for(const area of state.areas){
+    for(const sa of area.situacions){
+      for(const se of sa.sessions){
+        for(const act of se.activities){
+          (act.links||[]).forEach(tryPush);
+        }
+      }
+    }
+  }
+  (state.trashFiles||[]).forEach(t => { if(t.f && t.f.isLink) tryPush(t.f); });
+  if(!targets.length) return;
+  for(const l of targets){
+    l.titleTried = true;
+    const title = await fetchPageTitle(l.url);
+    if(title && l.label !== title){
+      l.label = title;
+      saveState();
+      if(showFiles) renderFilesList();
+      else if(showTrash) renderTrashBody();
+    }
+  }
+  saveState();
+}
+function linkTypeLabel(url){
+  const u = String(url||'');
+  if(/(?:^|\.)youtube\.com\//i.test(u) || /youtu\.be\//i.test(u) || /(?:^|\.)youtube-nocookie\.com\//i.test(u)) return tr('Vídeo Youtube');
+  if(isVideoLink(u)) return tr('Vídeo');
+  return tr('Enllaç');
 }
 function renderAttachLinks(){
   const box = document.getElementById('attach-links-list');
@@ -1987,9 +2716,9 @@ function renderAttachLinks(){
   const s = findSession(t.areaId, t.saId, t.sessionId); if(!s) return;
   const a = s.activities.find(x=>x.id===t.actId); if(!a) return;
   const list = (a.links||[]).map(l =>
-    `<span class="att-chip"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" style="flex:none"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label||l.url)}</a><button class="att-remove" onclick="attachRemoveLink('${l.id}')" aria-label="Elimina enllaç">&times;</button></span>`
+    `<span class="att-chip"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" style="flex:none"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label||l.url)}</a><button class="att-remove" onclick="attachRemoveLink('${l.id}')" aria-label="${tr('Elimina enllaç')}">&times;</button></span>`
   ).join('');
-  box.innerHTML = list || `<p class="empty-hint">Encara no hi ha enllaços afegits.</p>`;
+  box.innerHTML = list || `<p class="empty-hint">${tr('Encara no hi ha enllaços afegits.')}</p>`;
 }
 function attachRemoveLink(linkId){
   if(!attachTarget) return;
@@ -2036,19 +2765,40 @@ function recordatoriHTML(){
   const activeAreas = state.areas.filter(a => a.active);
   const body = activeAreas.length
     ? activeAreas.map(a => areaReminderHTML(a, cw)).join('')
-    : `<div class="empty-state"><h2 class="display">Sense àrees actives</h2><p>Activa una àrea a l'agenda per veure el recordatori de recursos de les properes 2 setmanes.</p></div>`;
+    : `<div class="empty-state"><h2 class="display">${tr('Sense àrees actives')}</h2><p>${tr('Activa una àrea a l\'agenda per veure el recordatori de recursos de les properes 2 setmanes.')}</p></div>`;
   return `
   <div class="settings-header">
-    <h1 class="display">Recordatori</h1>
-    <p class="settings-note">Recursos que caldran en les properes 2 setmanes, a partir de la sessió actual de l'agenda de cada àrea.</p>
+    <h1 class="display">${tr('Recordatori')}</h1>
+    <p class="settings-note">${tr('Recursos que caldran en les properes 2 setmanes, a partir de la sessió actual de l\'agenda de cada àrea.')}</p>
   </div>
   ${body}
   <div class="modal-backdrop" id="res-session-modal" onclick="if(event.target===this)closeResModal()">
     <div class="modal">
       <div id="res-session-body"></div>
-      <div class="modal-actions"><button class="btn btn-ghost" onclick="closeResModal()">Tanca</button></div>
+      <div class="modal-actions"><button class="btn btn-ghost" onclick="closeResModal()">${tr('Tanca')}</button></div>
     </div>
   </div>`;
+}
+function hasUrgentResources(){
+  const cw = courseWeeks();
+  for(const area of state.areas){
+    if(!area.active) continue;
+    const flat = flatSessions(area);
+    if(!flat.length) continue;
+    const sessions2w = Math.max(1, Math.ceil((flat.length / cw) * 2));
+    const cur = currentIdx(area);
+    let start = 0;
+    if(area.currentSessionId && area.currentSessionId !== '__done__' && cur >= 0) start = cur;
+    if(start >= flat.length) continue;
+    const upcoming = flat.slice(start, start + sessions2w);
+    for(const { sa, se } of upcoming){
+      for(const act of se.activities){
+        const res = cleanResourceText(act.resources);
+        if(res && !act.resourceDone && !hasAttachments(act)) return true;
+      }
+    }
+  }
+  return false;
 }
 function areaReminderHTML(area, cw){
   const flat = flatSessions(area);
@@ -2075,7 +2825,7 @@ function areaReminderHTML(area, cw){
   return `
   <div class="rem-area">
     <h3>${esc(area.name)}</h3>
-    <p class="rem-note">Properes 2 setmanes · ${sessions2w} sessió(ns) des de la S${start + 1}</p>
+    <p class="rem-note">${trf('Properes 2 setmanes · {n} sessió(ns) des de la S{m}', { n: sessions2w, m: start + 1 })}</p>
     <div class="res-grid">${rows.map(r => reminderCardHTML(r)).join('')}</div>
   </div>`;
 }
@@ -2084,27 +2834,31 @@ function reminderCardHTML(r){
   return `
   <div class="res-card" id="res-card-${r.actId}">
     <span class="sp-num">SA${r.sp}</span>
-    <span class="session-num" onclick="${open}" title="Obre la sessió">S${r.s}</span>
+    <span class="session-num" onclick="${open}" title="${tr('Obre la sessió')}">S${r.s}</span>
     <span class="res-name" onclick="${open}" title="${esc(r.resource)}">${esc(r.resource)}</span>
-    <button class="res-btn" title="Adjunta fitxers o enllaços" onclick="openAttachModal('${r.areaId}','${r.saId}','${r.seId}','${r.actId}')">
+    <button class="res-btn" title="${tr('Adjunta fitxers o enllaços')}" onclick="openAttachModal('${r.areaId}','${r.saId}','${r.seId}','${r.actId}')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
     </button>
-    <button class="res-btn res-btn-done" title="Marca com a fet (encara que no estiga pujat)" onclick="toggleResourceDone('${r.areaId}','${r.saId}','${r.seId}','${r.actId}')">
+    <button class="res-btn res-btn-done" title="${tr('Marca com a fet (encara que no estiga pujat)')}" onclick="toggleResourceDone('${r.areaId}','${r.saId}','${r.seId}','${r.actId}')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
     </button>
   </div>`;
 }
-function trashFile(areaId, saId, sessionId, actId, fileId){
+function trashFile(areaId, saId, sessionId, actId, fileId, isLink){
   const area = state.areas.find(a=>a.id===areaId); if(!area) return;
   const sa = area.situacions.find(x=>x.id===saId);
   const s = sa ? sa.sessions.find(x=>x.id===sessionId) : null; if(!s) return;
   const a = s.activities.find(x=>x.id===actId); if(!a) return;
-  const f = (a.files||[]).find(x=>x.id===fileId); if(!f) return;
-  if(!confirm(`Enviar "${f.name}" a la paperera?`)) return;
-  a.files = (a.files||[]).filter(x=>x.id!==fileId);
+  let f;
+  if(isLink) f = (a.links||[]).find(x=>x.id===fileId);
+  else f = (a.files||[]).find(x=>x.id===fileId);
+  if(!f) return;
+  if(askDeleteFilesEnabled() && !confirm(trf('Enviar "{name}" a la paperera?', { name: f.name || f.label || f.url }))) return;
+  if(isLink) a.links = (a.links||[]).filter(x=>x.id!==fileId);
+  else a.files = (a.files||[]).filter(x=>x.id!==fileId);
   state.trashFiles.push({
     id: uid(),
-    f,
+    f: Object.assign({}, f, { isLink: !!isLink }),
     areaId, areaName: area.name,
     saId, saName: sa ? sa.name : '',
     sessionId, sessionName: s.name,
@@ -2120,12 +2874,23 @@ function restoreTrashFile(id){
   const se = sa ? sa.sessions.find(x=>x.id===entry.sessionId) : null;
   const act = se ? se.activities.find(x=>x.id===entry.actId) : null;
   if(!area || !sa || !se || !act){
-    alert('No s\'ha pogut restaurar el recurs: la ubicació original ja no existeix (potser l\'àrea s\'ha eliminat).');
+    alert(tr('No s\'ha pogut restaurar el recurs: la ubicació original ja no existeix (potser l\'àrea s\'ha eliminat).'));
+    return;
+  }
+  if(entry.f && entry.f.isLink){
+    act.links = act.links || [];
+    if(act.links.some(x=>x.id===entry.f.id)){
+      alert(tr('Aquest recurs ja és present a la seua activitat.'));
+      return;
+    }
+    act.links.push({ id: entry.f.id, label: entry.f.label || entry.f.name || entry.f.url, url: entry.f.url });
+    state.trashFiles = state.trashFiles.filter(x=>x.id!==id);
+    saveState(); render();
     return;
   }
   act.files = act.files || [];
   if(act.files.some(x=>x.id===entry.f.id)){
-    alert('Aquest recurs ja és present a la seua activitat.');
+    alert(tr('Aquest recurs ja és present a la seua activitat.'));
     return;
   }
   act.files.push(entry.f);
@@ -2134,17 +2899,24 @@ function restoreTrashFile(id){
 }
 function purgeTrashFileItem(id){
   const entry = state.trashFiles.find(x=>x.id===id); if(!entry) return;
-  if(!confirm(`Eliminar definitivament "${entry.f.name}"? Aquesta acció no es pot desfer.`)) return;
+  if(askDeleteFilesEnabled() && !confirm(trf('Eliminar definitivament "{name}"? Aquesta acció no es pot desfer.', { name: entry.f.name || entry.f.label || entry.f.url }))) return;
   if(entry.f && (entry.f.path || entry.f.dbxPath)) removeFilesFromStorage([entry.f]);
   state.trashFiles = state.trashFiles.filter(x=>x.id!==id);
   saveState(); render();
 }
 
 function formatDate(iso){
-  if(!iso) return 'desconegut';
+  if(!iso) return tr('desconegut');
   try{
     return new Date(iso).toLocaleDateString('ca-ES', { day:'numeric', month:'long', year:'numeric' });
-  }catch(e){ return 'desconegut'; }
+  }catch(e){ return tr('desconegut'); }
+}
+function formatDateShort(iso){
+  if(!iso) return tr('desconegut');
+  try{
+    const d = new Date(iso);
+    return d.getDate() + '/' + (d.getMonth()+1) + '/' + String(d.getFullYear()).slice(-2);
+  }catch(e){ return tr('desconegut'); }
 }
 function binEmptyHTML(title, text){
   return `<div class="empty-state"><h2 class="display">${esc(title)}</h2><p>${esc(text)}</p></div>`;
@@ -2153,9 +2925,9 @@ function archivedHTML(){
   const list = state.archivedAreas;
   const body = list.length
     ? `<div class="bin-list">${list.map(a => archivedCardHTML(a)).join('')}</div>`
-    : binEmptyHTML('Res d\'arxivat', 'Arxiva una programació des de la seua capçalera per guardar-la fora de les àrees actives.');
-  return `<h1 class="display">Arxivats</h1>
-  <p class="agenda-note">Programacions guardades, fora de l'agenda i de les àrees actives.</p>` + body;
+    : binEmptyHTML(tr('Res d\'arxivat'), tr('Arxiva una programació des de la seua capçalera per guardar-la fora de les àrees actives.'));
+  return `<h1 class="display">${tr('Arxivats')}</h1>
+  <p class="agenda-note">${tr('Programacions guardades, fora de l\'agenda i de les àrees actives.')}</p>` + body;
 }
 function archivedCardHTML(a){
   return `
@@ -2163,56 +2935,122 @@ function archivedCardHTML(a){
     <div class="bin-badge" style="--area-color:${a.color}"></div>
     <div class="bin-info">
       <b>${esc(a.name)}</b>
-      <small>Creat: ${formatDate(a.createdAt)}</small>
-      <small>Arxivat: ${formatDate(a.archivedAt)}</small>
+      <small>${trf('Creat: {d}', { d: formatDate(a.createdAt) })}</small>
+      <small>${trf('Arxivat: {d}', { d: formatDate(a.archivedAt) })}</small>
     </div>
     <div class="bin-actions">
-      <button class="btn btn-ghost btn-sm" onclick="restoreArea('${a.id}')">Restaura</button>
-      <button class="btn btn-danger btn-sm" onclick="trashArchived('${a.id}')">Elimina</button>
+      <button class="btn btn-ghost btn-sm" onclick="restoreArea('${a.id}')">${tr('Restaura')}</button>
+      <button class="btn btn-danger btn-sm" onclick="trashArchived('${a.id}')">${tr('Elimina')}</button>
     </div>
   </div>`;
 }
 function trashHTML(){
   purgeExpiredTrash();
   purgeExpiredTrashFiles();
-  const areas = state.trashAreas;
-  const files = state.trashFiles;
-  const areasBody = areas.length
-    ? `<h2 class="bin-section-title">Àrees eliminades</h2><div class="bin-list">${areas.map(a => trashCardHTML(a)).join('')}</div>`
-    : '';
-  const filesBody = files.length
-    ? `<h2 class="bin-section-title">Recursos eliminats</h2><div class="files-grid">${files.map(t => trashFileCardHTML(t)).join('')}</div>`
-    : '';
-  const body = (areasBody || filesBody)
-    ? areasBody + filesBody
-    : binEmptyHTML('Paperera buida', 'Res eliminat per ara.');
-  const total = areas.length + files.length;
+  const total = (state.trashAreas||[]).length + (state.trashFiles||[]).length;
   const emptyBtn = total
-    ? `<button class="btn btn-danger btn-sm" onclick="emptyTrash()">Buidar la paperera</button>`
+    ? `<button class="btn btn-danger btn-sm btn-toolbar-right" onclick="emptyTrash()">${tr('Buidar la paperera')}</button>`
     : '';
-  return `<h1 class="display">Paperera</h1>
-  <p class="agenda-note">Les àrees eliminades es conserven 1 any i els arxius 30 dies abans de suprimir-se definitivament.</p>
-  <div class="bin-toolbar">${emptyBtn}</div>` + body;
+  return `<h1 class="display">${tr('Paperera')}</h1>
+  <p class="agenda-note">${tr('Les àrees eliminades es conserven 1 any i els arxius 30 dies abans de suprimir-se definitivament.')}</p>
+  <div class="bin-toolbar">
+    <input class="files-search" type="text" placeholder="${tr('Cerca per nom…')}" value="${esc(trashQuery)}" oninput="setTrashQuery(this.value)" aria-label="${tr('Cerca a la paperera')}">
+    <select class="files-filter" onchange="setTrashTypeFilter(this.value)" aria-label="${tr('Filtra per tipus')}">
+      <option value="all" ${trashTypeFilter==='all'?'selected':''}>${tr('Tots els tipus')}</option>
+      <option value="areas" ${trashTypeFilter==='areas'?'selected':''}>${tr('Àrees')}</option>
+      <option value="files" ${trashTypeFilter==='files'?'selected':''}>${tr('Arxius')}</option>
+      <option value="links" ${trashTypeFilter==='links'?'selected':''}>${tr('Enllaços')}</option>
+    </select>
+    ${emptyBtn}
+  </div>
+  <div id="trash-body">${trashBodyHTML()}</div>`;
 }
+function trashBodyHTML(){
+  const q = trashQuery.trim().toLowerCase();
+  const nameOf = t => (((t.f.name||'') + ' ' + (t.f.label||'') + ' ' + (t.f.url||'')).toLowerCase());
+  const areas = (state.trashAreas||[]).filter(a => (trashTypeFilter === 'all' || trashTypeFilter === 'areas') && (!q || (a.name||'').toLowerCase().includes(q)));
+  const fileItems = (state.trashFiles||[])
+    .filter(t => !(t.f && t.f.isLink))
+    .filter(t => (trashTypeFilter === 'all' || trashTypeFilter === 'files') && (!q || nameOf(t).includes(q)));
+  const linkItems = (state.trashFiles||[])
+    .filter(t => !!(t.f && t.f.isLink))
+    .filter(t => (trashTypeFilter === 'all' || trashTypeFilter === 'links') && (!q || nameOf(t).includes(q)));
+  const areasBody = areas.length
+    ? `<h2 class="bin-section-title">${tr('Àrees eliminades')}</h2><div class="bin-grid">${areas.map(a => trashCardHTML(a)).join('')}</div>`
+    : '';
+  const filesBody = fileItems.length
+    ? `<h2 class="bin-section-title">${tr('Arxius eliminats')}</h2><div class="files-grid">${fileItems.map(t => trashFileCardHTML(t)).join('')}</div>`
+    : '';
+  const linksBody = linkItems.length
+    ? `<h2 class="bin-section-title">${tr('Enllaços eliminats')}</h2><div class="links-trash-list">${linkItems.map(t => trashLinkCardHTML(t)).join('')}</div>`
+    : '';
+  return (areasBody || filesBody || linksBody)
+    ? areasBody + filesBody + linksBody
+    : binEmptyHTML(tr('Paperera buida'), tr('Res eliminat per ara.'));
+}
+function renderTrashBody(){
+  const el = document.getElementById('trash-body');
+  if(el) el.innerHTML = trashBodyHTML();
+}
+function setTrashQuery(v){ trashQuery = v; renderTrashBody(); }
+function setTrashTypeFilter(v){ trashTypeFilter = v; renderTrashBody(); }
 function trashFileCardHTML(t){
   const isImg = (t.f.type||'').startsWith('image/');
-  const thumb = isImg
-    ? `<img src="${esc(fileUrl(t.f))}" alt="">`
-    : `<span class="files-ext">${esc(extOf(t.f.name))}</span>`;
-  const link = isImg
-    ? `<a href="${esc(fileUrl(t.f))}" target="_blank" rel="noopener" title="${esc(t.f.name)}">${esc(t.f.name)}</a>`
-    : `<a href="${esc(fileUrl(t.f,true))}" download="${esc(t.f.name)}" title="${esc(t.f.name)}">${esc(t.f.name)}</a>`;
+  const isLink = !!(t.f.isLink);
+  let thumb, link, note;
+  if(isLink){
+    const typeLabel = linkTypeLabel(t.f.url);
+    thumb = `<span class="files-ic" title="${typeLabel}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${isVideoLink(t.f.url) ? '<path d="M10 15.5v-7l6 3.5z"/><rect x="2.5" y="4" width="19" height="16" rx="3"/>' : '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>'}</svg></span>`;
+    link = `<a href="${esc(t.f.url)}" target="_blank" rel="noopener" title="${esc(t.f.url)}">${esc(t.f.name||t.f.label||t.f.url)}</a>`;
+    note = trf('Eliminat: {d}', { d: formatDateShort(t.deletedAt) });
+  }else{
+    thumb = isImg
+      ? `<img src="${esc(fileUrl(t.f))}" alt="">`
+      : `<span class="files-ext">${esc(extOf(t.f.name))}</span>`;
+    link = fileAnchorHTML(t.f, `title="${esc(t.f.name)}"`);
+    note = trf('Eliminat: {d}', { d: formatDateShort(t.deletedAt) });
+  }
   return `
   <div class="file-card">
     <div class="file-thumb">${thumb}</div>
     <div class="file-info">
       ${link}
       <small>${esc(t.areaName)} · ${esc(t.saName)} · ${esc(t.sessionName)}</small>
-      <small class="file-size">Eliminat: ${formatDate(t.deletedAt)}</small>
+      <small class="file-size">${note}</small>
     </div>
     <div class="bin-actions">
-      <button class="btn btn-ghost btn-sm" onclick="restoreTrashFile('${t.id}')">Restaura</button>
-      <button class="btn btn-danger btn-sm" onclick="purgeTrashFileItem('${t.id}')">Elimina</button>
+      <button class="btn btn-icon btn-ghost" onclick="restoreTrashFile('${t.id}')" aria-label="${tr('Restaura')}" title="${tr('Restaura')}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+      </button>
+      <button class="btn btn-icon btn-danger" onclick="purgeTrashFileItem('${t.id}')" aria-label="${tr('Elimina')}" title="${tr('Elimina')}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M9 7V4h6v3m-8 0 1 13h8l1-13"/></svg>
+      </button>
+    </div>
+  </div>`;
+}
+function trashLinkCardHTML(t){
+  const isVid = isVideoLink(t.f.url);
+  const typeLabel = linkTypeLabel(t.f.url);
+  const urlText = t.f.url || '';
+  const label = t.f.name || t.f.label || urlText;
+  const icon = isVid
+    ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 15.5v-7l6 3.5z"/><rect x="2.5" y="4" width="19" height="16" rx="3"/></svg>`
+    : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>`;
+  return `
+  <div class="link-trash-row">
+    <span class="link-trash-ic ${isVid?'vid':''}" title="${typeLabel}">${icon}</span>
+    <div class="link-trash-main">
+      <a class="link-trash-label" href="${esc(urlText)}" target="_blank" rel="noopener" title="${esc(label)}">${esc(label)}</a>
+      <code class="link-trash-url" title="${esc(urlText)}">${esc(linkHost(urlText))}</code>
+      <small class="link-trash-meta">${esc(t.areaName)} · ${esc(t.saName)} · ${esc(t.sessionName)} · ${trf('Eliminat: {d}', { d: formatDateShort(t.deletedAt) })}</small>
+    </div>
+    <div class="bin-actions">
+      <button class="btn btn-icon btn-ghost" onclick="restoreTrashFile('${t.id}')" aria-label="${tr('Restaura')}" title="${tr('Restaura')}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+      </button>
+      <button class="btn btn-icon btn-danger" onclick="purgeTrashFileItem('${t.id}')" aria-label="${tr('Elimina')}" title="${tr('Elimina')}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M9 7V4h6v3m-8 0 1 13h8l1-13"/></svg>
+      </button>
     </div>
   </div>`;
 }
@@ -2222,12 +3060,16 @@ function trashCardHTML(a){
     <div class="bin-badge" style="--area-color:${a.color}"></div>
     <div class="bin-info">
       <b>${esc(a.name)}</b>
-      <small>Creat: ${formatDate(a.createdAt)}</small>
-      <small>Eliminat: ${formatDate(a.deletedAt)}</small>
+      <small>${trf('Creat: {d}', { d: formatDate(a.createdAt) })}</small>
+      <small>${trf('Eliminat: {d}', { d: formatDateShort(a.deletedAt) })}</small>
     </div>
     <div class="bin-actions">
-      <button class="btn btn-ghost btn-sm" onclick="restoreArea('${a.id}')">Restaura</button>
-      <button class="btn btn-danger btn-sm" onclick="purgeTrashItem('${a.id}')">Elimina definitivament</button>
+      <button class="btn btn-icon btn-ghost" onclick="restoreArea('${a.id}')" aria-label="${tr('Restaura')}" title="${tr('Restaura')}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+      </button>
+      <button class="btn btn-icon btn-danger" onclick="purgeTrashItem('${a.id}')" aria-label="${tr('Elimina definitivament')}" title="${tr('Elimina definitivament')}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M9 7V4h6v3m-8 0 1 13h8l1-13"/></svg>
+      </button>
     </div>
   </div>`;
 }
@@ -2237,9 +3079,9 @@ function trashCardHTML(a){
 -------------------------------------------------------- */
 function showAgendaView(){ showAgenda = true; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; editTarget = null; render(); closeDrawerIfMobile(); }
 function showSettingsView(){ showAgenda = false; showSettings = true; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; render(); closeDrawerIfMobile(); }
-function showFilesView(){ showAgenda = false; showSettings = false; showFiles = true; showArchived = false; showTrash = false; showResources = false; showReminder = false; render(); pruneMissingDropboxFiles(); closeDrawerIfMobile(); }
+function showFilesView(){ showAgenda = false; showSettings = false; showFiles = true; showArchived = false; showTrash = false; showResources = false; showReminder = false; render(); pruneMissingDropboxFiles(); closeDrawerIfMobile(); enrichLinkTitles(); }
 function showArchivedView(){ showAgenda = false; showSettings = false; showFiles = false; showArchived = true; showTrash = false; showResources = false; showReminder = false; render(); closeDrawerIfMobile(); }
-function showTrashView(){ showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = true; showResources = false; showReminder = false; render(); closeDrawerIfMobile(); }
+function showTrashView(){ showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = true; showResources = false; showReminder = false; render(); closeDrawerIfMobile(); enrichLinkTitles(); }
 function showResourcesView(){ showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = true; showReminder = false; recursosUrgents = true; recursosChecked = false; render(); pruneMissingDropboxFiles(); closeDrawerIfMobile(); }
 function openArea(id){
   const area = state.areas.find(a=>a.id===id); if(area) prepareAreaView(area);
@@ -2324,8 +3166,8 @@ function agendaHTML(){
   } else if(!active.length){
     body = `
     <div class="empty-state">
-      <h2 class="display">No tens cap àrea activa</h2>
-      <p>Activa una àrea des de Configuració (o crea'n una) perquè aparega ací la seua sessió actual.</p>
+      <h2 class="display">${tr('No tens cap àrea activa')}</h2>
+      <p>${tr('Activa una àrea des de Configuració (o crea\'n una) perquè aparega ací la seua sessió actual.')}</p>
       <div class="actions">
         <button class="btn btn-primary" onclick="addAreaPrompt()">+ Nova àrea</button>
       </div>
@@ -2334,9 +3176,15 @@ function agendaHTML(){
     body = `<div class="agenda-list">${active.map(a => agendaCardHTML(a)).join('')}</div>`;
   }
   const note = inactive
-    ? `<p class="agenda-note">${active.length} àrees actives · ${inactive} en pausa.</p>`
-    : `<p class="agenda-note">La sessió actual de cada àrea, una per una.</p>`;
-  return `<h1 class="display">Agenda</h1>` + note + body;
+    ? `<p class="agenda-note">${trf('{n} àrees actives · {m} en pausa.', { n: active.length, m: inactive })}</p>`
+    : '';
+  const urgentBanner = hasUrgentResources()
+    ? `<button class="urgent-banner" title="${esc(tr('Tens recursos per preparar necessaris en menys de 2 setmanes.'))}" onclick="showResourcesView()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        ${tr('Urgent')}
+      </button>`
+    : '';
+  return `<div class="agenda-head-row"><h1 class="display">${tr('Agenda')}</h1>${urgentBanner}</div>` + note + body;
 }
 
 function agendaCardHTML(a){
@@ -2346,14 +3194,14 @@ function agendaCardHTML(a){
   const spLine = info.complete ? '' : `<span class="agenda-sp" title="${esc(info.sa.name)}">SA${saIdx} · ${esc(info.sa.name)}</span>`;
   const courseLine = a.course ? `<span class="agenda-course">${esc(a.course)}</span>` : '';
   const stateBtn = done
-    ? `<button class="btn btn-gold btn-sm" onclick="resumeArea('${a.id}')">Reprendre</button>`
-    : `<button class="btn btn-primary btn-sm" onclick="markAreaDone('${a.id}')">Fet</button>`;
+    ? `<button class="btn btn-gold btn-sm" onclick="resumeArea('${a.id}')">${tr('Reprendre')}</button>`
+    : `<button class="btn btn-primary btn-sm" onclick="markAreaDone('${a.id}')">${tr('Fet')}</button>`;
   const head = `
   <div class="agenda-head" style="--area-color:${a.color};background:${hexToRgba(a.color,0.10)};border-left:4px solid ${a.color}">
     <div class="agenda-color-badge" style="--area-color:${a.color}"></div>
     <div class="agenda-area">
       <b class="agenda-area-name">${esc(a.name)}</b>
-      <small>${countSessions(a)} sessions</small>
+      <small>${trf('{n} sessions', { n: countSessions(a) })}</small>
     </div>
     <div class="agenda-head-actions">
       ${courseLine}
@@ -2363,13 +3211,13 @@ function agendaCardHTML(a){
   if(done) return `<div class="agenda-card collapsed">${head}</div>`;
   let body;
   if(info.complete){
-    body = `<div class="done-banner"><span class="check">✓</span>Totes les sessions completades</div>
-      <div class="agenda-foot"><button class="btn btn-ghost btn-sm" onclick="resetAgenda('${a.id}')">Reinicia</button></div>`;
+    body = `<div class="done-banner"><span class="check">✓</span>${tr('Totes les sessions completades')}</div>
+      <div class="agenda-foot"><button class="btn btn-ghost btn-sm" onclick="resetAgenda('${a.id}')">${tr('Reinicia')}</button></div>`;
   } else {
     const total = sumMinutes(info.session.activities);
     const bar = durationBarHTML(a, info.session);
     const acts = info.session.activities.map(x => activityVistaHTML(null, null, null, x, `openAreaAtSession('${a.id}','${info.sa.id}','${info.session.id}')`)).join('');
-    const actGrid = acts ? `<div class="vista-act-grid">${acts}</div>` : `<p class="empty-hint">Sense activitats.</p>`;
+    const actGrid = acts ? `<div class="vista-act-grid">${acts}</div>` : `<p class="empty-hint">${tr('Sense activitats.')}</p>`;
     const dur = durationsEnabled()
       ? `<div class="duration-bar-wrap">
           <div class="duration-bar${total===0?' empty':''}">${bar}</div>
@@ -2386,15 +3234,16 @@ function agendaCardHTML(a){
       </div>
       <div class="session-body">
         ${actGrid}
+        ${sessionElementFieldsHTML(a, info.sa, info.session, true)}
       </div>
     </div>
     <div class="agenda-foot">
-      <span class="agenda-progress">Sessió <b>${info.idx + 1}</b> de <b>${info.total}</b></span>
+      <span class="agenda-progress">${trf('Sessió {a} de {b}', { a: info.idx + 1, b: info.total })}</span>
       <span class="agenda-foot-spacer"></span>
-      <button class="btn btn-ghost btn-icon" onclick="prevSession('${a.id}')" aria-label="Sessió anterior">
+      <button class="btn btn-ghost btn-icon" onclick="prevSession('${a.id}')" aria-label="${tr('Sessió anterior')}">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="15 18 9 12 15 6"/></svg>
       </button>
-      <button class="btn btn-primary btn-icon" onclick="nextSession('${a.id}')" aria-label="Sessió següent">
+      <button class="btn btn-primary btn-icon" onclick="nextSession('${a.id}')" aria-label="${tr('Sessió següent')}">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="9 18 15 12 9 6"/></svg>
       </button>
     </div>`;
@@ -2404,9 +3253,7 @@ function agendaCardHTML(a){
 
 /* Vista (sols lectura) */
 function areaVistaHTML(area){
-  const totalMin = area.situacions.reduce((s,sa)=> s + sa.sessions.reduce((s2,se)=> s2+sumMinutes(se.activities),0), 0);
-  const sas = area.situacions.map((sa,i) => saVistaHTML(area, sa, i)).join('') || `<p class="empty-hint">Aquesta àrea encara no té cap situació d'aprenentatge.</p>`;
-  const totBadge = durationsEnabled() ? `<span class="sa-total-badge mono">${fmtDuration(totalMin)} totals</span>` : '';
+  const sas = area.situacions.map((sa,i) => saVistaHTML(area, sa, i)).join('') || `<p class="empty-hint">${tr('Aquesta àrea encara no té cap situació d\'aprenentatge.')}</p>`;
   return `
   <div class="area-header">
     <div class="area-header-left">
@@ -2414,53 +3261,49 @@ function areaVistaHTML(area){
       <div style="flex:1;">
         <input class="area-title-input" style="--area-color:${area.color}" value="${esc(area.name)}" oninput="renameArea('${area.id}', this.value)">
         <div class="area-meta">
-          ${totBadge}
-          <span class="area-course-wrap" title="Curs de la programació">
-            <span class="area-course-label">Curs</span>
-            <input class="area-course" value="${esc(area.course||'')}" placeholder="ex: 1r ESO" oninput="renameCourse('${area.id}', this.value)">
+          <span class="area-course-wrap" title="${tr('Curs')}">
+            <span class="area-course-label">${tr('Curs')}</span>
+            <input class="area-course" value="${esc(area.course||'')}" placeholder="${tr('ex: 1r ESO')}" oninput="renameCourse('${area.id}', this.value)">
           </span>
-          <span style="color:var(--ink-faint);font-size:.82rem">${countSessions(area)} sessions · ${countActs(area)} activitats</span>
+          <span style="color:var(--ink-faint);font-size:.82rem">${trf('{n} sessions', { n: countSessions(area) })}</span>
         </div>
       </div>
     </div>
     <div class="area-header-right">
-      <span class="switch-wrap" title="Mostra aquesta àrea a l'agenda">
-        <label class="switch" title="Activa/desactiva a l'agenda"><input type="checkbox" ${area.active?'checked':''} onchange="toggleActive('${area.id}')"><span class="slider"></span></label>
-        <span class="switch-label">Agenda</span>
+      <span class="switch-wrap" title="${tr('Mostra aquesta àrea a l\'agenda')}">
+        <label class="switch" title="${tr('Activa/desactiva a l\'agenda')}"><input type="checkbox" ${area.active?'checked':''} onchange="toggleActive('${area.id}')"><span class="slider"></span></label>
+        <span class="switch-label">${tr('Agenda')}</span>
       </span>
-      <button class="btn btn-ghost btn-icon" title="Arxiva la programació" onclick="archiveArea('${area.id}')">
+      <button class="btn btn-ghost btn-icon" title="${tr('Arxiva la programació')}" onclick="archiveArea('${area.id}')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 8v13H3V8"/><path d="M1 3h22v5H1z"/><path d="M10 12h4"/></svg>
       </button>
-      <button class="btn btn-danger btn-icon" title="Elimina la programació (a la paperera)" onclick="trashArea('${area.id}')">
+      <button class="btn btn-danger btn-icon" title="${tr('Elimina la programació (a la paperera)')}" onclick="trashArea('${area.id}')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M9 7V4h6v3m-8 0 1 13h8l1-13"/></svg>
       </button>
     </div>
   </div>
   <div id="sa-list">${sas}</div>
   <div class="sa-add-row">
-    <button class="btn btn-primary btn-sm" onclick="addSA('${area.id}')">+ Nova situació d'aprenentatge</button>
+    <button class="btn btn-primary btn-sm" onclick="addSA('${area.id}')">${tr('+ Nova situació d\'aprenentatge')}</button>
   </div>`;
 }
 
 function saVistaHTML(area, sa, index){
-  const totalMin = sa.sessions.reduce((s,se)=> s+sumMinutes(se.activities), 0);
   const sessions = sa.sessions.map((se, i) => {
     const editingHere = editTarget && editTarget.areaId===area.id && editTarget.saId===sa.id && editTarget.sessionId===se.id;
     return editingHere ? sessionHTML(area, sa, se, i) : sessionVistaHTML(area, sa, se, i);
-  }).join('') || `<p class="empty-hint">Cap sessió en aquesta situació.</p>`;
-  const totBadge = durationsEnabled() ? `<span class="sa-total-badge mono">${fmtDuration(totalMin)}</span>` : '';
+  }).join('') || `<p class="empty-hint">${tr('Cap sessió en aquesta situació.')}</p>`;
   return `
   <div class="sa-card ${sa.open?'open':''}" id="sa-${sa.id}">
     <div class="sa-header" style="--area-color:${area.color};background:${hexToRgba(area.color,0.08)}">
-      <button class="sa-toggle" onclick="toggleSA('${area.id}','${sa.id}')" aria-label="Desplega">
+      <button class="sa-toggle" onclick="toggleSA('${area.id}','${sa.id}')" aria-label="${tr('Desplega')}">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="9 6 15 12 9 18"/></svg>
       </button>
       <span class="sa-num">SA${index+1}</span>
       <input class="sa-title-input" id="sa-title-${sa.id}" style="flex:1;" value="${esc(sa.name)}" oninput="renameSA('${area.id}','${sa.id}', this.value)">
       <div class="sa-stats">
-        ${totBadge}
-        <button class="btn btn-ghost btn-sm" onclick="addSession('${area.id}','${sa.id}')">+ Sessió</button>
-        <button class="btn btn-danger btn-icon" onclick="deleteSA('${area.id}','${sa.id}')" aria-label="Elimina situació">
+        <button class="btn btn-ghost btn-sm" onclick="addSession('${area.id}','${sa.id}')">${tr('+ Sessió')}</button>
+        <button class="btn btn-danger btn-icon" onclick="deleteSA('${area.id}','${sa.id}')" aria-label="${tr('Elimina situació')}">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M9 7V4h6v3m-8 0 1 13h8l1-13"/></svg>
         </button>
       </div>
@@ -2473,10 +3316,10 @@ function sessionVistaHTML(area, sa, se, idx, forceOpen){
   const total = sumMinutes(se.activities);
   const bar = durationBarHTML(area, se);
   const activities = se.activities.map(act => activityVistaHTML(area, sa, se, act)).join('');
-  const bodyActs = activities ? `<div class="vista-act-grid">${activities}</div>` : `<p class="empty-hint">Cap activitat.</p>`;
+  const bodyActs = activities ? `<div class="vista-act-grid">${activities}</div>` : `<p class="empty-hint">${tr('Cap activitat.')}</p>`;
   const isOpen = !!forceOpen || se.open;
   const editIcon = isOpen
-    ? `<span class="btn btn-ghost btn-sm" title="Edita la sessió" onclick="event.stopPropagation();editSession('${area.id}','${sa.id}','${se.id}')">✎</span>`
+    ? `<span class="btn btn-ghost btn-sm" title="${tr('Edita la sessió')}" onclick="event.stopPropagation();editSession('${area.id}','${sa.id}','${se.id}')">✎</span>`
     : '';
   const dur = durationsEnabled()
     ? `<div class="duration-bar-wrap">
@@ -2486,7 +3329,7 @@ function sessionVistaHTML(area, sa, se, idx, forceOpen){
   return `
   <div class="session-card ${isOpen?'open':''}" id="session-${se.id}">
     <div class="session-header" style="cursor:pointer;" onclick="openSessionView('${area.id}','${sa.id}','${se.id}')">
-      <button class="session-toggle btn-icon" style="background:none;border:none;color:var(--ink-faint);width:22px;height:22px;padding:0;" onclick="event.stopPropagation();openSessionView('${area.id}','${sa.id}','${se.id}')" aria-label="Desplega sessió">
+      <button class="session-toggle btn-icon" style="background:none;border:none;color:var(--ink-faint);width:22px;height:22px;padding:0;" onclick="event.stopPropagation();openSessionView('${area.id}','${sa.id}','${se.id}')" aria-label="${tr('Desplega sessió')}">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="9 6 15 12 9 18"/></svg>
       </button>
       <span class="session-num">S${idx + 1}</span>
@@ -2496,17 +3339,52 @@ function sessionVistaHTML(area, sa, se, idx, forceOpen){
     </div>
     <div class="session-body">
       ${bodyActs}
+      ${sessionElementFieldsHTML(area, sa, se, true)}
     </div>
   </div>`;
 }
 
+const ACTIVITY_ICONS = {
+  raig: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>',
+  explicacio: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>',
+  fitxes: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>',
+  ordinador: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>',
+  jocs: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 12h4"/><path d="M8 10v4"/><path d="M15 13h.01"/><path d="M18 11h.01"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>',
+  oral: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>'
+};
+function normText(s){
+  return String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+}
+function activityIconHTML(act){
+  const txt = normText((act && act.title||'') + ' ' + (act && act.description||''));
+  const tokens = txt.split(/[^a-z0-9]+/).filter(Boolean);
+  const hasW = list => list.some(k => tokens.some(t => t.startsWith(k)));
+  const hasP = list => list.some(p => txt.includes(p));
+  let key = 'raig';
+  if(hasW(['joc','dinamic','concurs','kahoot','trivial','teatral','mim','endevinalla','trencaclosques','puzzle','rol','roleplay','escape','gamific','juego','juegos','concurso','adivinanza','oca','bingo','scrabble','domino','parxis','gimcana','rally','repte','competici','quiz','pasapalabra','ahorcado','penjat']) || hasP(['escape room','joc de taula','joc de rol','jocs de taula','joc de cartes'])) key = 'jocs';
+  else if(hasW(['ordinador','ordenador','tauleta','tablet','portatil','informatic','digital','app','programari','software','teclat','pantalla','moodle','internet','web','google','drive','canva','genially','escriptori','desktop','online','educaplay','liveworksheets','wordwall','quizizz','auricular','tecla','windows','linux','desa','desem','desat','guard','arxiu','archiv','teclej','cerca','busqu','investig','ratoli','mouse','correu','email','mail','blog','wiki','mecanograf','word','docs','slides','sheets','excel','webquest']) || hasP(['pantalla digital','taula digital','pissarra digital','desar documents','desa el document','desa els documents','guardar el document','guardar els documents','guardar el arxiu','guardar els arxius'])) key = 'ordinador';
+  else if(hasW(['oral','parl','habl','convers','debat','assemblea','asamblea','reflexi','dialog','dialeg','coment','opini','opinio','raon','pens','piens','lect','lleg','lee','leem']) || hasP(['posada en comu','posem en comu','posarem en comu','posta en comu','posar en comu','expressio oral','en veu alta','veu alta','lectura compartida','lectura en veu alta'])) key = 'oral';
+  else if(hasW(['explicaci','explica','exposici','exposa','power','presentaci','presenta','teori','llico','xarrada','conferenci','video','projecci','diapositiva','magistral','charla','leccion','powerpoint','escolt','escuch']) || hasP(['power point','video explicatiu','classe magistral'])) key = 'explicacio';
+  else if(hasW(['fitx','fich','llib','libr','escri','redacci','redact','dict','quadern','cuadern','resum','exercici','ejercici','calcul','full','foli','hoja','esquem','copia','fotocopi','deures','paper','papel','boli','llapis','lapiz','lapis','colorej','colorear','pinta','retall','tallar','enganx','pega','dibuix','dibuj','sopa','caligraf','carta','cartas']) || hasP(['sopa de lletres','mots encreuats','tallar i enganxar','talla i enganxa','escrit a ma','a paper i boli'])) key = 'fitxes';
+  return ACTIVITY_ICONS[key] || ACTIVITY_ICONS.raig;
+}
 function activityVistaHTML(area, sa, se, act, titleClick){
   const chips = (act.files||[]).map(f => {
     const isImg = (f.type||'').startsWith('image/');
     const inner = isImg
       ? `<img src="${esc(fileUrl(f))}" alt="" style="width:34px;height:34px;object-fit:cover;border-radius:5px;vertical-align:middle"><span style="margin-left:6px">${esc(f.name)}</span>`
       : `<span class="att-ext">${esc(extOf(f.name))}</span><span style="margin-left:6px">${esc(f.name)}</span>`;
-    return `<span class="att-chip"><a href="${esc(isImg ? fileUrl(f) : fileUrl(f,true))}" ${isImg?'target="_blank" rel="noopener"':`download="${esc(f.name)}"`} style="display:inline-flex;align-items:center">${inner}</a></span>`;
+    let a;
+    if(attachmentPreviewEnabled()){
+      registerPreviewFile(f);
+      a = `<a href="javascript:void(0)" onclick="openFilePreview('${f.id}')" style="display:inline-flex;align-items:center">${inner}</a>`;
+    }else if(isImg){
+      a = `<a href="${esc(fileUrl(f))}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center">${inner}</a>`;
+    }else{
+      registerPreviewFile(f);
+      a = `<a href="javascript:void(0)" onclick="downloadFile('${f.id}')" style="display:inline-flex;align-items:center">${inner}</a>`;
+    }
+    return `<span class="att-chip">${a}</span>`;
   }).join('');
   const linkChips = (act.links||[]).map(l =>
     `<span class="att-chip"><a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label||l.url)}</a></span>`
@@ -2523,12 +3401,12 @@ function activityVistaHTML(area, sa, se, act, titleClick){
   return `
   <div class="vista-activity" ${clickable}>
     <div class="vista-activity-head">
-      <span class="vista-activity-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
-      <span class="vista-activity-title" ${titleExtra}>${esc(act.title||'Activitat')}</span>
+      <span class="vista-activity-icon">${activityIconHTML(act)}</span>
+      <span class="vista-activity-title" ${titleExtra}>${esc(act.title||tr('Activitat'))}</span>
       ${dur}
     </div>
     ${act.description ? `<div class="vista-activity-desc">${esc(act.description)}</div>` : ''}
-    ${(act.resources || resChips) ? `<div class="vista-activity-desc" style="border-top:1px dashed var(--gold);margin-top:7px;padding-top:6px"><span class="mono" style="color:var(--gold-dark);font-size:.72rem">RECURSOS</span> ${act.resources?esc(act.resources):''}${resChips}</div>` : ''}
+    ${(sessionRecursosEnabled() && (act.resources || resChips)) ? `<div class="vista-activity-desc" style="border-top:1px dashed var(--gold);margin-top:7px;padding-top:6px"><span class="mono" style="color:var(--gold-dark);font-size:.72rem">${tr('Recursos')}</span> ${act.resources?esc(act.resources):''}${resChips}</div>` : ''}
   </div>`;
 }
 
@@ -2544,7 +3422,7 @@ function closeAddAreaModal(){
   if(m) m.classList.remove('open');
 }
 function addArea(){
-  const area = { id: uid(), name: 'Nova àrea', course: '', color: colorForNewArea(), active: true, currentSessionId: null, createdAt: new Date().toISOString(), situacions: [] };
+  const area = { id: uid(), name: tr('Nova àrea'), course: '', color: colorForNewArea(), active: true, currentSessionId: null, createdAt: new Date().toISOString(), situacions: [] };
   state.areas.push(area);
   state.selectedAreaId = area.id;
   showAgenda = false;
@@ -2636,7 +3514,7 @@ function archiveArea(id){
 }
 function trashArea(id){
   const area = state.areas.find(a=>a.id===id); if(!area) return;
-  if(!confirm(`Segur que vols enviar a la paperera l'àrea "${area.name}" i tot el seu contingut?`)) return;
+  if(!confirm(trf('Segur que vols enviar a la paperera l\'àrea "{name}" i tot el seu contingut?', { name: area.name }))) return;
   area.deletedAt = new Date().toISOString();
   state.areas = state.areas.filter(a=>a.id!==id);
   state.trashAreas.push(area);
@@ -2646,7 +3524,7 @@ function trashArea(id){
 }
 function trashArchived(id){
   const area = state.archivedAreas.find(a=>a.id===id); if(!area) return;
-  if(!confirm(`Segur que vols enviar a la paperera l'àrea arxivada "${area.name}"?`)) return;
+  if(!confirm(trf('Segur que vols enviar a la paperera l\'àrea arxivada "{name}"?', { name: area.name }))) return;
   area.deletedAt = new Date().toISOString();
   state.archivedAreas = state.archivedAreas.filter(a=>a.id!==id);
   state.trashAreas.push(area);
@@ -2670,7 +3548,7 @@ function restoreArea(id){
 }
 function purgeTrashItem(id){
   const area = state.trashAreas.find(a=>a.id===id); if(!area) return;
-  if(!confirm(`Eliminar definitivament "${area.name}"? Aquesta acció no es pot desfer.`)) return;
+  if(!confirm(trf('Eliminar definitivament "{name}"? Aquesta acció no es pot desfer.', { name: area.name }))) return;
   removeFilesFromArea(area);
   state.trashAreas = state.trashAreas.filter(a=>a.id!==id);
   saveState(); render();
@@ -2678,7 +3556,7 @@ function purgeTrashItem(id){
 function emptyTrash(){
   const total = (state.trashAreas.length || 0) + (state.trashFiles.length || 0);
   if(!total) return;
-  if(!confirm(`Buidar la paperera? S'eliminaran definitivament ${total} element(s).`)) return;
+  if(!confirm(trf('Buidar la paperera? S\'eliminaran definitivament {n} element(s).', { n: total }))) return;
   state.trashAreas.forEach(removeFilesFromArea);
   state.trashAreas = [];
   state.trashFiles.forEach(t => { if(t.f && (t.f.path || t.f.dbxPath)) removeFilesFromStorage([t.f]); });
@@ -2693,7 +3571,7 @@ function deleteArea(id){ trashArea(id); }
 function addSA(areaId){
   const area = state.areas.find(a=>a.id===areaId); if(!area) return;
   area.situacions.push({
-    id: uid(), name: `Situació d'aprenentatge ${area.situacions.length + 1}`, autoName: true, open: true,
+    id: uid(), name: trf('Situació d\'aprenentatge {n}', { n: area.situacions.length + 1 }), autoName: true, open: true,
     sessions: [{ id: uid(), name: 'Sessió 1', open: true, activities: [] }]
   });
   saveState(); render();
@@ -2708,7 +3586,7 @@ function toggleSA(areaId, saId){
 }
 function deleteSA(areaId, saId){
   const area = state.areas.find(a=>a.id===areaId); if(!area) return;
-  if(!confirm('Segur que vols eliminar aquesta situació d\'aprenentatge?')) return;
+  if(!confirm(tr('Segur que vols eliminar aquesta situació d\'aprenentatge?'))) return;
   const sa = area.situacions.find(x=>x.id===saId);
   if(sa) sa.sessions.forEach(se => se.activities.forEach(a => removeFilesFromStorage(a.files)));
   area.situacions = area.situacions.filter(sa=>sa.id!==saId);
@@ -2720,12 +3598,12 @@ function setSessionCount(areaId, saId, rawValue){
   const current = sa.sessions.length;
   if(n > current){
     for(let i=current; i<n; i++){
-      sa.sessions.push({ id: uid(), name: `Sessió ${i+1}`, open:false, activities: [] });
+      sa.sessions.push({ id: uid(), name: trf('Sessió {n}', { n: i+1 }), open:false, activities: [] });
     }
   } else if(n < current){
     const toRemove = sa.sessions.slice(n);
     const hasContent = toRemove.some(s => s.activities.length>0);
-    if(hasContent && !confirm('Algunes de les sessions que s\'eliminarien tenen activitats. Vols continuar?')){
+    if(hasContent && !confirm(tr('Algunes de les sessions que s\'eliminarien tenen activitats. Vols continuar?'))){
       render(); return;
     }
     toRemove.forEach(s => s.activities.forEach(a => removeFilesFromStorage(a.files)));
@@ -2771,7 +3649,7 @@ function autoNameSA(areaId, saId){
   const combined = combineTopics(topics);
   if(!combined) return;
   const idx = area.situacions.indexOf(sa) + 1;
-  sa.name = `Situació d'aprenentatge ${idx} — ${combined}`;
+  sa.name = trf('Situació d\'aprenentatge {n} — {t}', { n: idx, t: combined });
   sa.autoName = true;
   saveState();
   const el = document.getElementById('sa-title-' + saId);
@@ -2832,7 +3710,7 @@ function stopEditing(){
 }
 function addSession(areaId, saId){
   const sa = findSA(areaId, saId); if(!sa) return;
-  const newSession = { id: uid(), name: `Sessió ${sa.sessions.length + 1}`, open: true, activities: [] };
+  const newSession = { id: uid(), name: trf('Sessió {n}', { n: sa.sessions.length + 1 }), open: true, activities: [] };
   sa.sessions.push(newSession);
   sa.open = true;
   editTarget = { kind:'session', areaId, saId, sessionId: newSession.id };
@@ -2841,7 +3719,7 @@ function addSession(areaId, saId){
 function deleteSession(areaId, saId, sessionId){
   const sa = findSA(areaId, saId); if(!sa) return;
   const s = sa.sessions.find(x=>x.id===sessionId);
-  if(s && s.activities.length>0 && !confirm('Aquesta sessió té activitats. Segur que la vols eliminar?')) return;
+  if(s && s.activities.length>0 && !confirm(tr('Aquesta sessió té activitats. Segur que la vols eliminar?'))) return;
   if(s) s.activities.forEach(a => removeFilesFromStorage(a.files));
   sa.sessions = sa.sessions.filter(x=>x.id!==sessionId);
   saveState(); render();
@@ -2914,8 +3792,8 @@ async function handleActivityFiles(areaId, saId, sessionId, actId, inputOrFiles)
   for(const f of files){
     const ext = extOf(f.name).toLowerCase();
     const isVideo = (f.type||'').startsWith('video/') || VIDEO_EXTS.includes(ext);
-    if(isVideo){ alert(`"${f.name}" és un vídeo i no es permeten arxius de vídeo.`); continue; }
-    if(f.size > MAX){ alert(`"${f.name}" és massa gran (màxim 20 MB).`); continue; }
+    if(isVideo){ alert(trf('"{name}" és un vídeo i no es permeten arxius de vídeo.', { name: f.name })); continue; }
+    if(f.size > MAX){ alert(trf('"{name}" és massa gran (màxim 20 MB).', { name: f.name })); continue; }
     const fileId = uid();
     try{
       let meta;
@@ -2931,7 +3809,7 @@ async function handleActivityFiles(areaId, saId, sessionId, actId, inputOrFiles)
     }catch(e){
       console.warn("No s'ha pogut pujar l'arxiu", e);
       const detail = (e && (e.error_summary || (e.error && e.error.error_summary) || e.message)) || '';
-      alert(`No s'ha pogut pujar "${f.name}". Comprova la connexió${dropboxEnabled() ? ' i la teua sessió de Dropbox' : ' i el bucket'}.${detail ? '\n\nDetall: ' + detail : ''}`);
+      alert(trf('No s\'ha pogut pujar "{name}". Comprova la connexió{extra}.', { name: f.name, extra: dropboxEnabled() ? tr(' i la teua sessió de Dropbox') : tr(' i el bucket') }) + (detail ? '\n\n' + trf('Detall: {d}', { d: detail }) : ''));
     }
   }
   if(inputOrFiles && inputOrFiles.tagName === 'INPUT') inputOrFiles.value = '';
@@ -2949,10 +3827,28 @@ function readAsDataURL(file){
 async function uploadFileToDropbox(file, fileId, folderPath){
   if(!dbx) throw new Error('Sense sessió de Dropbox');
   const ext = extOf(file.name).toLowerCase();
-  const dbxPath = (folderPath || '/Recursos Activitats') + '/' + fileId + '.' + ext;
+  const baseName = dropboxSafeName(file.name) || (fileId + '.' + ext);
+  let dbxPath = (folderPath || '/Recursos Activitats') + '/' + baseName;
+  const dotIdx = baseName.lastIndexOf('.');
+  const stem = dotIdx > 0 ? baseName.slice(0, dotIdx) : baseName;
+  const suffixExt = dotIdx > 0 ? baseName.slice(dotIdx) : '';
+  let n = 2;
+  while(await dropboxFileExists(dbxPath)){
+    dbxPath = (folderPath || '/Recursos Activitats') + '/' + stem + ' (' + n + ')' + suffixExt;
+    n++;
+  }
   await dbx.filesUpload({ path: dbxPath, contents: file, mode: { '.tag': 'overwrite' } });
   const url = await getOrCreateDropboxSharedLink(dbxPath);
   return { dbxPath, url };
+}
+async function dropboxFileExists(path){
+  try{
+    await dbx.filesGetMetadata({ path });
+    return true;
+  }catch(e){
+    if(isDropboxNotFoundError(e)) return false;
+    throw e;
+  }
 }
 function dropboxSafeName(name){
   return String(name||'')
@@ -3119,12 +4015,12 @@ function resetImportModal(){
   document.getElementById('import-confirm-btn').disabled = true;
   document.getElementById('import-status').textContent = '';
   const hint = document.getElementById('drop-hint');
-  if(hint) hint.textContent = '…o arrossega el document aquí i deixa\'l anar';
+  if(hint) hint.textContent = tr('…o arrossega el document aquí i deixa\'l anar');
 }
 function populateImportTargetOptions(){
   const sel = document.getElementById('import-target');
-  const opts = [`<option value="new">Crea una àrea nova</option>`]
-    .concat(state.areas.map(a=>`<option value="${a.id}">Afig a: ${esc(a.name)}</option>`));
+  const opts = [`<option value="new">${tr('Crea una àrea nova')}</option>`]
+    .concat(state.areas.map(a=>`<option value="${a.id}">${trf('Afig a: {name}', { name: esc(a.name) })}</option>`));
   sel.innerHTML = opts.join('');
   sel.onchange = () => {
     document.getElementById('import-name-field').style.display = sel.value==='new' ? 'block' : 'none';
@@ -3135,12 +4031,12 @@ async function handleAnalyze(){
   const fileInput = document.getElementById('import-file');
   const file = fileInput.files[0] || window._importDroppedFile;
   const status = document.getElementById('import-status');
-  if(!file){ status.textContent = 'Selecciona o arrossega primer un document.'; return; }
-  status.textContent = 'Llegint el document…';
+  if(!file){ status.textContent = tr('Selecciona o arrossega primer un document.'); return; }
+  status.textContent = tr('Llegint el document…');
   document.getElementById('import-confirm-btn').disabled = true;
   try{
     const text = await extractTextFromFile(file);
-    status.textContent = "Analitzant l'estructura…";
+    status.textContent = tr('Analitzant l\'estructura…');
     importParsedStructure = parseTextToStructure(text);
     importFileName = file.name.replace(/\.[^.]+$/, '');
     document.getElementById('import-area-name').value = parsedAreaName || importFileName;
@@ -3148,13 +4044,13 @@ async function handleAnalyze(){
     document.getElementById('import-confirm-btn').disabled = false;
     const nSessions = importParsedStructure.reduce((s,sa)=>s+sa.sessions.length,0);
     if(!importParsedStructure.length){
-      status.textContent = "No s'ha detectat cap estructura de situacions ni sessions. El document ha d'indicar 'Situació d'aprenentatge'/'Sessió 1' o 'Setmana 1' per poder-la importar.";
+      status.textContent = tr('No s\'ha detectat cap estructura de situacions ni sessions. El document ha d\'indicar \'Situació d\'aprenentatge\'/\'Sessió 1\' o \'Setmana 1\' per poder-la importar.');
     } else {
-      status.textContent = `Trobades ${importParsedStructure.length} situació(ns) d'aprenentatge i ${nSessions} sessió(ns). Revisa-ho abans d'importar.`;
+      status.textContent = trf('Trobades {a} situació(ns) d\'aprenentatge i {b} sessió(ns). Revisa-ho abans d\'importar.', { a: importParsedStructure.length, b: nSessions });
     }
   }catch(err){
     console.error(err);
-    status.textContent = "No s'ha pogut llegir el document: " + err.message;
+    status.textContent = trf("No s'ha pogut llegir el document: {msg}", { msg: err.message });
   }
 }
 
@@ -3353,7 +4249,7 @@ function inventTitle(text){
     }
   }
   let t = picked.join(' ');
-  if (!t) t = 'Activitat';
+  if (!t) t = tr('Activitat');
   return t.charAt(0).toUpperCase() + t.slice(1);
 }
 function splitActivityName(text){
@@ -3375,7 +4271,7 @@ function generateSessionTitle(ses){
   const all = (ses.activities||[]).map(a => a.text || '').join(' ');
   if (!all.trim()) return '';
   const t = inventTitle(all);
-  return (t && t !== 'Activitat') ? t : '';
+  return (t && t !== tr('Activitat')) ? t : '';
 }
 
 function parseProgramacio(text){
@@ -3387,14 +4283,14 @@ function parseProgramacio(text){
     const m = line.match(/^(?:sessi[oó]n?|sessio|session)\s*(\d+)\s*[:\-\–—\.]?\s*(.*)$/i);
     if (!m) return null;
     const title = (m[2] || '').trim();
-    if (!title) return "Sessió " + m[1];
-    if (title.split(/\s+/).length <= 4 && title.length <= 45) return "Sessió " + m[1] + " — " + title;
-    return "Sessió " + m[1];
+    if (!title) return trf("Sessió {n}", { n: m[1] });
+    if (title.split(/\s+/).length <= 4 && title.length <= 45) return trf("Sessió {n} — {t}", { n: m[1], t: title });
+    return trf("Sessió {n}", { n: m[1] });
   };
   const weekOf = line => {
     const m = line.match(/^SETMANA\s*(\d+)\s*:\s*(.*)$/);
     if (!m) return null;
-    return m[2] ? "Setmana " + m[1] + " — " + m[2].trim() : "Setmana " + m[1];
+    return m[2] ? trf("Setmana {n} — {t}", { n: m[1], t: m[2].trim() }) : trf("Setmana {n}", { n: m[1] });
   };
   const isSA = line => {
     if (sesOf(line)) return false;
@@ -3422,7 +4318,7 @@ function parseProgramacio(text){
   };
   const isRes = line => /^(?:recursos|materials?|material|recursos\s+i\s+materials?)\s*[:\-]?/i.test(line);
   const ensureCurSes = () => {
-    if(!curSes){ curSes = { id: uid(), name: "Sessió 1", activities: [], resources: [] }; }
+    if(!curSes){ curSes = { id: uid(), name: tr("Sessió 1"), activities: [], resources: [] }; }
     return curSes;
   };
   const addRes = line => {
@@ -3471,7 +4367,7 @@ function parseProgramacio(text){
       const segs = splitActivityLine(line);
       const { minutes } = extractMinutes(line);
       if ((!segs || segs.length === 0) && minutes == null) continue;
-      curSes = { id: uid(), name: "Sessió 1", activities: [], resources: [] };
+      curSes = { id: uid(), name: tr("Sessió 1"), activities: [], resources: [] };
     }
     const segs = splitActivityLine(line);
     if (segs && segs.length){
@@ -3534,7 +4430,7 @@ function parseTextToStructure(text){
   return parsed.sas.map(sa => ({
     name: sa.name,
     sessions: sa.sessions.map((se, i) => {
-      const num = "Sessió " + (i + 1);
+      const num = trf("Sessió {n}", { n: i + 1 });
       let name = num;
       const m = /^Sessió\s+\d+\s*—\s*(.+)$/.exec(se.name);
       if (m) name = num + " — " + m[1].trim();
@@ -3558,7 +4454,7 @@ function renderImportPreview(situacions){
   el.innerHTML = situacions.map(sa=>{
     const rows = sa.sessions.map(se=>{
       const t = sumMinutes(se.activities);
-      return `<li>${esc(se.name)}: ${se.activities.length} activitat(s), ${t} min</li>`;
+      return `<li>${esc(se.name)}: ${trf('{n} activitat(s), {m} min', { n: se.activities.length, m: t })}</li>`;
     }).join('');
     return `<div class="imp-sa"><strong>${esc(sa.name)}</strong><ul>${rows}</ul></div>`;
   }).join('');
@@ -3567,7 +4463,7 @@ function renderImportPreview(situacions){
 function confirmImport(){
   if(!importParsedStructure) return;
   const target = document.getElementById('import-target').value;
-  const areaNameInput = document.getElementById('import-area-name').value.trim() || importFileName || 'Àrea importada';
+  const areaNameInput = document.getElementById('import-area-name').value.trim() || importFileName || tr('Àrea importada');
   let area;
   if(target==='new'){
     area = { id: uid(), name: areaNameInput, color: colorForNewArea(), active: true, currentSessionId: null, createdAt: new Date().toISOString(), situacions: [] };
@@ -3608,15 +4504,15 @@ async function handleBackupFile(e){
   try{
     const text = await file.text();
     const parsed = JSON.parse(text);
-    if(!parsed || !Array.isArray(parsed.areas)) throw new Error('El fitxer no té el format esperat.');
-    if(confirm('Això substituirà totes les dades actuals per les de la còpia de seguretat. Vols continuar?')){
+    if(!parsed || !Array.isArray(parsed.areas)) throw new Error(tr('El fitxer no té el format esperat.'));
+    if(confirm(tr('Això substituirà totes les dades actuals per les de la còpia de seguretat. Vols continuar?'))){
       state = parsed;
       normalizeState();
       if(!state.selectedAreaId && state.areas.length) state.selectedAreaId = state.areas[0].id;
       saveState(); render();
     }
   }catch(err){
-    alert('No s\'ha pogut restaurar la còpia de seguretat: ' + err.message);
+    alert(trf('No s\'ha pogut restaurar la còpia de seguretat: {msg}', { msg: err.message }));
   }
   e.target.value = '';
 }
@@ -3628,7 +4524,7 @@ window.addEventListener('error', (e) => {
   const modal = document.getElementById('import-modal');
   if(modal && modal.classList.contains('open')){
     const status = document.getElementById('import-status');
-    if(status) status.textContent = 'Error inesperat en analitzar: ' + (e.message || 'desconegut');
+    if(status) status.textContent = trf('Error inesperat en analitzar: {msg}', { msg: e.message || tr('desconegut') });
   }
 });
 function toggleDrawer(){
@@ -3653,6 +4549,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   initDropbox();
   if(!state.selectedAreaId && state.areas.length) state.selectedAreaId = state.areas[0].id;
   render();
+  applyI18n();
   pruneMissingDropboxFiles();
   initImportDropzone();
   initAttachDropzone();
@@ -3660,7 +4557,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     await restoreAuthSession();
     loadRemoteState();
   }else{
-    setSyncStatus('Sense núvol configurat');
+    setSyncStatus(tr('Sense núvol configurat'));
   }
   setInterval(() => { if(expireDoneAreas()) render(); }, 30000);
 });
@@ -3680,7 +4577,7 @@ function initImportDropzone(){
       window._importDroppedFile = f;
       document.getElementById('import-file').value = '';
       const hint = document.getElementById('drop-hint');
-      if(hint) hint.textContent = 'Document arrossegat: ' + f.name;
+      if(hint) hint.textContent = trf('Document arrossegat: {name}', { name: f.name });
     }
   });
 }
