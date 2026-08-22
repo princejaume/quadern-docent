@@ -2719,7 +2719,8 @@ async function handleActivityFiles(areaId, saId, sessionId, actId, inputOrFiles)
       added++;
     }catch(e){
       console.warn("No s'ha pogut pujar l'arxiu", e);
-      alert(`No s'ha pogut pujar "${f.name}". Comprova la connexió${dropboxEnabled() ? ' i la teua sessió de Dropbox' : ' i el bucket'}.`);
+      const detail = (e && (e.error_summary || (e.error && e.error.error_summary) || e.message)) || '';
+      alert(`No s'ha pogut pujar "${f.name}". Comprova la connexió${dropboxEnabled() ? ' i la teua sessió de Dropbox' : ' i el bucket'}.${detail ? '\n\nDetall: ' + detail : ''}`);
     }
   }
   if(inputOrFiles && inputOrFiles.tagName === 'INPUT') inputOrFiles.value = '';
