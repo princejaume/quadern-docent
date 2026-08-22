@@ -361,6 +361,14 @@ a{color:var(--pen);}
   width:100%;border:1px solid var(--line);border-radius:8px;padding:9px 10px;font-size:.9rem;background:var(--paper);
 }
 .modal-field input[type=file]{font-size:.85rem;}
+.modal-field input[type=email], .modal-field input[type=password]{
+  width:100%;border:1px solid var(--line);border-radius:8px;padding:9px 10px;font-size:.9rem;background:var(--paper);
+}
+.modal-field input[type=email]:focus, .modal-field input[type=password]:focus{outline:none;border-color:var(--pen);}
+#auth-status{font-size:.8rem;min-height:1.2em;margin:8px 0;}
+#auth-status.auth-ok{color:var(--pen-dark);}
+#auth-status.auth-error{color:var(--danger,#b0523f);}
+#account-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
 #import-dropzone{border:2px dashed var(--line);border-radius:9px;padding:12px 14px;}
 #import-dropzone.dragover{border-color:var(--pen);background:var(--pen-soft);}
 #drop-hint{font-size:.78rem;color:var(--ink-faint);margin-top:6px;}
@@ -602,6 +610,7 @@ a{color:var(--pen);}
 
     <div id="sidebar-footer">
       <p class="foot-note" id="sync-status">Sincronitzant…</p>
+      <button class="files-nav" id="auth-nav-btn" onclick="if(loggedIn())signOut();else openAuthModal()" style="display:none;border-left-color:transparent;"></button>
       <p class="foot-note">Les dades es sincronitzen al núvol i es guarden en aquest navegador per poder treballar sense connexió.</p>
     </div>
   </aside>
@@ -695,6 +704,28 @@ a{color:var(--pen);}
   </div>
 </div>
 
+<!-- Inicia sessió / crea compte modal -->
+<div class="modal-backdrop" id="auth-modal" onclick="if(event.target===this)closeAuthModal()">
+  <div class="modal">
+    <h2 id="auth-modal-title">Inicia sessió</h2>
+    <p class="hint" id="auth-modal-hint">Entra amb el teu compte per sincronitzar i protegir les dades.</p>
+    <div class="modal-field">
+      <label>Correu electrònic</label>
+      <input type="email" id="auth-email" placeholder="tu@exemple.cat" autocomplete="email">
+    </div>
+    <div class="modal-field">
+      <label>Contrasenya</label>
+      <input type="password" id="auth-password" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <div id="auth-status"></div>
+    <div class="modal-actions">
+      <button class="btn btn-primary" id="auth-submit" onclick="authSubmit()">Entra</button>
+      <button class="btn btn-ghost" id="auth-toggle" onclick="authToggleMode()">Crea un compte</button>
+      <button class="btn btn-ghost" onclick="closeAuthModal()">Cancel·la</button>
+    </div>
+  </div>
+</div>
+
 <script>
 /* ---------------------------------------------------------
    ESTAT I PERSISTÈNCIA
@@ -714,6 +745,7 @@ let recursosUrgents = true;
 let recursosChecked = false;
 let attachAnimActId = null;
 let pruneRunning = false;
+let authSession = null;
 let filesQuery = '';
 let filesFilter = 'all';
 let filesAreaFilter = 'all';
@@ -723,24 +755,46 @@ const AREA_COLORS = ['#33507A','#B0523F','#6B8F71','#7A5980','#3C8C8C','#B9860F'
 
 const LS_STATE = 'quadernAulaState';
 
-/* Supabase: sincronització entre dispositius.
+/* Supabase: sincronització entre dispositius + autenticació.
    Crea un projecte a https://supabase.com i enganxa ací la URL i la clau anònima
-   (Project Settings → API). Després executa el SQL de la taula (veure instruccions). */
+   (Project Settings → API). Després:
+   1. Crea el teu usuari (a l'app: Ajustos → Inicia sessió → Crea un compte, o a
+      Authentication → Users → Add user).
+   2. Executa al SQL Editor el SQL de la taula i les polítiques RLS (veure més avall). */
 const SUPABASE_URL = 'https://ychbmsvzylrapbicetmn.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_WTZ_fo8ZewZl9z-wQ2QyCQ_yjaRZUVp';
 const SUPABASE_TABLE = 'app_data';
-/* Bucket públic d'arxius (Supabase Storage). Executa aquest SQL al SQL Editor
-   de Supabase per crear-lo amb les policies d'upload/delete per a l'anon key:
+/* =========================================================
+   SQL per al SQL Editor de Supabase (executa després de
+   crear el teu usuari):
 
-   insert into storage.buckets (id, name, public)
-   values ('arxius','arxius',true)
-   on conflict (id) do nothing;
+   -- Taula + RLS: només el propietari pot llegir/escriure
+   alter table app_data add column if not exists owner_uid uuid;
+   alter table app_data enable row level security;
 
+   drop policy if exists "app_data_select" on app_data;
+   drop policy if exists "app_data_insert" on app_data;
+   drop policy if exists "app_data_update" on app_data;
+
+   create policy "app_data_select" on app_data
+     for select using (auth.uid() = owner_uid);
+   create policy "app_data_insert" on app_data
+     for insert with check (auth.uid() = owner_uid);
+   create policy "app_data_update" on app_data
+     for update using (auth.uid() = owner_uid) with check (auth.uid() = owner_uid);
+
+   -- Assigna la fila existent al teu usuari (el primer creat):
+   update app_data set owner_uid = (select id from auth.users order by created_at limit 1) where id = 1;
+   -- (Si hi ha més d'un usuari, posa el teu uuid exacte: update app_data set owner_uid = 'el-teu-uid' where id = 1;)
+
+   -- Bucket d'arxius: restringeix pujada/borrat als usuaris autenticats
+   drop policy if exists "arxius_upload" on storage.objects;
+   drop policy if exists "arxius_delete" on storage.objects;
    create policy "arxius_upload" on storage.objects
-   for insert to anon with check (bucket_id = 'arxius');
-
+     for insert to authenticated with check (bucket_id = 'arxius');
    create policy "arxius_delete" on storage.objects
-   for delete to anon using (bucket_id = 'arxius'); */
+     for delete to authenticated using (bucket_id = 'arxius');
+   ========================================================= */
 const STORAGE_BUCKET = 'arxius';
 /* Dropbox: emmagatzematge dels arxius adjunts al teu compte personal.
    Per activar-lo:
@@ -920,9 +974,69 @@ function setSyncStatus(text, ok){
 
 /* --- Sincronització remota (Supabase) --- */
 function remoteEnabled(){ return !!supabaseClient; }
+function loggedIn(){ return !!(authSession && authSession.user); }
+function currentUserId(){ return authSession && authSession.user ? authSession.user.id : null; }
+
+async function restoreAuthSession(){
+  if(!remoteEnabled()) return;
+  try{
+    const { data } = await supabaseClient.auth.getSession();
+    authSession = (data && data.session) || null;
+    supabaseClient.auth.onAuthStateChange((event, session) => {
+      authSession = session || null;
+      updateAuthUI();
+      if(event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED'){
+        loadRemoteState();
+      }
+    });
+    updateAuthUI();
+  }catch(e){
+    console.warn("No s'ha pogut restaurar la sessió", e);
+  }
+}
+
+function updateAuthUI(){
+  const st = document.getElementById('sync-status');
+  if(st){
+    if(!remoteEnabled()){
+      st.textContent = 'Sense núvol configurat';
+    }else if(loggedIn()){
+      st.textContent = 'Núvol sincronitzat';
+      st.classList.add('ok');
+    }else{
+      st.textContent = 'Inicia sessió per sincronitzar';
+      st.classList.remove('ok');
+    }
+  }
+  const acc = document.getElementById('account-row');
+  if(acc){
+    if(loggedIn()){
+      acc.innerHTML = `
+        <div class="settings-label"><b>Compte</b><small>Connectat com a <span class="mono">${esc(authSession.user.email || '')}</span>.</small></div>
+        <div class="settings-input"><button class="btn btn-sm btn-danger" onclick="signOut()">Tanca sessió</button></div>`;
+    }else{
+      acc.innerHTML = `
+        <div class="settings-label"><b>Compte</b><small>Inicia sessió per protegir i sincronitzar les teues dades al núvol.</small></div>
+        <div class="settings-input"><button class="btn btn-sm btn-primary" onclick="openAuthModal()">Inicia sessió</button></div>`;
+    }
+  }
+  const nav = document.getElementById('auth-nav-btn');
+  if(nav){
+    if(loggedIn()){
+      nav.textContent = 'Tanca sessió (' + (authSession.user.email || '') + ')';
+      nav.style.display = 'flex';
+    }else if(remoteEnabled()){
+      nav.textContent = 'Inicia sessió';
+      nav.style.display = 'flex';
+    }else{
+      nav.style.display = 'none';
+    }
+  }
+}
 
 async function loadRemoteState(){
   if(!remoteEnabled()){ setSyncStatus('Sense núvol'); return; }
+  if(!loggedIn()){ updateAuthUI(); return; }
   try{
     const { data, error } = await supabaseClient
       .from(SUPABASE_TABLE)
@@ -950,23 +1064,107 @@ async function loadRemoteState(){
 
 let remoteSaveTimer = null;
 function queueRemoteSave(){
-  if(!remoteEnabled()) return;
+  if(!remoteEnabled() || !loggedIn()) return;
   clearTimeout(remoteSaveTimer);
   setSyncStatus('Desant…');
   remoteSaveTimer = setTimeout(pushRemoteState, 500);
 }
 async function pushRemoteState(){
-  if(!remoteEnabled()) return;
+  if(!remoteEnabled() || !loggedIn()) return;
   try{
     const { error } = await supabaseClient
       .from(SUPABASE_TABLE)
-      .upsert({ id: 1, data: state, updated_at: new Date().toISOString() }, { onConflict: 'id' });
+      .upsert({ id: 1, data: state, owner_uid: currentUserId(), updated_at: new Date().toISOString() }, { onConflict: 'id' });
     if(error) throw error;
     setSyncStatus('Núvol sincronitzat', true);
   }catch(e){
     console.warn("No s'ha pogut desar al núvol", e);
     setSyncStatus('Error en desar al núvol');
   }
+}
+
+/* --- Autenticació (Supabase Auth) --- */
+let authMode = 'login';
+function openAuthModal(mode){
+  if(!remoteEnabled()){
+    alert('Primer has de configurar Supabase al codi (SUPABASE_URL i SUPABASE_ANON_KEY) i publicar l\'app.');
+    return;
+  }
+  authMode = mode || 'login';
+  const title = document.getElementById('auth-modal-title');
+  const hint = document.getElementById('auth-modal-hint');
+  const submit = document.getElementById('auth-submit');
+  const toggle = document.getElementById('auth-toggle');
+  if(title) title.textContent = authMode === 'login' ? 'Inicia sessió' : 'Crea un compte';
+  if(hint) hint.textContent = authMode === 'login'
+    ? 'Entra amb el teu compte per sincronitzar i protegir les dades.'
+    : 'Crea un compte nou per protegir les teues dades al núvol.';
+  if(submit) submit.textContent = authMode === 'login' ? 'Entra' : 'Crea el compte';
+  if(toggle) toggle.textContent = authMode === 'login' ? 'Crea un compte' : 'Ja tinc un compte';
+  setAuthStatus('');
+  const m = document.getElementById('auth-modal');
+  if(m) m.classList.add('open');
+  const email = document.getElementById('auth-email');
+  if(email) email.value = '';
+  const pass = document.getElementById('auth-password');
+  if(pass) pass.value = '';
+  if(email) setTimeout(() => email.focus(), 50);
+}
+function closeAuthModal(){
+  const m = document.getElementById('auth-modal');
+  if(m) m.classList.remove('open');
+}
+function authToggleMode(){
+  openAuthModal(authMode === 'login' ? 'signup' : 'login');
+}
+function setAuthStatus(msg, ok){
+  const st = document.getElementById('auth-status');
+  if(!st) return;
+  st.textContent = msg || '';
+  st.className = ok ? 'auth-ok' : 'auth-error';
+}
+async function authSubmit(){
+  if(!remoteEnabled()) return;
+  const emailEl = document.getElementById('auth-email');
+  const passEl = document.getElementById('auth-password');
+  const email = (emailEl && emailEl.value || '').trim();
+  const pass = passEl ? passEl.value : '';
+  if(!email || !pass){ setAuthStatus('Omple el correu i la contrasenya.'); return; }
+  try{
+    if(authMode === 'signup'){
+      const res = await supabaseClient.auth.signUp({ email, password: pass });
+      if(res.error) throw res.error;
+      if(res.data && res.data.session){
+        closeAuthModal();
+        await loadRemoteState();
+        return;
+      }
+      setAuthStatus('Compte creat. Revisa el teu correu per confirmar-lo i després inicia sessió.', true);
+      authMode = 'login';
+      const submit = document.getElementById('auth-submit');
+      if(submit) submit.textContent = 'Entra';
+      const toggle = document.getElementById('auth-toggle');
+      if(toggle) toggle.textContent = 'Crea un compte';
+      return;
+    }
+    const res = await supabaseClient.auth.signInWithPassword({ email, password: pass });
+    if(res.error) throw res.error;
+    closeAuthModal();
+    await loadRemoteState();
+  }catch(e){
+    console.warn('Error d\'autenticació', e);
+    const msg = (e && (e.message || e.error_description)) || 'No s\'ha pogut iniciar sessió.';
+    setAuthStatus(msg);
+  }
+}
+async function signOut(){
+  if(remoteEnabled()){
+    try{ await supabaseClient.auth.signOut(); }catch(e){ console.warn('Error tancant sessió', e); }
+  }
+  authSession = null;
+  updateAuthUI();
+  setSyncStatus('Sessió tancada');
+  render();
 }
 function colorForNewArea(){ return AREA_COLORS[state.areas.length % AREA_COLORS.length]; }
 function esc(str){
@@ -1025,7 +1223,7 @@ function renderSidebar(){
 
 function renderMain(){
   const main = document.getElementById('main-content');
-  if(showSettings){ main.innerHTML = settingsHTML(); return; }
+  if(showSettings){ main.innerHTML = settingsHTML(); updateAuthUI(); return; }
   if(showArchived){ main.innerHTML = archivedHTML(); return; }
   if(showTrash){ main.innerHTML = trashHTML(); return; }
   if(showFiles){ main.innerHTML = filesHTML(); return; }
@@ -1275,6 +1473,12 @@ function settingsHTML(){
         <button class="btn btn-ghost btn-sm" onclick="triggerImportBackup()">Restaura còpia</button>
         <input type="file" id="backup-file-input" accept="application/json" style="display:none" onchange="handleBackupFile(event)">
       </div>
+    </div>
+  </div>
+  <div class="settings-card">
+    <div class="settings-row" id="account-row">
+      <div class="settings-label"><b>Compte</b><small>Inicia sessió per protegir i sincronitzar les teues dades al núvol.</small></div>
+      <div class="settings-input"><button class="btn btn-sm btn-primary" onclick="openAuthModal()">Inicia sessió</button></div>
     </div>
   </div>
   <div class="settings-card">
@@ -2717,7 +2921,7 @@ async function handleActivityFiles(areaId, saId, sessionId, actId, inputOrFiles)
       let meta;
       if(dropboxEnabled()){
         meta = await uploadFileToDropbox(f, fileId, dropboxFolder);
-      }else if(remoteEnabled()){
+      }else if(remoteEnabled() && loggedIn()){
         meta = await uploadFileToStorage(f, fileId);
       }else{
         meta = { dataUrl: await readAsDataURL(f) };
@@ -3452,8 +3656,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   pruneMissingDropboxFiles();
   initImportDropzone();
   initAttachDropzone();
-  if(remoteEnabled()) loadRemoteState();
-  else setSyncStatus('Sense núvol configurat');
+  if(remoteEnabled()){
+    await restoreAuthSession();
+    loadRemoteState();
+  }else{
+    setSyncStatus('Sense núvol configurat');
+  }
   setInterval(() => { if(expireDoneAreas()) render(); }, 30000);
 });
 
