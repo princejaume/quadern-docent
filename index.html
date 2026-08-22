@@ -580,6 +580,10 @@ a{color:var(--pen);}
 .settings-input{display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--ink-soft);}
 .settings-input input[type=number]{width:64px;padding:7px 8px;border:1px solid var(--line);border-radius:7px;text-align:center;font-size:.95rem;font-family:'IBM Plex Mono',monospace;background:var(--paper);}
 .settings-input input[type=number]:focus{outline:none;border-color:var(--pen);}
+.settings-input.stack{flex-direction:column;align-items:center;gap:2px;}
+.settings-row.centered{flex-direction:column;align-items:center;text-align:center;gap:12px;}
+.settings-row.centered .settings-label{text-align:center;}
+.settings-row.centered .settings-input{justify-content:center;flex-wrap:wrap;}
 .settings-sub{background:var(--paper);border-bottom:1px solid var(--line);}
 .settings-sub .settings-row{padding-left:38px;}
 .settings-sub .settings-sub .settings-row{padding-left:64px;}
@@ -889,13 +893,15 @@ const I18N_ES = {
   'Aplica a totes les sessions': 'Aplicar a todas las sesiones',
   'Canvia totes les sessions programades que no duren els minuts configurats.': 'Cambia todas las sesiones programadas que no duren los minutos configurados.',
   'Aplica a totes': 'Aplicar a todas',
+  'Canvia la durada de totes les sessions.': 'Cambia la duración de todas las sesiones.',
   'Mode fosc': 'Modo oscuro',
   'Canvia l\'aparença de l\'aplicació.': 'Cambia la apariencia de la aplicación.',
   'Preguntar per eliminar arxius': 'Preguntar al eliminar archivos',
   'Demana confirmació quan envies un recurs a la paperera o l\'elimines definitivament.': 'Pide confirmación cuando envías un recurso a la papelera o lo eliminas definitivamente.',
   'Arxius adjuntats': 'Archivos adjuntos',
-  'Quan fas clic a un document adjuntat, tria si es descarrega directament o s\'obri una previsualització a l\'app.': 'Cuando haces clic en un documento adjunto, elige si se descarga directamente o se abre una vista previa en la app.',
+  'Tria si els documents es descarreguen o es previsualitzen a l\'app.': 'Elige si los documentos se descargan o se previsualizan en la app.',
   'Descarrega sempre': 'Descargar siempre',
+  'Previsualitza': 'Previsualizar',
   'Previsualitza abans de descarregar': 'Previsualizar antes de descargar',
   'Tanca': 'Cerrar',
   'Descarrega': 'Descargar',
@@ -904,7 +910,7 @@ const I18N_ES = {
   'No s\'ha pogut previsualitzar aquest arxiu. Descarrega\'l per veure\'l.': 'No se ha podido previsualizar este archivo. Descárgalo para verlo.',
   'No s\'ha pogut descarregar "{name}".': 'No se ha podido descargar "{name}".',
   'Durada del curs': 'Duración del curso',
-  'Setmanes que sol durar el curs (per calcular el recordatori de les properes 2 setmanes).': 'Semanas que suele durar el curso (para calcular el recordatorio de las próximas 2 semanas).',
+  'Setmanes que dura el curs.': 'Semanas que dura el curso.',
   'setmanes': 'semanas',
   'General': 'General',
   'Configuració': 'Configuración',
@@ -1841,22 +1847,21 @@ function settingsHTML(){
     <div class="settings-row">
       <div class="settings-label">
         <b>${tr('Durada del curs')}</b>
-        <small>${tr('Setmanes que sol durar el curs (per calcular el recordatori de les properes 2 setmanes).')}</small>
+        <small>${tr('Setmanes que dura el curs.')}</small>
       </div>
       <div class="settings-input">
         <input type="number" min="1" max="52" value="${cw}" onchange="setCourseWeeks(this.value)" aria-label="${tr('Durada del curs')}">
-        <span>${tr('setmanes')}</span>
       </div>
     </div>
     <div class="settings-row">
       <div class="settings-label">
         <b>${tr('Arxius adjuntats')}</b>
-        <small>${tr('Quan fas clic a un document adjuntat, tria si es descarrega directament o s\'obri una previsualització a l\'app.')}</small>
+        <small>${tr('Tria si els documents es descarreguen o es previsualitzen a l\'app.')}</small>
       </div>
       <div class="settings-input">
         <select onchange="setAttachmentPreview(this.value)" aria-label="${tr('Arxius adjuntats')}">
-          <option value="download" ${attPrev?'':'selected'}>${tr('Descarrega sempre')}</option>
-          <option value="preview" ${attPrev?'selected':''}>${tr('Previsualitza abans de descarregar')}</option>
+          <option value="download" ${attPrev?'':'selected'}>${tr('Descarrega')}</option>
+          <option value="preview" ${attPrev?'selected':''}>${tr('Previsualitza')}</option>
         </select>
       </div>
     </div>
@@ -1888,8 +1893,8 @@ function settingsHTML(){
         </div>
         <div class="settings-row">
           <div class="settings-label">
-            <b>${tr('Aplica a totes les sessions')}</b>
-            <small>${tr('Canvia totes les sessions programades que no duren els minuts configurats.')}</small>
+            <b>${tr('Aplica a totes')}</b>
+            <small>${tr('Canvia la durada de totes les sessions.')}</small>
           </div>
           <div class="settings-input">
             <button class="btn btn-ghost btn-sm" onclick="applySessionDurationToAll()">${tr('Aplica a totes')}</button>
