@@ -4983,13 +4983,26 @@ function docxText(buf){
   const xml = unzipEntry(buf, "word/document.xml");
   const doc = new DOMParser().parseFromString(xml, "text/xml");
   const out = [];
+  const textOfNode = node => {
+    let res = '';
+    for (let i = 0; i < node.childNodes.length; i++) {
+      const n = node.childNodes[i];
+      if (n.nodeType === 3) res += n.nodeValue;
+      else if (n.nodeType === 1) {
+        if (n.prefix === "w" && n.localName === "br") res += '\n';
+        else if (n.prefix === "w" && n.localName === "tab") res += ' ';
+        else res += textOfNode(n);
+      }
+    }
+    return res;
+  };
   const collect = node => {
     for (let i = 0; i < node.childNodes.length; i++) {
       const n = node.childNodes[i];
       if (n.nodeType === 1) {
         if (n.prefix === "w" && n.localName === "p") {
-          const t = (n.textContent || "").trim();
-          if (t) out.push(t);
+          const parts = textOfNode(n).split('\n').map(s => s.replace(/\s+/g, " ").trim()).filter(Boolean);
+          for (const part of parts) out.push(part);
         } else collect(n);
       }
     }
@@ -5003,13 +5016,28 @@ function odtText(buf){
   const doc = new DOMParser().parseFromString(xml, "text/xml");
   const body = doc.getElementsByTagName("office:body")[0] || doc.documentElement;
   const out = [];
+  const textOfNode = node => {
+    let res = '';
+    for (let i = 0; i < node.childNodes.length; i++) {
+      const n = node.childNodes[i];
+      if (n.nodeType === 3) res += n.nodeValue;
+      else if (n.nodeType === 1) {
+        const p = n.prefix, ln = n.localName;
+        if (p === "text" && ln === "line-break") res += '\n';
+        else if (p === "text" && ln === "tab") res += ' ';
+        else if (p === "text" && ln === "s") res += ' '.repeat(Math.max(1, parseInt(n.getAttribute("text:c"), 10) || 1));
+        else res += textOfNode(n);
+      }
+    }
+    return res;
+  };
   const collect = node => {
     for (let i = 0; i < node.childNodes.length; i++) {
       const n = node.childNodes[i];
       if (n.nodeType === 1) {
         if (n.prefix === "text" && (n.localName === "p" || n.localName === "h")) {
-          const t = (n.textContent || "").replace(/\s+/g, " ").trim();
-          if (t) out.push(t);
+          const parts = textOfNode(n).split('\n').map(s => s.replace(/\s+/g, " ").trim()).filter(Boolean);
+          for (const part of parts) out.push(part);
         } else collect(n);
       }
     }
@@ -5115,6 +5143,7 @@ function splitActivityName(text){
       return { title: name, description: desc || name };
     }
   }
+  if (t.length <= 60 && t.split(/\s+/).length <= 7) return { title: t, description: t };
   return { title: inventTitle(t), description: t };
 }
 function generateSessionTitle(ses){
@@ -5134,7 +5163,7 @@ function parseProgramacio(text){
     if (!m) return null;
     const title = (m[2] || '').trim();
     if (!title) return trf("Sessió {n}", { n: m[1] });
-    if (title.split(/\s+/).length <= 4 && title.length <= 45) return trf("Sessió {n} — {t}", { n: m[1], t: title });
+    if (title.split(/\s+/).length <= 8 && title.length <= 60) return trf("Sessió {n} — {t}", { n: m[1], t: title });
     return trf("Sessió {n}", { n: m[1] });
   };
   const weekOf = line => {
@@ -5177,6 +5206,15 @@ function parseProgramacio(text){
     const parts = line.split(/[;,]/).map(s => s.trim()).filter(Boolean);
     for (const p of parts) if(!isNonFileResource(p)) ensureCurSes().resources.push(p);
   };
+  const lastAct = () => curSes && curSes.activities.length ? curSes.activities[curSes.activities.length - 1] : null;
+  const descOf = line => {
+    const m = line.match(/^(?:descripci[oó]n?(?:\s+de\s+(?:la\s+|l['’]\s*)?activitat(?:\s*\d+)?)?)\s*:\s*(.+)$/i);
+    return m ? m[1].trim() : null;
+  };
+  const actResOf = line => {
+    const m = line.match(/^(?:recursos?|materials?)\s+necessaris?\s*:\s*(.+)$/i);
+    return m ? m[1].trim() : null;
+  };
 
   const startSA = name => {
     if (curSes && cur) cur.sessions.push(curSes);
@@ -5205,6 +5243,16 @@ function parseProgramacio(text){
     if (isSA(line)) { startSA(cleanSAname(line)); continue; }
     if (skipOf(line)) { cur = null; curSes = null; inRes = false; continue; }
     if (!cur) continue;
+    const descContent = descOf(line);
+    if (descContent) {
+      const a = lastAct();
+      if (a) { a.description = descContent; continue; }
+    }
+    const actResContent = actResOf(line);
+    if (actResContent) {
+      const a = lastAct();
+      if (a) { (a.resources = a.resources || []).push(actResContent); continue; }
+    }
     if (isRes(line)) {
       inRes = true;
       const mm = line.match(/^[^:]+:\s*(.+)$/);
@@ -5302,15 +5350,25 @@ function parseTextToStructure(text){
       }
       const acts = se.activities.map(a => {
         const sp = splitActivityName(a.text || '');
-        return { title: sp.title, minutes: a.minutes || 0, description: sp.description, resources: '' };
+        return {
+          title: sp.title,
+          minutes: a.minutes || 0,
+          description: a.description || sp.description,
+          resources: (a.resources || []).join('\n')
+        };
       }).filter(a => {
         const ti = (a.title || '').trim(), de = (a.description || '').trim();
         if (!ti && !de) return false;
         if (a.minutes <= 0 && ti.length <= 1 && de.length <= 1) return false;
         return true;
       });
-      const resPerAct = distributeResources(acts, se.resources);
-      acts.forEach((a, j) => { a.resources = resPerAct[j]; });
+      if (acts.some(a => a.resources)) {
+        const dist = distributeResources(acts, se.resources);
+        acts.forEach((a, j) => { if (!a.resources) a.resources = dist[j]; });
+      } else {
+        const resPerAct = distributeResources(acts, se.resources);
+        acts.forEach((a, j) => { a.resources = resPerAct[j]; });
+      }
       return { name, activities: acts };
     })
   }));
