@@ -1,0 +1,23 @@
+{
+  "name": "Quadern docent — Programació d'aula",
+  "short_name": "Quadern",
+  "description": "Programació d'aula per a docents. Organitza àrees, sessions i activitats.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#F3F6F3",
+  "theme_color": "#33507A",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
