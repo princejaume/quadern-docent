@@ -771,6 +771,7 @@ a{color:var(--pen);}
   padding:18px 16px;color:var(--ink-soft);font-weight:600;font-size:.95rem;
   cursor:pointer;transition:background .12s ease;
 }
+.mobile-add-area-card svg{width:24px;height:24px;flex:none;}
 .mobile-add-area-card:active{background:var(--line);}
 
 /* ---------- Mobile resources hub screen ---------- */
@@ -3712,13 +3713,14 @@ function trashCardHTML(a){
 function showAgendaView(){ showAgenda = true; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; agendaShowAll = false; editTarget = null; render(); closeDrawerIfMobile(); }
 function showCalendarView(){ showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = true; showMobileAreas = false; showMobileResources = false; editTarget = null; render(); closeDrawerIfMobile(); }
 function showSettingsView(){ showAgenda = false; showSettings = true; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; render(); closeDrawerIfMobile(); }
-function showFilesView(){ showAgenda = false; showSettings = false; showFiles = true; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; render(); closeDrawerIfMobile(); pruneMissingDropboxFiles(); enrichLinkTitles(); }
-function showArchivedView(){ showAgenda = false; showSettings = false; showFiles = false; showArchived = true; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; render(); closeDrawerIfMobile(); }
-function showTrashView(){ showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = true; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; render(); closeDrawerIfMobile(); enrichLinkTitles(); }
-function showResourcesView(){ showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = true; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; recursosUrgents = true; recursosChecked = false; render(); pruneMissingDropboxFiles(); closeDrawerIfMobile(); }
+function showFilesView(){ if(showMobileResources) pushViewState('resources'); showAgenda = false; showSettings = false; showFiles = true; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; render(); closeDrawerIfMobile(); pruneMissingDropboxFiles(); enrichLinkTitles(); }
+function showArchivedView(){ if(showMobileResources) pushViewState('resources'); showAgenda = false; showSettings = false; showFiles = false; showArchived = true; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; render(); closeDrawerIfMobile(); }
+function showTrashView(){ if(showMobileResources) pushViewState('resources'); showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = true; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; render(); closeDrawerIfMobile(); enrichLinkTitles(); }
+function showResourcesView(){ if(showMobileResources) pushViewState('resources'); showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = true; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; recursosUrgents = true; recursosChecked = false; render(); pruneMissingDropboxFiles(); closeDrawerIfMobile(); }
 function showMobileAreasView(){ showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = true; showMobileResources = false; editTarget = null; render(); closeDrawerIfMobile(); }
 function showMobileResourcesView(){ showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = true; editTarget = null; render(); closeDrawerIfMobile(); }
 function openArea(id){
+  pushViewState('area');
   const area = state.areas.find(a=>a.id===id); if(area) prepareAreaView(area);
   state.selectedAreaId = id; showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; editTarget = null; saveState(); render(); closeDrawerIfMobile();
 }
@@ -5754,6 +5756,19 @@ function closeDrawerIfMobile(){
     document.getElementById('drawer-backdrop').classList.remove('open');
   }
 }
+function isMobile(){ return window.innerWidth <= 860; }
+function pushViewState(view){
+  if(isMobile()) history.pushState({view:view}, '');
+}
+window.addEventListener('popstate', function(e){
+  if(!isMobile()) return;
+  const v = e.state && e.state.view;
+  if(v === 'area'){
+    showMobileAreasView();
+  }else if(v === 'resources'){
+    showMobileResourcesView();
+  }
+});
 
 /* ---------------------------------------------------------
    INICI
