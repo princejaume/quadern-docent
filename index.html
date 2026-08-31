@@ -324,7 +324,7 @@ a{color:var(--pen);}
   border-bottom:2px solid transparent;padding:2px 0;
 }
 .session-title-input:focus{outline:none;border-bottom-color:var(--pen);}
-.duration-bar-wrap{flex:1 1 200px;min-width:120px;display:flex;align-items:center;gap:8px;}
+.duration-bar-wrap{flex:0 1 90px;min-width:70px;display:flex;align-items:center;gap:6px;}
 .duration-bar{flex:1;height:10px;border-radius:6px;background:var(--paper-alt);display:flex;overflow:hidden;border:1px solid var(--line);}
 .duration-bar .seg{height:100%;}
 .duration-bar.empty{background:repeating-linear-gradient(45deg,var(--paper-alt),var(--paper-alt) 4px,var(--line) 4px,var(--line) 8px);}
@@ -351,24 +351,25 @@ a{color:var(--pen);}
 .activities-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start;}
 @media(max-width:900px){.activities-grid{grid-template-columns:1fr;}}
 .activity-row{
-  display:grid;grid-template-columns:1fr 84px 36px;gap:8px 10px;
+  display:grid;grid-template-columns:1fr 74px;gap:8px 10px;
   padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--white);
   box-shadow:var(--shadow);align-items:start;
 }
 .activity-row label{font-size:.68rem;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-faint);display:block;margin-bottom:3px;}
 .activity-row input[type=text], .activity-row textarea{
-  width:100%;border:1px solid var(--line);border-radius:7px;padding:7px 9px;font-size:.85rem;background:var(--paper);
+  width:100%;border:1px solid var(--line);border-radius:7px;padding:7px 9px;font-size:.95rem;background:var(--paper);
 }
 .activity-row textarea{resize:vertical;min-height:38px;font-family:inherit;}
 .activity-row input[type=number]{
-  width:100%;border:1px solid var(--line);border-radius:7px;padding:7px 9px;font-size:.85rem;text-align:center;
+  width:100%;border:1px solid var(--line);border-radius:7px;padding:5px 4px;font-size:.8rem;text-align:center;
   font-family:'IBM Plex Mono',monospace;background:var(--paper);
 }
-.activity-title-cell{grid-column:1;}
+.activity-title-cell{grid-column:1;min-width:0;}
 .activity-min-cell{grid-column:2;}
-.activity-del-cell{grid-column:3;display:flex;align-items:flex-end;justify-content:center;padding-top:16px;}
-.activity-desc-cell{grid-column:1 / span 2;margin-top:6px;}
-.activity-res-cell{grid-column:1 / span 2;margin-top:8px;border-top:1px dashed var(--gold);padding-top:8px;}
+.activity-desc-cell{grid-column:1 / -1;margin-top:6px;}
+.activity-res-cell{grid-column:1 / -1;margin-top:8px;border-top:1px dashed var(--gold);padding-top:8px;}
+.activity-res-cell.res-no-resources{border-top:none;margin-top:2px;padding-top:0;}
+.activity-res-cell.res-no-resources .res-actions{margin-top:0;}
 .activity-res-cell label{color:var(--gold-dark);}
 .activity-res-cell textarea{
   width:100%;border:1px solid var(--gold);border-radius:7px;padding:7px 9px;font-size:.85rem;
@@ -382,6 +383,8 @@ a{color:var(--pen);}
 }
 .res-btn:hover{background:var(--paper-alt);}
 .res-btn svg{width:13px;height:13px;}
+.res-btn-del{color:var(--danger);margin-left:auto;}
+.res-btn-del:hover{background:var(--danger-soft, var(--paper-alt));}
 .res-btn-done{color:#4a7a57;}
 [data-theme="dark"] .res-btn-done{color:#7CC98A;}
 .res-btn-uncheck{color:var(--pen);}
@@ -503,7 +506,7 @@ a{color:var(--pen);}
   #sidebar.open{transform:translateX(0);}
   #main-content{padding:20px 16px 72px;}
   .area-title-input{font-size:1.4rem;}
-  .activity-row{grid-template-columns:1fr 74px 34px;}
+  .activity-row{grid-template-columns:1fr 64px;}
 }
 @media(prefers-reduced-motion:reduce){*{transition:none!important;}}
 
@@ -676,6 +679,12 @@ a{color:var(--pen);}
 .settings-input select:focus{outline:none;border-color:var(--pen);box-shadow:0 0 0 3px var(--pen-soft);}
 .settings-input input[type=number]{width:64px;padding:7px 8px;border:1px solid var(--line);border-radius:7px;text-align:center;font-size:.95rem;font-family:'IBM Plex Mono',monospace;background:var(--paper);}
 .settings-input input[type=number]:focus{outline:none;border-color:var(--pen);}
+.settings-input input[type=text]{
+  width:150px;padding:7px 9px;border:1px solid var(--line);border-radius:7px;font-size:.9rem;background:var(--paper);
+}
+.settings-input input[type=text]:focus{outline:none;border-color:var(--pen);box-shadow:0 0 0 3px var(--pen-soft);}
+.req-star{color:var(--danger);font-weight:700;}
+.req-hint{display:none;color:var(--danger);font-size:.82rem;margin:4px 0 0;}
 .settings-input.stack{flex-direction:column;align-items:center;gap:2px;}
 .settings-row.centered{flex-direction:column;align-items:center;text-align:center;gap:12px;}
 .settings-row.centered .settings-label{text-align:center;}
@@ -1036,13 +1045,14 @@ a{color:var(--pen);}
 </div>
 
 <!-- Configuració de l'àrea modal -->
-<div class="modal-backdrop" id="area-config-modal" onclick="if(event.target===this)closeAreaConfigModal()">
+<div class="modal-backdrop" id="area-config-modal" onclick="if(event.target===this)tryCloseAreaConfig()">
   <div class="modal">
     <h2 data-i18n="Configuració de l'àrea">Configuració de l'àrea</h2>
     <p class="hint" data-i18n="Opcions de configuració de l'àrea.">Opcions de configuració de l'àrea.</p>
     <div id="area-config-body"></div>
     <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeAreaConfigModal()" data-i18n="Tanca">Tanca</button>
+      <button class="btn btn-ghost" onclick="tryCloseAreaConfig()" data-i18n="Tanca">Tanca</button>
+      <button class="btn btn-primary" id="area-config-continue-btn" onclick="confirmAreaConfig()" data-i18n="Fet" style="display:none">Fet</button>
     </div>
   </div>
 </div>
@@ -1488,7 +1498,9 @@ const I18N_ES = {
   'Nombre de sessions setmanals d\'aquesta àrea.': 'Número de sesiones semanales de esta área.',
   'Curs al qual pertany l\'àrea.': 'Curso al que pertenece el área.',
   'Dies de classe': 'Días de clase',
-  'Marca els dies de la setmana en què tens classe per calcular les sessions totals.': 'Marca los días de la semana en los que tienes clase para calcular las sesiones totales.',
+  'Marca els dies de la setmana en què tens classe.': 'Marca los días de la semana en los que tienes clase.',
+  'Escriu el curs de l\'àrea per continuar.': 'Escribe el curso del área para continuar.',
+  'Marca almenys un dia de classe per continuar.': 'Marca al menos un día de clase para continuar.',
   '{n} sessions / setmana': '{n} sesiones / semana',
   'Dilluns': 'Lunes', 'Dimarts': 'Martes', 'Dimecres': 'Miércoles', 'Dijous': 'Jueves', 'Divendres': 'Viernes', 'Dissabte': 'Sábado', 'Diumenge': 'Domingo',
   'Detecció de dies': 'Detección de días',
@@ -2159,7 +2171,7 @@ function mobileAreasHTML(){
   const addCard = `
     <div class="mobile-add-area-card" onclick="addAreaPrompt()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-      <span>${tr('+ Nova àrea')}</span>
+      <span>${tr('Nova àrea')}</span>
     </div>`;
   return `
   <div class="mobile-areas-header">
@@ -2329,6 +2341,11 @@ function activityHTML(area, sa, session, act){
         <input type="number" min="0" max="600" value="${act.minutes||0}" oninput="updateActivityMinutes('${area.id}','${sa.id}','${session.id}','${act.id}', this.value)">
       </div>`
     : '';
+  const delBtn = `
+          <button class="res-btn res-btn-del" title="${tr('Elimina activitat')}" onclick="deleteActivity('${area.id}','${sa.id}','${session.id}','${act.id}')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M9 7V4h6v3m-8 0 1 13h8l1-13"/></svg>
+            ${tr('Elimina')}
+          </button>`;
   const resCell = sessionRecursosEnabled()
     ? `<div class="activity-res-cell">
         <label>${tr('Recursos')}</label>
@@ -2339,9 +2356,12 @@ function activityHTML(area, sa, session, act){
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
             ${tr('Adjunta')}
           </button>
+          ${delBtn}
         </div>
       </div>`
-    : '';
+    : `<div class="activity-res-cell res-no-resources">
+        <div class="res-actions">${delBtn}</div>
+      </div>`;
   return `
   <div class="activity-row" id="activity-${act.id}">
     <div class="activity-title-cell">
@@ -2349,11 +2369,6 @@ function activityHTML(area, sa, session, act){
       <input type="text" value="${esc(act.title)}" placeholder="${tr('Què es farà…')}" oninput="updateActivityField('${area.id}','${sa.id}','${session.id}','${act.id}','title', this.value)">
     </div>
     ${minCell}
-    <div class="activity-del-cell">
-      <button class="btn btn-danger btn-icon" onclick="deleteActivity('${area.id}','${sa.id}','${session.id}','${act.id}')" aria-label="${tr('Elimina activitat')}">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M9 7V4h6v3m-8 0 1 13h8l1-13"/></svg>
-      </button>
-    </div>
     <div class="activity-desc-cell">
       <label>${tr('Descripció')}</label>
       <textarea placeholder="${tr('Detall de l\'activitat…')}" oninput="updateActivityField('${area.id}','${sa.id}','${session.id}','${act.id}','description', this.value)">${esc(act.description)}</textarea>
@@ -3955,7 +3970,9 @@ function saVistaHTML(area, sa, index){
       <span class="sa-num">SA${index+1}</span>
       <input class="sa-title-input" id="sa-title-${sa.id}" style="flex:1;" value="${esc(sa.name)}" oninput="renameSA('${area.id}','${sa.id}', this.value)">
       <div class="sa-stats">
-        <button class="btn btn-ghost btn-sm" onclick="addSession('${area.id}','${sa.id}')">${tr('+ Sessió')}</button>
+        <button class="btn btn-ghost btn-icon" title="${tr('+ Sessió')}" onclick="addSession('${area.id}','${sa.id}')" aria-label="${tr('+ Sessió')}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
         <button class="btn btn-danger btn-icon" onclick="deleteSA('${area.id}','${sa.id}')" aria-label="${tr('Elimina situació')}">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M9 7V4h6v3m-8 0 1 13h8l1-13"/></svg>
         </button>
@@ -4115,6 +4132,7 @@ function addArea(){
   showCalendar = false;
   saveState(); render();
   closeDrawerIfMobile();
+  openAreaConfigForCreate(area.id);
 }
 function selectArea(id){
   const area = state.areas.find(a=>a.id===id); if(area) prepareAreaView(area);
@@ -4188,11 +4206,22 @@ function closeColorModal(){
 }
 
 let areaConfigTargetId = null;
+let areaConfigCreating = false;
 function openAreaConfigModal(id){
   areaConfigTargetId = id;
   const area = state.areas.find(a=>a.id===id); if(!area) return;
+  const creating = areaConfigCreating;
   const body = document.getElementById('area-config-body');
   if(body) body.innerHTML = `
+    <div class="settings-row">
+      <div class="settings-label">
+        <b>${tr('Curs')}${creating?` <span class="req-star">*</span>`:''}</b>
+        <small>${tr('Curs al qual pertany l\'àrea.')}</small>
+      </div>
+      <div class="settings-input">
+        <input type="text" value="${esc(area.course||'')}" placeholder="${tr('ex: 1r ESO')}" onchange="renameCourse('${area.id}', this.value)">
+      </div>
+    </div>
     <div class="settings-row">
       <div class="settings-label">
         <b>${tr('Mostra a l\'agenda')}</b>
@@ -4200,30 +4229,63 @@ function openAreaConfigModal(id){
       </div>
       <label class="switch" title="${tr('Activa/desactiva a l\'agenda')}"><input type="checkbox" ${area.active?'checked':''} onchange="setAreaActive('${area.id}', this.checked)"><span class="slider"></span></label>
     </div>
-    <div class="settings-row">
-      <div class="settings-label">
-        <b>${tr('Curs')}</b>
-        <small>${tr('Curs al qual pertany l\'àrea.')}</small>
-      </div>
-      <div class="settings-input">
-        <input type="text" value="${esc(area.course||'')}" placeholder="${tr('ex: 1r ESO')}" onchange="renameCourse('${area.id}', this.value)">
-      </div>
-    </div>
     <div class="settings-row column">
       <div class="settings-label">
-        <b>${tr('Dies de classe')}</b>
-        <small>${tr('Marca els dies de la setmana en què tens classe per calcular les sessions totals.')}</small>
+        <b>${tr('Dies de classe')}${creating?` <span class="req-star">*</span>`:''}</b>
+        <small>${tr('Marca els dies de la setmana en què tens classe.')}</small>
       </div>
       ${weekDayPickerHTML(area)}
       <div class="settings-input"><span class="wd-count">${trf('{n} sessions / setmana', { n: areaWeeklySessions(area) })}</span></div>
-    </div>`;
+    </div>
+    <p class="req-hint" id="area-config-msg"></p>`;
+  const contBtn = document.getElementById('area-config-continue-btn');
+  if(contBtn) contBtn.style.display = creating ? 'inline-flex' : 'none';
   const m = document.getElementById('area-config-modal');
   if(m) m.classList.add('open');
+}
+function openAreaConfigForCreate(id){
+  areaConfigCreating = true;
+  openAreaConfigModal(id);
+}
+function showAreaConfigMsg(msg){
+  const el = document.getElementById('area-config-msg');
+  if(el){ el.textContent = msg; el.style.display = 'block'; }
+}
+function confirmAreaConfig(){
+  const area = state.areas.find(a=>a.id===areaConfigTargetId);
+  if(!area) return;
+  if(areaConfigCreating){
+    if(!(area.course||'').trim()){
+      showAreaConfigMsg(tr('Escriu el curs de l\'àrea per continuar.'));
+      return;
+    }
+    if(!Array.isArray(area.weekDays) || !area.weekDays.length){
+      showAreaConfigMsg(tr('Marca almenys un dia de classe per continuar.'));
+      return;
+    }
+    areaConfigCreating = false;
+  }
+  closeAreaConfigModal();
+}
+function tryCloseAreaConfig(){
+  if(areaConfigCreating){
+    const area = state.areas.find(a=>a.id===areaConfigTargetId);
+    if(area && !(area.course||'').trim()){
+      showAreaConfigMsg(tr('Escriu el curs de l\'àrea per continuar.'));
+      return;
+    }
+    if(area && (!Array.isArray(area.weekDays) || !area.weekDays.length)){
+      showAreaConfigMsg(tr('Marca almenys un dia de classe per continuar.'));
+      return;
+    }
+  }
+  closeAreaConfigModal();
 }
 function closeAreaConfigModal(){
   const m = document.getElementById('area-config-modal');
   if(m) m.classList.remove('open');
   areaConfigTargetId = null;
+  areaConfigCreating = false;
 }
 function setAreaActive(id, on){
   const area = state.areas.find(a=>a.id===id); if(!area) return;
@@ -5705,6 +5767,7 @@ function confirmImport(){
   saveState();
   closeImportModal();
   render();
+  if(target==='new') openAreaConfigForCreate(area.id);
 }
 
 /* ---------------------------------------------------------
