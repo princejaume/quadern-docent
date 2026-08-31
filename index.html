@@ -882,6 +882,102 @@ body.gate-open #mobile-bottombar{visibility:hidden;}
 .mobile-res-card-icon.res-arxivats{background:var(--paper-alt);color:var(--ink-soft);}
 .mobile-res-card-label{font-weight:600;font-size:.95rem;color:var(--ink);}
 .mobile-res-card-desc{font-size:.75rem;color:var(--ink-faint);line-height:1.35;}
+
+/* ---------- Mode Data ---------- */
+.agenda-today{font-family:'IBM Plex Mono',monospace;font-size:.8rem;color:var(--ink-soft);margin-bottom:6px;}
+.agenda-date{font-family:'IBM Plex Mono',monospace;font-size:.72rem;color:var(--gold-dark);background:var(--gold-soft);padding:2px 7px;border-radius:6px;flex:none;align-self:center;}
+
+/* Camps de data */
+.date-field-wrap{position:relative;display:inline-flex;align-items:center;}
+.date-field{
+  font-family:'IBM Plex Mono',monospace;font-size:.78rem;width:82px;padding:5px 22px 5px 8px;text-align:center;
+  border:1px solid var(--line);border-radius:7px;background:var(--paper);color:var(--ink);
+}
+.date-field:focus{outline:none;border-color:var(--pen);box-shadow:0 0 0 3px var(--pen-soft);}
+.date-field-ico{position:absolute;right:6px;width:13px;height:13px;color:var(--ink-faint);pointer-events:none;display:flex;}
+.date-field-ico svg{width:13px;height:13px;}
+
+/* Mini calendari */
+.mini-cal{
+  display:none;position:fixed;z-index:110;width:244px;background:var(--white);
+  border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);padding:8px;
+}
+.mini-cal.open{display:block;}
+.mcal-head{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:6px;}
+.mcal-nav{background:none;border:none;color:var(--pen);font-size:1rem;cursor:pointer;width:26px;height:26px;border-radius:6px;}
+.mcal-nav:hover{background:var(--pen-soft);}
+.mcal-title{font-family:'Fraunces',serif;font-weight:600;font-size:.9rem;color:var(--ink);}
+.mcal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;}
+.mcal-hd{text-align:center;font-size:.62rem;font-weight:600;color:var(--ink-faint);text-transform:uppercase;padding:3px 0;}
+.mcal-d{
+  text-align:center;font-family:'IBM Plex Mono',monospace;font-size:.76rem;padding:5px 0;border:none;border-radius:6px;
+  background:none;color:var(--ink);cursor:pointer;
+}
+.mcal-d.empty{background:none;cursor:default;}
+.mcal-d:hover:not(.empty){background:var(--pen-soft);}
+.mcal-d.sel{background:var(--pen);color:#fff;font-weight:600;}
+.mcal-d.today:not(.sel){box-shadow:inset 0 0 0 2px var(--pen);}
+
+/* Mode Data: capçalera de sessió amb barra de temps mínima */
+body.mode-data .duration-bar-wrap{flex:0 1 52px;min-width:44px;}
+@media(max-width:640px){body.mode-data .session-header{flex-wrap:wrap;}}
+
+/* Data a la capçalera de SA */
+.sa-date-chip{display:inline-flex;align-items:center;flex:none;}
+
+/* Picker de dies de classe amb hores */
+.wd-day-wrap{display:flex;flex-direction:column;align-items:center;gap:4px;}
+.wd-time,.date-time-input{width:86px;padding:4px 2px;border:1px solid var(--line);border-radius:7px;background:var(--paper);color:var(--ink);font-family:'IBM Plex Mono',monospace;font-size:.72rem;text-align:center;}
+.wd-time:focus,.date-time-input:focus{outline:none;border-color:var(--pen);}
+
+/* Formulari inicial de mode Data */
+#data-setup-modal .modal{max-width:640px;}
+.data-setup-scroll{display:flex;flex-direction:column;gap:12px;padding-top:4px;}
+.data-setup-area{border:1px solid var(--line);border-radius:10px;background:var(--white);padding:12px 14px;box-shadow:var(--shadow);}
+.data-setup-area-head{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:.95rem;}
+.data-setup-day{display:flex;flex-direction:column;align-items:center;gap:4px;}
+.data-setup-day .wd-day{min-width:46px;}
+#data-setup-status{font-size:.8rem;color:var(--danger);min-height:1.2em;margin-top:6px;}
+
+/* Vista setmanal */
+.cal-v-tabs{display:flex;gap:6px;margin-bottom:14px;border-bottom:1px solid var(--line);}
+.week-nav{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+.week-title{font-family:'Fraunces',serif;font-weight:600;font-size:1.05rem;color:var(--ink);flex:1;min-width:160px;}
+.week-view{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;}
+.week-day{border:1px solid var(--line);border-radius:9px;background:var(--white);overflow:hidden;display:flex;flex-direction:column;min-width:0;}
+.week-day.weekend{background:var(--gold-soft);}
+.week-day-head{font-size:.72rem;font-weight:600;color:var(--ink-soft);text-transform:capitalize;text-align:center;padding:6px 4px;background:var(--paper-alt);border-bottom:1px solid var(--line);}
+.week-day-body{display:flex;flex-direction:column;gap:6px;padding:6px;}
+.week-area{display:flex;flex-direction:column;gap:2px;border:1px solid var(--line);border-radius:7px;padding:6px;background:var(--paper);}
+.week-area-name{font-size:.72rem;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.week-dot{width:8px;height:8px;border-radius:50%;flex:none;}
+.week-block{display:flex;align-items:center;gap:4px;flex-wrap:wrap;font-size:.72rem;border-radius:5px;padding:2px 4px;}
+.week-block.has-session{background:var(--pen-soft);color:var(--pen-dark);cursor:pointer;}
+.week-block.has-session:hover{filter:brightness(1.05);}
+.week-block.empty{border:1px dashed var(--line);color:var(--ink-faint);background:none;width:100%;cursor:pointer;justify-content:center;padding:6px 4px;text-align:center;}
+.week-block.empty:hover{background:var(--pen-soft);}
+.week-time{font-family:'IBM Plex Mono',monospace;color:var(--gold-dark);font-weight:600;}
+.week-sess{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.week-sess.faint{color:var(--ink-faint);font-size:.68rem;}
+.week-none{color:var(--ink-faint);font-size:.7rem;text-align:center;padding:8px 0;}
+
+/* Marcador de sessions a la vista mensual (mode Data) */
+.cal-cell{position:relative;}
+.cal-cell-session-dot{position:absolute;bottom:3px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:var(--pen);}
+
+@media(max-width:860px){
+  #data-setup-modal,#year-start-modal{padding:0;}
+  #data-setup-modal .modal,#year-start-modal .modal{
+    max-width:100%;width:100%;max-height:100%;height:100%;border-radius:0;padding:0;
+    display:flex;flex-direction:column;overflow:hidden;
+  }
+  #data-setup-modal .data-setup-scroll,#year-start-modal .year-start-scroll{flex:1;overflow-y:auto;padding:16px;-webkit-overflow-scrolling:touch;}
+  #data-setup-modal .modal-actions,#year-start-modal .modal-actions{flex:none;padding:12px 16px 14px;border-top:1px solid var(--line);background:var(--white);margin-top:0;}
+  #data-setup-modal h2,#data-setup-modal p.hint,#year-start-modal h2,#year-start-modal p.hint{padding:16px 16px 0;}
+}
+@media(max-width:860px){
+  .week-view{grid-template-columns:1fr;}
+}
 </style>
 </head>
 <body>
@@ -1244,6 +1340,33 @@ body.gate-open #mobile-bottombar{visibility:hidden;}
   </div>
 </div>
 
+<!-- Configuració inicial del mode Data -->
+<div class="modal-backdrop" id="data-setup-modal" onclick="if(event.target===this)cancelDataSetup()">
+  <div class="modal">
+    <h2 data-i18n="Configura el mode Data">Configura el mode Data</h2>
+    <p class="hint" data-i18n="Estableix la data d'inici de curs i, per a cada àrea activa, els dies de classe i les hores d'inici de cada sessió.">Estableix la data d'inici de curs i, per a cada àrea activa, els dies de classe i les hores d'inici de cada sessió.</p>
+    <div class="data-setup-scroll" id="data-setup-body"></div>
+    <div id="data-setup-status"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="cancelDataSetup()" data-i18n="Cancel·la">Cancel·la</button>
+      <button class="btn btn-primary" onclick="saveDataSetup()" data-i18n="Desa">Desa</button>
+    </div>
+  </div>
+</div>
+
+<!-- Diàleg anual d'inici de curs -->
+<div class="modal-backdrop" id="year-start-modal" onclick="if(event.target===this)skipYearPrompt()">
+  <div class="modal">
+    <h2 data-i18n="Inici del proper curs">Inici del proper curs</h2>
+    <p class="hint" data-i18n="Quina és la data d'inici del proper curs? Pots deixar-la en blanc per esborrar la del curs anterior.">Quina és la data d'inici del proper curs? Pots deixar-la en blanc per esborrar la del curs anterior.</p>
+    <div class="year-start-scroll" id="year-start-date-wrap"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="skipYearPrompt()" data-i18n="Salta">Salta</button>
+      <button class="btn btn-primary" onclick="saveYearPrompt()" data-i18n="Desa">Desa</button>
+    </div>
+  </div>
+</div>
+
 <script>
 /* ---------------------------------------------------------
    ESTAT I PERSISTÈNCIA
@@ -1482,6 +1605,37 @@ const I18N_ES = {
   'Cap festiu detectat.': 'Ningún festivo detectado.',
   'No s\'ha pogut analitzar el text: {msg}': 'No se ha podido analizar el texto: {msg}',
   'Desa el calendari': 'Guardar el calendario',
+  'Mode': 'Modo',
+  'Seqüencial': 'Secuencial',
+  'Data': 'Fecha',
+  'Seqüencial: sessions sense dates. Data: sessions, SA i àrees amb dates calculades.': 'Secuencial: sesiones sin fechas. Fecha: sesiones, SA y áreas con fechas calculadas.',
+  'Configura el mode Data': 'Configura el modo Fecha',
+  'Estableix la data d\'inici de curs i, per a cada àrea activa, els dies de classe i les hores d\'inici de cada sessió.': 'Establece la fecha de inicio de curso y, para cada área activa, los días de clase y las horas de inicio de cada sesión.',
+  'Data d\'inici de curs': 'Fecha de inicio de curso',
+  'S\'usa per calcular la primera sessió de cada àrea.': 'Se usa para calcular la primera sesión de cada área.',
+  'No tens cap àrea activa.': 'No tienes ninguna área activa.',
+  'Inici de curs': 'Inicio de curso',
+  'Data d\'inici de curs. Si ja està registrada, apareix preescrita i es pot modificar.': 'Fecha de inicio de curso. Si ya está registrada, aparece escrita y se puede modificar.',
+  'A més, pots indicar l\'hora d\'inici de cada sessió.': 'Además, puedes indicar la hora de inicio de cada sesión.',
+  'Hora d\'inici': 'Hora de inicio',
+  'Data de la primera sessió d\'aquesta SA.': 'Fecha de la primera sesión de esta SA.',
+  'Retardar': 'Retrasar',
+  'Mou aquesta sessió i les següents al proper dia de classe.': 'Mueve esta sesión y las siguientes al próximo día de clase.',
+  'Aquesta data és anterior a l\'última sessió de les SA anteriors.': 'Esta fecha es anterior a la última sesión de las SA anteriores.',
+  'Data no vàlida.': 'Fecha no válida.',
+  'Inici del proper curs': 'Inicio del próximo curso',
+  'Quina és la data d\'inici del proper curs? Pots deixar-la en blanc per esborrar la del curs anterior.': '¿Cuál es la fecha de inicio del próximo curso? Puedes dejarla en blanco para borrar la del curso anterior.',
+  'Data d\'inici': 'Fecha de inicio',
+  'Salta': 'Saltar',
+  'Vista setmanal': 'Vista semanal',
+  'Setmana': 'Semana',
+  'Mes': 'Mes',
+  'Sense sessió programada': 'Sin sesión programada',
+  'Sense sessió programada. Clica per configurar.': 'Sin sesión programada. Haz clic para configurar.',
+  'Obre la sessió': 'Abrir la sesión',
+  'Setmana del {d}': 'Semana del {d}',
+  'Setmana anterior': 'Semana anterior',
+  'Setmana següent': 'Semana siguiente',
   'Carregant imatge…': 'Cargando imagen…',
   'Fes clic al cantó superior esquerre de la cel·la amb el número 1 del mes i, després, al cantó inferior dret de la mateixa cel·la.': 'Haz clic en la esquina superior izquierda de la celda con el número 1 del mes y, después, en la esquina inferior derecha de la misma celda.',
   'Ara fes clic al cantó inferior dret de la mateixa cel·la.': 'Ahora haz clic en la esquina inferior derecha de la misma celda.',
@@ -1995,6 +2149,18 @@ function normalizeState(){
   if(!state.trashAreas) state.trashAreas = [];
   if(!state.trashFiles) state.trashFiles = [];
   if(!state.settings) state.settings = {};
+  if(!state.settings.mode) state.settings.mode = 'seqüencial';
+  for(const a of state.areas){
+    if(!a.sessionTimes) a.sessionTimes = {};
+    if(!Array.isArray(a.situacions)) a.situacions = [];
+    for(const sa of a.situacions){
+      if(sa.startDate === undefined) sa.startDate = null;
+      if(!Array.isArray(sa.sessions)) sa.sessions = [];
+      for(const se of sa.sessions){
+        if(se.date === undefined) se.date = null;
+      }
+    }
+  }
   purgeExpiredTrash();
 }
 function saveState(){
@@ -2007,6 +2173,440 @@ function setSyncStatus(text, ok){
   if(!el) return;
   el.textContent = text;
   el.classList.toggle('ok', ok);
+}
+
+/* ---------------------------------------------------------
+   MODE DATA — Dates de sessions, SA i àrees
+--------------------------------------------------------- */
+function dataModeEnabled(){ return !!(state.settings && state.settings.mode === 'data'); }
+
+/* --- Utilitats de dates --- */
+function toISODate(d){
+  if(!d || isNaN(d)) return null;
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+function parseISODate(iso){
+  if(!iso) return null;
+  const m = String(iso).match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if(!m) return null;
+  const d = new Date(parseInt(m[1],10), parseInt(m[2],10)-1, parseInt(m[3],10));
+  return isNaN(d) ? null : d;
+}
+function parseShortDate(s){
+  if(!s) return null;
+  const t = String(s).trim();
+  const m = t.match(/^(\d{1,2})[\/\-.](\d{1,2})(?:[\/\-.](\d{2,4}))?$/);
+  if(!m) return null;
+  const day = parseInt(m[1],10), month = parseInt(m[2],10);
+  let year = m[3] ? parseInt(m[3],10) : new Date().getFullYear();
+  if(year < 100) year += 2000;
+  const d = new Date(year, month-1, day);
+  if(d.getFullYear()!==year || d.getMonth()!==month-1 || d.getDate()!==day) return null;
+  return d;
+}
+function fmtShort(iso){
+  if(!iso) return '';
+  const d = parseISODate(iso);
+  if(!d) return '';
+  return String(d.getDate()).padStart(2,'0') + '/' + String(d.getMonth()+1).padStart(2,'0') + '/' + String(d.getFullYear()%100).padStart(2,'0');
+}
+function addDays(iso, n){
+  const d = parseISODate(iso); if(!d) return null;
+  d.setDate(d.getDate() + n);
+  return toISODate(d);
+}
+function isHolidayIso(iso){
+  const cd = state.calendarData;
+  return !!(cd && Array.isArray(cd.holidays) && cd.holidays.indexOf(iso) !== -1);
+}
+function nextClassDate(afterISO, weekDays){
+  const days = Array.isArray(weekDays) ? weekDays : [];
+  let d = parseISODate(afterISO);
+  if(!d) return null;
+  if(!days.length) return toISODate(d);
+  const set = new Set(days);
+  let guard = 0;
+  while(guard < 400){
+    const cur = toISODate(d);
+    if(set.has(d.getDay()) && !isHolidayIso(cur)) return cur;
+    d.setDate(d.getDate() + 1);
+    guard++;
+  }
+  return toISODate(d);
+}
+function sessionTimeFor(area, iso){
+  if(!area) return null;
+  const d = parseISODate(iso); if(!d) return null;
+  return (area.sessionTimes && area.sessionTimes[d.getDay()]) || null;
+}
+function sessionsOnDay(iso){
+  const out = [];
+  for(const a of state.areas){
+    if(!a.active) continue;
+    for(const sa of a.situacions) for(const se of sa.sessions){
+      if(se.date === iso) out.push({ area:a, sa, se });
+    }
+  }
+  return out;
+}
+
+/* --- Càlcul de dates --- */
+function recomputeAreaDates(area, fromFlatIdx, keepAnchor){
+  if(!dataModeEnabled() || !area) return;
+  const flat = flatSessions(area);
+  const base0 = state.settings.courseStartDate;
+  const days = Array.isArray(area.weekDays) ? area.weekDays : [];
+  let prevDate = null;
+  for(let i = 0; i < flat.length; i++){
+    const { sa, se } = flat[i];
+    if(i < fromFlatIdx){
+      if(se.date) prevDate = se.date;
+      continue;
+    }
+    if(i === fromFlatIdx && keepAnchor && se.date){
+      prevDate = se.date;
+      continue;
+    }
+    let date = null;
+    if(sa.startDate && sa.sessions[0] === se){
+      date = nextClassDate(sa.startDate, days);
+    } else if(prevDate){
+      date = nextClassDate(addDays(prevDate, 1), days);
+    } else if(base0){
+      date = nextClassDate(base0, days);
+    }
+    se.date = date;
+    if(date) prevDate = date;
+  }
+}
+function computeSessionDates(area){
+  recomputeAreaDates(area, 0);
+}
+function recomputeAllDates(){
+  if(!dataModeEnabled()) return;
+  for(const a of state.areas) recomputeAreaDates(a, 0);
+}
+
+/* --- Accions sobre dates --- */
+function validateSAStartDate(area, sa, iso){
+  const d = parseISODate(iso); if(!d) return tr('Data no vàlida.');
+  const idx = area.situacions.indexOf(sa);
+  let lastBefore = null;
+  for(let i = 0; i < idx; i++){
+    const psa = area.situacions[i];
+    for(const se of psa.sessions){ if(se.date) lastBefore = se.date; }
+  }
+  if(lastBefore){
+    const lb = parseISODate(lastBefore);
+    if(lb && d <= lb) return tr('Aquesta data és anterior a l\'última sessió de les SA anteriors.');
+  }
+  return null;
+}
+function setSAStartDate(iso, input){
+  const areaId = input ? input.getAttribute('data-area-id') : null;
+  const saId = input ? input.getAttribute('data-sa-id') : null;
+  const area = state.areas.find(a=>a.id===areaId); if(!area) return;
+  const sa = area.situacions.find(x=>x.id===saId); if(!sa) return;
+  if(iso === null || iso === ''){
+    sa.startDate = null;
+  } else {
+    const err = validateSAStartDate(area, sa, iso);
+    if(err){ alert(err); input.value = fmtShort(sa.startDate); return; }
+    sa.startDate = iso;
+  }
+  const flat = flatSessions(area);
+  const fromIdx = flat.findIndex(f => f.sa === sa);
+  recomputeAreaDates(area, fromIdx < 0 ? 0 : fromIdx);
+  saveState(); render();
+}
+function setSessionDate(iso, input){
+  const areaId = input ? input.getAttribute('data-area-id') : null;
+  const saId = input ? input.getAttribute('data-sa-id') : null;
+  const sessionId = input ? input.getAttribute('data-session-id') : null;
+  const area = state.areas.find(a=>a.id===areaId); if(!area) return;
+  const sa = area.situacions.find(x=>x.id===saId); if(!sa) return;
+  const se = sa.sessions.find(x=>x.id===sessionId); if(!se) return;
+  se.date = (iso === null || iso === '') ? null : iso;
+  const flat = flatSessions(area);
+  const fromIdx = flat.findIndex(f => f.se === se);
+  recomputeAreaDates(area, fromIdx < 0 ? 0 : fromIdx, true);
+  saveState(); render();
+}
+function setCourseStartDate(iso, input){
+  if(!state.settings) state.settings = {};
+  state.settings.courseStartDate = (iso === null || iso === '') ? null : iso;
+  recomputeAllDates();
+  saveState();
+  render();
+}
+function delayAreaSessions(areaId){
+  const a = state.areas.find(x => x.id === areaId); if(!a) return;
+  const flat = flatSessions(a); if(!flat.length) return;
+  let idx = currentIdx(a);
+  if(a.currentSessionId === '__done__') idx = flat.length - 1;
+  if(idx < 0) idx = 0;
+  const target = flat[idx].se;
+  const days = Array.isArray(a.weekDays) ? a.weekDays : [];
+  if(target.date){
+    target.date = nextClassDate(addDays(target.date, 1), days);
+  }
+  recomputeAreaDates(a, idx, true);
+  saveState(); render();
+}
+
+/* --- Camp de data + mini-calendari --- */
+let miniCalTarget = null;
+function dateFieldHTML(id, iso, cb, extra){
+  extra = extra || '';
+  return `<span class="date-field-wrap">
+    <input type="text" class="date-field" id="${id}" value="${esc(fmtShort(iso))}" placeholder="dd/mm/aa" maxlength="10" inputmode="numeric"
+      data-cb="${esc(cb)}" ${extra}
+      onclick="toggleMiniCal(this)"
+      oninput="onDateFieldInput(this)"
+      onkeydown="if(event.key==='Escape')closeMiniCals()">
+    <span class="date-field-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
+    <span class="mini-cal" id="mini-${id}"></span>
+  </span>`;
+}
+function toggleMiniCal(input){
+  const wrap = document.getElementById('mini-' + input.id);
+  if(!wrap) return;
+  if(wrap.classList.contains('open')){ closeMiniCals(); return; }
+  closeMiniCals();
+  const parsed = parseShortDate(input.value);
+  const d = parsed || new Date();
+  const sel = parsed ? toISODate(parsed) : null;
+  miniCalTarget = { inputId: input.id, year: d.getFullYear(), month: d.getMonth(), sel };
+  wrap.classList.add('open');
+  renderMiniCal(wrap, d.getFullYear(), d.getMonth(), sel);
+  positionMiniCal(wrap, input);
+  setTimeout(()=>document.addEventListener('click', miniCalOutside), 0);
+}
+function closeMiniCals(){
+  document.querySelectorAll('.mini-cal.open').forEach(w => w.classList.remove('open'));
+  document.removeEventListener('click', miniCalOutside);
+}
+function miniCalOutside(e){
+  if(e.target.closest('.date-field-wrap')) return;
+  closeMiniCals();
+}
+function positionMiniCal(wrap, input){
+  const rect = input.getBoundingClientRect();
+  const mw = 244, mh = 250;
+  let left = rect.left, top = rect.bottom + 4;
+  if(left + mw > window.innerWidth - 8) left = Math.max(8, window.innerWidth - mw - 8);
+  if(top + mh > window.innerHeight - 8){
+    if(rect.top - mh - 4 >= 8) top = rect.top - mh - 4;
+    else { left = Math.max(8, (window.innerWidth - mw)/2); top = Math.max(8, (window.innerHeight - mh)/2); }
+  }
+  wrap.style.left = left + 'px';
+  wrap.style.top = top + 'px';
+}
+function renderMiniCal(wrap, year, month, sel){
+  const first = new Date(year, month, 1);
+  const dim = new Date(year, month+1, 0).getDate();
+  const colOf1 = (first.getDay()+6)%7;
+  const headers = ['Dl','Dt','Dc','Dj','Dv','Ds','Dg'];
+  const todayIso = toISODate(new Date());
+  let cells = '';
+  for(let i=0;i<colOf1;i++) cells += '<span class="mcal-d empty"></span>';
+  for(let d=1; d<=dim; d++){
+    const iso = calDateIso(year, month, d);
+    const cls = ['mcal-d', iso===sel?'sel':'', iso===todayIso?'today':''].filter(Boolean).join(' ');
+    cells += `<button type="button" class="${cls}" onclick="miniCalPick('${wrap.id}','${iso}')">${d}</button>`;
+  }
+  wrap.innerHTML = `
+    <div class="mcal-head">
+      <button type="button" class="mcal-nav" onclick="miniCalNav('${wrap.id}',-1)">‹</button>
+      <span class="mcal-title">${tr(CAL_MONTHS[month])} ${year}</span>
+      <button type="button" class="mcal-nav" onclick="miniCalNav('${wrap.id}',1)">›</button>
+    </div>
+    <div class="mcal-grid">${headers.map(h=>`<span class="mcal-hd">${h}</span>`).join('')}${cells}</div>`;
+}
+function miniCalNav(id, delta){
+  const t = miniCalTarget; if(!t) return;
+  let m = t.month + delta, y = t.year;
+  if(m<0){m=11;y--;} if(m>11){m=0;y++;}
+  t.month=m; t.year=y;
+  renderMiniCal(document.getElementById(id), y, m, t.sel);
+}
+function miniCalPick(id, iso){
+  const t = miniCalTarget; if(!t) return;
+  const input = document.getElementById(t.inputId);
+  if(input) input.value = fmtShort(iso);
+  closeMiniCals();
+  if(input && input.dataset.cb){
+    const fn = window[input.dataset.cb];
+    if(typeof fn === 'function') fn(iso, input);
+  }
+}
+function onDateFieldInput(input){
+  const d = parseShortDate(input.value);
+  if(!d) return;
+  const iso = toISODate(d);
+  input.value = fmtShort(iso);
+  const fn = window[input.dataset.cb];
+  if(typeof fn === 'function') fn(iso, input);
+}
+
+/* --- Mode selector --- */
+function setMode(v){
+  if(!state.settings) state.settings = {};
+  const prev = state.settings.mode;
+  if(v === 'data'){
+    state.settings.mode = 'data';
+    saveState();
+    if(prev !== 'data') openDataSetup();
+    else { recomputeAllDates(); render(); }
+  } else {
+    state.settings.mode = 'seqüencial';
+    saveState(); render();
+  }
+}
+
+/* --- Formulari inicial de mode Data --- */
+function openDataSetup(){
+  const body = document.getElementById('data-setup-body');
+  if(!body) return;
+  const areas = state.areas.filter(a => a.active);
+  body.innerHTML = `
+    <div class="settings-row column">
+      <div class="settings-label">
+        <b>${tr('Data d\'inici de curs')}</b>
+        <small>${tr('S\'usa per calcular la primera sessió de cada àrea.')}</small>
+      </div>
+      <div class="settings-input">
+        ${dateFieldHTML('data-setup-csd', state.settings.courseStartDate || '', 'dataSetupCSD')}
+      </div>
+    </div>
+    ${areas.length
+      ? areas.map(a => dataSetupAreaHTML(a)).join('')
+      : `<p class="empty-hint">${tr('No tens cap àrea activa.')}</p>`}`;
+  const st = document.getElementById('data-setup-status');
+  if(st) st.textContent = '';
+  const m = document.getElementById('data-setup-modal');
+  if(m) m.classList.add('open');
+}
+function dataSetupCSD(iso, input){
+  if(!state.settings) state.settings = {};
+  state.settings.courseStartDate = iso || null;
+  saveState();
+}
+function dataSetupAreaHTML(area){
+  const sel = new Set(Array.isArray(area.weekDays) ? area.weekDays : []);
+  const times = area.sessionTimes || {};
+  const days = AREA_WEEK_ORDER.map(d => {
+    const timeInput = sel.has(d)
+      ? `<input type="time" class="date-time-input" value="${esc(times[d]||'')}" onchange="dataSetupTime('${area.id}',${d},this.value)">`
+      : '';
+    return `
+    <div class="data-setup-day">
+      <button type="button" class="wd-day ${sel.has(d)?'active':''}" onclick="dataSetupDay('${area.id}',${d})">${AREA_WEEK_SHORT[d]}</button>
+      ${timeInput}
+    </div>`;
+  }).join('');
+  return `
+  <div class="data-setup-area" id="data-setup-area-${area.id}">
+    <div class="data-setup-area-head">
+      <span class="area-dot" style="--area-color:${area.color}"></span>
+      <b>${esc(area.name)}</b>
+    </div>
+    <div class="weekday-picker">${days}</div>
+  </div>`;
+}
+function refreshDataSetupArea(areaId){
+  const a = state.areas.find(x=>x.id===areaId); if(!a) return;
+  const cont = document.getElementById('data-setup-area-'+areaId);
+  if(cont) cont.outerHTML = dataSetupAreaHTML(a);
+}
+function dataSetupDay(areaId, dow){
+  const a = state.areas.find(x=>x.id===areaId); if(!a) return;
+  if(!Array.isArray(a.weekDays)) a.weekDays = [];
+  const i = a.weekDays.indexOf(dow);
+  if(i >= 0) a.weekDays.splice(i,1); else a.weekDays.push(dow);
+  saveState();
+  refreshDataSetupArea(areaId);
+}
+function dataSetupTime(areaId, dow, value){
+  const a = state.areas.find(x=>x.id===areaId); if(!a) return;
+  if(!a.sessionTimes) a.sessionTimes = {};
+  if(value) a.sessionTimes[dow] = value; else delete a.sessionTimes[dow];
+  saveState();
+}
+function saveDataSetup(){
+  const input = document.getElementById('data-setup-csd');
+  if(input){
+    const d = parseShortDate(input.value);
+    if(d) state.settings.courseStartDate = toISODate(d);
+  }
+  recomputeAllDates();
+  saveState();
+  closeDataSetup();
+  render();
+}
+function cancelDataSetup(){
+  state.settings.mode = 'seqüencial';
+  saveState();
+  closeDataSetup();
+  render();
+}
+function closeDataSetup(){
+  const m = document.getElementById('data-setup-modal');
+  if(m) m.classList.remove('open');
+}
+
+/* --- Diàleg anual (1 de juliol) --- */
+function maybeShowYearPrompt(){
+  const now = new Date();
+  if(now.getMonth() !== 6) return;
+  const year = now.getFullYear();
+  if(state.settings.yearPromptDone === year) return;
+  const wrap = document.getElementById('year-start-date-wrap');
+  if(wrap) wrap.innerHTML = `
+    <div class="modal-field">
+      <label data-i18n="Data d'inici">Data d'inici</label>
+      <div>${dateFieldHTML('year-start-csd', '', 'yearPromptCSD')}</div>
+    </div>`;
+  const m = document.getElementById('year-start-modal');
+  if(m) m.classList.add('open');
+}
+function yearPromptCSD(iso, input){
+  state.settings.yearPromptValue = iso || null;
+  saveState();
+}
+function clearAllSessionDates(){
+  for(const a of state.areas) for(const sa of a.situacions) for(const se of sa.sessions) se.date = null;
+}
+function saveYearPrompt(){
+  let val = null;
+  const input = document.getElementById('year-start-csd');
+  if(input){
+    const d = parseShortDate(input.value);
+    if(d) val = toISODate(d);
+  }
+  if(val) state.settings.courseStartDate = val;
+  else {
+    state.settings.courseStartDate = null;
+    clearAllSessionDates();
+  }
+  state.settings.yearPromptDone = new Date().getFullYear();
+  delete state.settings.yearPromptValue;
+  saveState();
+  closeYearPrompt();
+  render();
+}
+function skipYearPrompt(){
+  state.settings.courseStartDate = null;
+  clearAllSessionDates();
+  state.settings.yearPromptDone = new Date().getFullYear();
+  delete state.settings.yearPromptValue;
+  saveState();
+  closeYearPrompt();
+  render();
+}
+function closeYearPrompt(){
+  const m = document.getElementById('year-start-modal');
+  if(m) m.classList.remove('open');
 }
 
 /* --- Sincronització remota (Supabase) --- */
@@ -2408,7 +3008,7 @@ function updateBottomBar(){
 /* ---------------------------------------------------------
    RENDERITZAT
 --------------------------------------------------------- */
-function render(){ renderSidebar(); renderMain(); updateBottomBar(); }
+function render(){ document.body.classList.toggle('mode-data', dataModeEnabled()); renderSidebar(); renderMain(); updateBottomBar(); }
 
 function renderSidebar(){
   const list = state.areas.map(a => `
@@ -2577,6 +3177,9 @@ function areaHTML(area){
 
 function saHTML(area, sa, index){
   const sessions = sa.sessions.map((se,i)=> sessionHTML(area, sa, se, i)).join('') || `<p class="empty-hint">${tr('Cap sessió encara. Canvia el número de sessions per afegir-ne.')}</p>`;
+  const saDateChip = dataModeEnabled()
+    ? `<span class="sa-date-chip" title="${esc(tr('Data de la primera sessió d\'aquesta SA.'))}">${dateFieldHTML('sa-date-'+sa.id, sa.startDate||'', 'setSAStartDate', `data-area-id="${area.id}" data-sa-id="${sa.id}"`)}</span>`
+    : '';
   return `
   <div class="sa-card ${sa.open?'open':''}" id="sa-${sa.id}" style="--area-color:${area.color}">
     <div class="sa-header" style="--area-color:${area.color};background:${hexToRgba(area.color,0.08)}">
@@ -2586,6 +3189,7 @@ function saHTML(area, sa, index){
       <span class="sa-num">SA${index+1}</span>
       <input class="sa-title-input" id="sa-title-${sa.id}" value="${esc(sa.name)}" oninput="renameSA('${area.id}','${sa.id}', this.value)">
       <div class="sa-stats">
+        ${saDateChip}
         <div class="sessions-count-field">
           <span>${tr('Sessions')}</span>
           <input type="number" min="0" max="60" value="${sa.sessions.length}" onchange="setSessionCount('${area.id}','${sa.id}', this.value)">
@@ -2610,6 +3214,9 @@ function sessionHTML(area, sa, session, index){
       </div>
       <span class="session-total mono" id="total-${session.id}">${total}′</span>`
     : '';
+  const dateField = dataModeEnabled()
+    ? dateFieldHTML('session-date-'+session.id, session.date||'', 'setSessionDate', `data-area-id="${area.id}" data-sa-id="${sa.id}" data-session-id="${session.id}"`)
+    : '';
   return `
   <div class="session-card ${session.open?'open':''}${editing?' session-editing':''}" id="session-${session.id}">
     <div class="session-header">
@@ -2618,6 +3225,7 @@ function sessionHTML(area, sa, session, index){
       </button>
       <span class="session-num">S${index + 1}</span>
       <input class="session-title-input" value="${esc(sessionCleanName(session))}" oninput="renameSession('${area.id}','${sa.id}','${session.id}', this.value)">
+      ${dateField}
       ${dur}
     </div>
     <div class="session-body">
@@ -2718,6 +3326,7 @@ function settingsHTML(){
   const eMet = sessionMetodologiaEnabled();
   const eSeg = sessionSeguimentEnabled();
   const eRec = sessionRecursosEnabled();
+  const mode = dataModeEnabled() ? 'data' : 'seqüencial';
   return `
   <div class="settings-header">
     <h1 class="display">${tr('Ajustos')}</h1>
@@ -2775,6 +3384,18 @@ function settingsHTML(){
 
   <div class="settings-card">
     <div class="settings-card-title">${tr('Configuració')}</div>
+    <div class="settings-row">
+      <div class="settings-label">
+        <b>${tr('Mode')}</b>
+        <small>${tr('Seqüencial: sessions sense dates. Data: sessions, SA i àrees amb dates calculades.')}</small>
+      </div>
+      <div class="settings-input">
+        ${customSelectHTML('settings-mode', mode, [
+          { value: 'seqüencial', label: tr('Seqüencial') },
+          { value: 'data', label: tr('Data') }
+        ], 'setMode')}
+      </div>
+    </div>
     <div class="settings-row">
       <div class="settings-label">
         <b>${tr('Detecció de dies')}</b>
@@ -4154,6 +4775,16 @@ function areaClassesToday(a){
 }
 function agendaHTML(){
   const dayFilter = dayDetectionEnabled() && !agendaShowAll;
+  if(dataModeEnabled()){
+    const today = toISODate(new Date());
+    let changed = false;
+    for(const a of state.areas){
+      if(!a.active || a.doneOn || a.currentSessionId === '__done__') continue;
+      const f = flatSessions(a).find(f => f.se.date === today);
+      if(f && a.currentSessionId !== f.se.id){ a.currentSessionId = f.se.id; changed = true; }
+    }
+    if(changed) saveState();
+  }
   const activeAll = state.areas.filter(a => a.active).sort((x, y) => (x.doneOn ? 1 : 0) - (y.doneOn ? 1 : 0));
   const active = dayFilter ? activeAll.filter(areaClassesToday) : activeAll;
   const inactive = state.areas.length - activeAll.length;
@@ -4193,7 +4824,10 @@ function agendaHTML(){
   const seeAllBtn = dayDetectionEnabled() && !agendaShowAll && activeAll.length
     ? `<button class="btn btn-ghost btn-sm" title="${esc(tr('Mostra totes les àrees actives indiferentment del dia.'))}" onclick="agendaShowAll = true; render()">${tr('Vore totes')}</button>`
     : '';
-  return `<div class="agenda-head-row"><h1 class="display">${tr('Agenda')}</h1><div class="agenda-head-actions">${urgentBanner}${seeAllBtn}</div></div>` + note + body;
+  const todayLine = dataModeEnabled()
+    ? `<div class="agenda-today">${new Date().toLocaleDateString(lang()==='es' ? 'es-ES' : 'ca-ES', { weekday:'long', day:'numeric', month:'long' })}</div>`
+    : '';
+  return `<div class="agenda-head-row"><h1 class="display">${tr('Agenda')}</h1><div class="agenda-head-actions">${urgentBanner}${seeAllBtn}</div></div>` + todayLine + note + body;
 }
 
 function agendaCardHTML(a){
@@ -4229,11 +4863,18 @@ function agendaCardHTML(a){
     const actGrid = acts ? `<div class="vista-act-grid">${acts}</div>` : `<p class="empty-hint">${tr('Sense activitats.')}</p>`;
     const sessNumInSA = info.sa.sessions.indexOf(info.session) + 1;
     const saTotal = info.sa.sessions.length;
+    const sessDate = (dataModeEnabled() && info.session.date)
+      ? `<span class="agenda-date">${esc(fmtShort(info.session.date))}</span>`
+      : '';
+    const retardBtn = dataModeEnabled()
+      ? `<button class="btn btn-ghost btn-sm" onclick="delayAreaSessions('${a.id}')" title="${esc(tr('Mou aquesta sessió i les següents al proper dia de classe.'))}">${tr('Retardar')}</button>`
+      : '';
     body = `
     <div class="session-card open">
       <div class="session-header">
         <span class="session-num">S${sessNumInSA}</span>
         <span class="session-name" title="${esc(sessionCleanName(info.session))}">${esc(sessionCleanName(info.session))}</span>
+        ${sessDate}
       </div>
       <div class="session-body">
         ${actGrid}
@@ -4244,6 +4885,7 @@ function agendaCardHTML(a){
       <span class="agenda-progress">${trf('Sessió {a} de {b}', { a: sessNumInSA, b: saTotal })}</span>
       <span class="agenda-foot-spacer"></span>
       <button class="btn btn-primary btn-sm" onclick="markAreaDone('${a.id}')">${tr('Fet')}</button>
+      ${retardBtn}
       <button class="btn btn-ghost btn-icon" onclick="prevSession('${a.id}')" aria-label="${tr('Sessió anterior')}">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="15 18 9 12 15 6"/></svg>
       </button>
@@ -4558,6 +5200,16 @@ function openAreaConfigModal(id){
         <input type="text" value="${esc(area.course||'')}" placeholder="${tr('ex: 1r ESO')}" onchange="renameCourse('${area.id}', this.value)">
       </div>
     </div>
+    ${dataModeEnabled() ? `
+    <div class="settings-row column">
+      <div class="settings-label">
+        <b>${tr('Inici de curs')}</b>
+        <small>${tr('Data d\'inici de curs. Si ja està registrada, apareix preescrita i es pot modificar.')}</small>
+      </div>
+      <div class="settings-input">
+        ${dateFieldHTML('area-csd-'+area.id, state.settings.courseStartDate || '', 'setCourseStartDate')}
+      </div>
+    </div>` : ''}
     <div class="settings-row">
       <div class="settings-label">
         <b>${tr('Mostra a l\'agenda')}</b>
@@ -4568,7 +5220,7 @@ function openAreaConfigModal(id){
     <div class="settings-row column">
       <div class="settings-label">
         <b>${tr('Dies de classe')}${creating?` <span class="req-star">*</span>`:''}</b>
-        <small>${tr('Marca els dies de la setmana en què tens classe.')}</small>
+        <small>${tr('Marca els dies de la setmana en què tens classe.')}${dataModeEnabled() ? ' ' + tr('A més, pots indicar l\'hora d\'inici de cada sessió.') : ''}</small>
       </div>
       ${weekDayPickerHTML(area)}
       <div class="settings-input"><span class="wd-count">${trf('{n} sessions / setmana', { n: areaWeeklySessions(area) })}</span></div>
@@ -4635,9 +5287,23 @@ const AREA_WEEK_SHORT = { 1:'Dl', 2:'Dt', 3:'Dc', 4:'Dj', 5:'Dv', 6:'Ds', 0:'Dg'
 const AREA_WEEK_LABELS = { 1:'Dilluns', 2:'Dimarts', 3:'Dimecres', 4:'Dijous', 5:'Divendres', 6:'Dissabte', 0:'Diumenge' };
 function weekDayPickerHTML(area){
   const sel = new Set(Array.isArray(area.weekDays) ? area.weekDays : []);
-  return `<div class="weekday-picker">${AREA_WEEK_ORDER.map(d =>
-    `<button type="button" class="wd-day${sel.has(d)?' active':''}" title="${tr(AREA_WEEK_LABELS[d])}" onclick="toggleAreaWeekDay('${area.id}', ${d})">${AREA_WEEK_SHORT[d]}</button>`
-  ).join('')}</div>`;
+  const times = area.sessionTimes || {};
+  return `<div class="weekday-picker">${AREA_WEEK_ORDER.map(d => {
+    const t = dataModeEnabled() && sel.has(d)
+      ? `<input type="time" class="wd-time" value="${esc(times[d]||'')}" onchange="setAreaSessionTime('${area.id}', ${d}, this.value)" aria-label="${esc(tr(AREA_WEEK_LABELS[d]) + ' — ' + tr('Hora d\'inici'))}">`
+      : '';
+    return `<div class="wd-day-wrap">
+      <button type="button" class="wd-day${sel.has(d)?' active':''}" title="${tr(AREA_WEEK_LABELS[d])}" onclick="toggleAreaWeekDay('${area.id}', ${d})">${AREA_WEEK_SHORT[d]}</button>
+      ${t}
+    </div>`;
+  }).join('')}</div>`;
+}
+function setAreaSessionTime(areaId, dow, value){
+  const area = state.areas.find(a=>a.id===areaId); if(!area) return;
+  if(!area.sessionTimes) area.sessionTimes = {};
+  if(value) area.sessionTimes[dow] = value; else delete area.sessionTimes[dow];
+  recomputeAllDates();
+  saveState();
 }
 function toggleAreaWeekDay(id, dow){
   const area = state.areas.find(a=>a.id===id); if(!area) return;
@@ -4745,8 +5411,15 @@ function calViewMonthHTML(y, m){
     const isEnd = iso && cd.endDate === iso;
     const cls = ['cal-cell', isWeekend ? 'cal-cell-weekend' : '', isH ? 'cal-cell-holiday' : '', (isStart || isEnd) ? 'cal-cell-special' : ''].filter(Boolean).join(' ');
     const marker = isStart ? 'I' : isEnd ? 'F' : '';
-    const content = marker ? `${d}<span class="cal-cell-mark">${marker}</span>` : d;
-    cells += `<span class="${cls}">${content}</span>`;
+    const dot = (dataModeEnabled() && iso && sessionsOnDay(iso).length) ? '<span class="cal-cell-session-dot"></span>' : '';
+    const content = `${d}${marker ? `<span class="cal-cell-mark">${marker}</span>` : ''}${dot}`;
+    if(isWeekend){
+      cells += `<span class="${cls}">${content}</span>`;
+    } else if(dataModeEnabled()){
+      cells += `<button type="button" class="${cls}" onclick="showWeeklyView('${iso}')" title="${esc(tr('Vista setmanal'))}">${content}</button>`;
+    } else {
+      cells += `<span class="${cls}">${content}</span>`;
+    }
   }
   return `<div class="cal-view-month">
     <div class="cal-view-month-title">${tr(CAL_MONTHS[m])} ${y}</div>
@@ -4762,11 +5435,27 @@ function calendariHTML(){
     ? `<button class="btn btn-sm btn-ghost" onclick="openCalModal()">${tr('Modifica')}</button>
        <button class="btn btn-sm btn-danger" onclick="calDelete()">${tr('Esborra')}</button>`
     : `<button class="btn btn-sm btn-primary" onclick="openCalModal()">${tr('Configura')}</button>`;
+  const dataTabs = dataModeEnabled() ? `
+    <div class="cal-v-tabs">
+      <button class="cal-tab active" id="cal-v-tab-month" onclick="showMonthView()">${tr('Mes')}</button>
+      <button class="cal-tab" id="cal-v-tab-week" onclick="showWeeklyViewToday()">${tr('Setmana')}</button>
+    </div>` : '';
+  const monthWrap = `
+    <div id="cal-month-view-wrap">
+      <div class="cal-view">${calendariMonths().map(mo => calViewMonthHTML(mo.y, mo.m)).join('')}</div>
+      <div class="cal-grid-legend">
+        <span class="cal-legend cal-legend-weekend">${tr('cap de setmana')}</span>
+        <span class="cal-legend cal-legend-holiday">${tr('festiu')}</span>
+        <span class="cal-legend">${tr('inici/fi de curs')}</span>
+      </div>
+    </div>`;
+  const weekWrap = dataModeEnabled() ? `<div id="week-view-wrap" style="display:none"></div>` : '';
   return `
   <div class="settings-header">
     <h1 class="display">${tr('Calendari escolar')}</h1>
     <p class="settings-note">${tr('Dies de festa del curs i període escolar.')}</p>
   </div>
+  ${dataTabs}
   <div class="settings-card">
     <div class="settings-row">
       <div class="settings-label">
@@ -4775,13 +5464,84 @@ function calendariHTML(){
       </div>
       <div class="settings-input">${buttons}</div>
     </div>
-    <div class="cal-view">${calendariMonths().map(mo => calViewMonthHTML(mo.y, mo.m)).join('')}</div>
-    <div class="cal-grid-legend">
-      <span class="cal-legend cal-legend-weekend">${tr('cap de setmana')}</span>
-      <span class="cal-legend cal-legend-holiday">${tr('festiu')}</span>
-      <span class="cal-legend">${tr('inici/fi de curs')}</span>
-    </div>
+    ${monthWrap}
+    ${weekWrap}
   </div>`;
+}
+let weeklyViewISO = null;
+function showWeeklyView(iso){
+  weeklyViewISO = iso;
+  const wrap = document.getElementById('week-view-wrap');
+  const monthView = document.getElementById('cal-month-view-wrap');
+  const tM = document.getElementById('cal-v-tab-month');
+  const tW = document.getElementById('cal-v-tab-week');
+  if(tM) tM.classList.remove('active');
+  if(tW) tW.classList.add('active');
+  if(monthView) monthView.style.display = 'none';
+  if(wrap){ wrap.style.display = ''; renderWeekView(wrap, iso); }
+}
+function showWeeklyViewToday(){
+  showWeeklyView(toISODate(new Date()));
+}
+function showMonthView(){
+  weeklyViewISO = null;
+  const wrap = document.getElementById('week-view-wrap');
+  const monthView = document.getElementById('cal-month-view-wrap');
+  const tM = document.getElementById('cal-v-tab-month');
+  const tW = document.getElementById('cal-v-tab-week');
+  if(tM) tM.classList.add('active');
+  if(tW) tW.classList.remove('active');
+  if(monthView) monthView.style.display = '';
+  if(wrap) wrap.style.display = 'none';
+}
+function renderWeekView(wrap, iso){
+  const d = parseISODate(iso); if(!d) return;
+  const diff = (d.getDay() + 6) % 7;
+  const monday = new Date(d); monday.setDate(d.getDate() - diff);
+  const days = [];
+  for(let i=0;i<7;i++){
+    const day = new Date(monday); day.setDate(monday.getDate()+i);
+    days.push({ iso: toISODate(day), date: day });
+  }
+  const locale = lang()==='es' ? 'es-ES' : 'ca-ES';
+  const fmtDay = dd => dd.date.toLocaleDateString(locale, { weekday:'short', day:'numeric', month:'short' });
+  const cols = days.map(dd => {
+    const dow = dd.date.getDay();
+    const blocks = [];
+    for(const a of state.areas){
+      if(!a.active) continue;
+      if(!Array.isArray(a.weekDays) || a.weekDays.indexOf(dow) === -1) continue;
+      const time = (a.sessionTimes && a.sessionTimes[dow]) || '';
+      const timeLabel = time ? `<span class="week-time">${esc(time)}</span>` : '';
+      const s = sessionsOnDay(dd.iso).find(x => x.area.id === a.id);
+      let body;
+      if(s){
+        const sName = sessionCleanName(s.se) || s.se.name;
+        body = `<button type="button" class="week-block has-session" onclick="openAreaAtSession('${a.id}','${s.sa.id}','${s.se.id}')" title="${esc(tr('Obre la sessió'))}">${timeLabel}<span class="week-sess">${esc(sName)}</span></button>`;
+      } else {
+        body = `<button type="button" class="week-block empty" onclick="openAreaConfigModal('${a.id}')" title="${esc(tr('Sense sessió programada. Clica per configurar.'))}">${timeLabel}<span class="week-sess faint">${esc(tr('Sense sessió programada'))}</span></button>`;
+      }
+      blocks.push(`<div class="week-area"><span class="week-dot" style="background:${a.color}"></span><b class="week-area-name">${esc(a.name)}</b>${body}</div>`);
+    }
+    return `<div class="week-day ${dow===0||dow===6?'weekend':''}"><div class="week-day-head">${fmtDay(dd)}</div><div class="week-day-body">${blocks.join('') || '<span class="week-none">—</span>'}</div></div>`;
+  }).join('');
+  const weekTitle = trf('Setmana del {d}', { d: monday.toLocaleDateString(locale, { day:'numeric', month:'long' }) });
+  wrap.innerHTML = `
+    <div class="week-nav">
+      <button class="btn btn-ghost btn-sm" onclick="weekShift(-7)" aria-label="${esc(tr('Setmana anterior'))}">◀</button>
+      <span class="week-title">${esc(weekTitle)}</span>
+      <button class="btn btn-ghost btn-sm" onclick="weekShift(7)" aria-label="${esc(tr('Setmana següent'))}">▶</button>
+      <button class="btn btn-ghost btn-sm" onclick="showMonthView()">${esc(tr('Mes'))}</button>
+    </div>
+    <div class="week-view">${cols}</div>`;
+}
+function weekShift(delta){
+  if(!weeklyViewISO) return;
+  const d = parseISODate(weeklyViewISO); if(!d) return;
+  d.setDate(d.getDate() + delta);
+  weeklyViewISO = toISODate(d);
+  const wrap = document.getElementById('week-view-wrap');
+  if(wrap) renderWeekView(wrap, weeklyViewISO);
 }
 function openCalModal(){
   const now = new Date();
@@ -6193,6 +6953,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   render();
   applyI18n();
   updateLoginGate();
+  maybeShowYearPrompt();
   pruneMissingDropboxFiles();
   initImportDropzone();
   initAttachDropzone();
