@@ -507,14 +507,7 @@ body.gate-open #mobile-bottombar{visibility:hidden;}
 .attach-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:10px;}
 .attach-head-text{flex:1;min-width:0;}
 .attach-head-text h2{margin:0 0 4px;}
-.attach-back{
-  flex:none;width:36px;height:36px;border:1px solid var(--line);border-radius:9px;
-  background:var(--paper);color:var(--ink);cursor:pointer;
-  display:flex;align-items:center;justify-content:center;margin-top:2px;
-  transition:background .12s ease, border-color .12s ease;
-}
-.attach-back:hover{background:var(--paper-alt);border-color:var(--pen);}
-.attach-back svg{width:18px;height:18px;}
+.attach-hint-mobile{display:none;}
 @media(max-width:860px){
   #attach-modal{padding:0;}
   #attach-modal .modal{
@@ -524,6 +517,8 @@ body.gate-open #mobile-bottombar{visibility:hidden;}
   }
   #attach-modal .attach-head{flex:none;padding:14px 16px 10px;border-bottom:1px solid var(--line);}
   #attach-modal .attach-head-text h2{font-size:1.15rem;}
+  #attach-modal .attach-hint-desktop{display:none;}
+  #attach-modal .attach-hint-mobile{display:block;}
   #attach-modal .attach-body{flex:1;overflow-y:auto;padding:16px 16px 6px;-webkit-overflow-scrolling:touch;}
   #attach-modal .attach-foot{flex:none;padding:12px 16px 14px;border-top:1px solid var(--line);background:var(--white);}
   #attach-modal .modal-actions{margin-top:0;}
@@ -720,7 +715,7 @@ body.gate-open #mobile-bottombar{visibility:hidden;}
 }
 .settings-input select:hover{border-color:var(--pen);}
 .settings-input select:focus{outline:none;border-color:var(--pen);box-shadow:0 0 0 3px var(--pen-soft);}
-.custom-select{position:relative;min-width:170px;}
+.custom-select{position:relative;min-width:140px;}
 .custom-select-trigger{
   display:flex;align-items:center;justify-content:space-between;gap:8px;
   width:100%;border:1px solid var(--line);border-radius:8px;
@@ -1060,12 +1055,10 @@ body.gate-open #mobile-bottombar{visibility:hidden;}
 <div class="modal-backdrop" id="attach-modal" onclick="if(event.target===this)closeAttachModal()">
   <div class="modal">
     <div class="attach-head">
-      <button class="attach-back" onclick="closeAttachModal()" aria-label="Tanca" title="Tanca" data-i18n-aria="Tanca" data-i18n-title="Tanca">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-      </button>
       <div class="attach-head-text">
         <h2 data-i18n="Adjunta recursos">Adjunta recursos</h2>
-        <p class="hint" data-i18n="Tria fitxers de l'ordinador o arrossega'ls ací, i/o enganxa enllaços. Pots afegir tants com vulgues, en aquesta finestra o en una altra.">Tria fitxers de l'ordinador o arrossega'ls ací, i/o enganxa enllaços. Pots afegir tants com vulgues, en aquesta finestra o en una altra.</p>
+        <p class="hint attach-hint-desktop" data-i18n="Tria fitxers de l'ordinador o arrossega'ls ací, i/o enganxa enllaços. Pots afegir tants com vulgues, en aquesta finestra o en una altra.">Tria fitxers de l'ordinador o arrossega'ls ací, i/o enganxa enllaços. Pots afegir tants com vulgues, en aquesta finestra o en una altra.</p>
+        <p class="hint attach-hint-mobile" data-i18n="Tria fitxers i/o enganxa enllaços.">Tria fitxers i/o enganxa enllaços.</p>
       </div>
     </div>
 
@@ -1274,6 +1267,8 @@ let attachTarget = null;
 let recursosUrgents = true;
 let recursosChecked = false;
 let attachAnimActId = null;
+let attachBackPushed = false;
+let closingAttachFromBack = false;
 let pruneRunning = false;
 let authSession = null;
 let filesQuery = '';
@@ -1391,16 +1386,15 @@ const I18N_ES = {
   'Inicia sessió': 'Inicia sesión',
   'Tanca sessió': 'Cerrar sesión',
   'Elimina compte': 'Eliminar cuenta',
-  'Suprimeix definitivament les teues dades i el teu usuari de la base de dades.': 'Elimina definitivamente tus datos y tu usuario de la base de datos.',
+  'Suprimeix el teu usuari de la base de dades.': 'Elimina tu usuario de la base de datos.',
   'Segur que vols eliminar el teu compte? S\'esborraran totes les teues dades i el teu usuari de la base de dades. No es pot desfer.': '¿Seguro que quieres eliminar tu cuenta? Se borrarán todos tus datos y tu usuario de la base de datos. No se puede deshacer.',
   'No s\'ha pogut eliminar el compte: ': 'No se ha podido eliminar la cuenta: ',
   'No s\'ha pogut eliminar completament el compte. Configura la funció SQL delete_my_account (vegeu els comentaris del codi) i torna-ho a provar.': 'No se ha podido eliminar completamente la cuenta. Configura la función SQL delete_my_account (ver los comentarios del código) y vuelve a intentarlo.',
   'Compte eliminat. Totes les teues dades s\'han esborrat.': 'Cuenta eliminada. Todos tus datos han sido borrados.',
   'Compte': 'Cuenta',
   'Inicia sessió per protegir i sincronitzar les teues dades al núvol.': 'Inicia sesión para proteger y sincronizar tus datos en la nube.',
-  'Connectat com a ': 'Conectado como ',
   'Llengua': 'Idioma',
-  'Llengua de la interfície del programa.': 'Idioma de la interfaz del programa.',
+  'Llengua del programa.': 'Idioma del programa.',
   'Valencià': 'Valenciano',
   'Castellà': 'Castellano',
   'Configuració general de l\'aplicació.': 'Configuración general de la aplicación.',
@@ -1517,8 +1511,7 @@ const I18N_ES = {
   'Arxius adjunts (Dropbox)': 'Archivos adjuntos (Dropbox)',
   'Per guardar els arxius al teu Dropbox personal (fins als teus GB) cal configurar l\'App Key al codi: DROPBOX_APP_KEY.': 'Para guardar los archivos en tu Dropbox personal (hasta tus GB) debes configurar la App Key en el código: DROPBOX_APP_KEY.',
   'No configurat': 'No configurado',
-  'Els arxius que adjuntes es guarden al teu Dropbox personal. ': 'Los archivos que adjuntas se guardan en tu Dropbox personal. ',
-  'Els nous arxius aniran al teu Dropbox.': 'Los nuevos archivos irán a tu Dropbox.',
+  'Compte de Dropbox vinculat.': 'Cuenta de Dropbox vinculada.',
   'Connecta el teu compte per guardar-hi els arxius.': 'Conecta tu cuenta para guardar ahí los archivos.',
   'Connectat': 'Conectado',
   'No connectat': 'No conectado',
@@ -1616,6 +1609,7 @@ const I18N_ES = {
   'Lleva el check i torna a pendents': 'Quitar el check y volver a pendientes',
   'Adjunta recursos': 'Adjuntar recursos',
   'Tria fitxers de l\'ordinador o arrossega\'ls ací, i/o enganxa enllaços. Pots afegir tants com vulgues, en aquesta finestra o en una altra.': 'Elige archivos del ordenador o arrástralos aquí, y/o pega enlaces. Puedes añadir tantos como quieras, en esta ventana o en otra.',
+  'Tria fitxers i/o enganxa enllaços.': 'Elige archivos y/o pega enlaces.',
   'Fitxers': 'Archivos',
   'Fitxers adjuntats': 'Archivos adjuntos',
   'Enllaç': 'Enlace',
@@ -1967,7 +1961,7 @@ function dropboxSettingsHTML(){
   return `<div class="settings-row">
     <div class="settings-label">
       <b>${tr('Arxius adjunts (Dropbox)')}</b>
-      <small>${connected ? tr('Els arxius que adjuntes es guarden al teu Dropbox personal. ') + tr('Els nous arxius aniran al teu Dropbox.') : tr('Connecta el teu compte per guardar-hi els arxius.')}</small>
+      <small>${connected ? tr('Compte de Dropbox vinculat.') : tr('Connecta el teu compte per guardar-hi els arxius.')}</small>
     </div>
     <div class="settings-input">
       <button class="btn btn-sm ${connected ? 'btn-danger' : 'btn-primary'}" onclick="dbxToggle()">${connected ? tr('Desconnecta') : tr('Connecta amb Dropbox')}</button>
@@ -2056,7 +2050,7 @@ function updateAuthUI(){
   if(acc){
     if(loggedIn()){
       acc.innerHTML = `
-        <div class="settings-label"><b>${tr('Compte')}</b><small>${tr('Connectat com a ')}<span class="mono">${esc(authSession.user.email || '')}</span>.</small></div>
+        <div class="settings-label"><b>${tr('Compte')}</b><small><span class="mono">${esc(authSession.user.email || '')}</span></small></div>
         <div class="settings-input"><button class="btn btn-sm btn-danger" onclick="signOut()">${isMobile() ? tr('Tanca') : tr('Tanca sessió')}</button></div>`;
     }else{
       acc.innerHTML = `
@@ -2736,7 +2730,7 @@ function settingsHTML(){
     <div class="settings-row">
       <div class="settings-label">
         <b>${tr('Llengua')}</b>
-        <small>${tr('Llengua de la interfície del programa.')}</small>
+        <small>${tr('Llengua del programa.')}</small>
       </div>
       <div class="settings-input">
         ${customSelectHTML('settings-lang', l, [
@@ -2876,7 +2870,7 @@ function settingsHTML(){
     <div class="settings-row" id="account-delete-row" style="display:none;">
       <div class="settings-label">
         <b>${tr('Elimina compte')}</b>
-        <small>${tr('Suprimeix definitivament les teues dades i el teu usuari de la base de dades.')}</small>
+        <small>${tr('Suprimeix el teu usuari de la base de dades.')}</small>
       </div>
       <div class="settings-input">
         <button class="btn btn-sm btn-danger" onclick="deleteAccount()">${tr('Elimina compte')}</button>
@@ -3531,6 +3525,10 @@ function openAttachModal(areaId, saId, sessionId, actId){
   renderAttachLinks();
   const m = document.getElementById('attach-modal');
   if(m) m.classList.add('open');
+  if(isMobile()){
+    attachBackPushed = true;
+    history.pushState({view:'attach'}, '');
+  }
 }
 function closeAttachModal(){
   const m = document.getElementById('attach-modal');
@@ -3543,6 +3541,10 @@ function closeAttachModal(){
   }else{
     render();
   }
+  if(isMobile() && attachBackPushed && !closingAttachFromBack){
+    history.back();
+  }
+  attachBackPushed = false;
 }
 function setAttachStatus(msg){
   const el = document.getElementById('attach-status');
@@ -6162,6 +6164,13 @@ function markViewState(view){
 }
 window.addEventListener('popstate', function(e){
   if(!isMobile()) return;
+  const m = document.getElementById('attach-modal');
+  if(m && m.classList.contains('open')){
+    closingAttachFromBack = true;
+    closeAttachModal();
+    closingAttachFromBack = false;
+    return;
+  }
   const v = e.state && e.state.view;
   if(v === 'area'){
     showMobileAreasView();
