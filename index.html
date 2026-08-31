@@ -292,7 +292,7 @@ a{color:var(--pen);}
 }
 .sa-title-input:focus{outline:none;border-bottom-color:var(--gold);}
 .sa-num{font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:.72rem;color:var(--pen-dark);background:var(--pen-soft);padding:3px 8px;border-radius:6px;flex:none;align-self:center;}
-.sa-stats{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.sa-stats{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-left:-6px;}
 .sessions-count-field{display:flex;align-items:center;gap:6px;font-size:.78rem;color:var(--ink-soft);}
 .sessions-count-field input{width:48px;padding:5px 6px;border:1px solid var(--line);border-radius:6px;text-align:center;font-size:.85rem;}
 .sa-total-badge{
@@ -445,9 +445,9 @@ a{color:var(--pen);}
   width:100%;border:1px solid var(--line);border-radius:8px;padding:9px 10px;font-size:.9rem;background:var(--paper);
 }
 .modal-field input[type=email]:focus, .modal-field input[type=password]:focus{outline:none;border-color:var(--pen);}
-#auth-status{font-size:.8rem;min-height:1.2em;margin:8px 0;}
-#auth-status.auth-ok{color:var(--pen-dark);}
-#auth-status.auth-error{color:var(--danger,#b0523f);}
+#auth-status, #gate-status{font-size:.8rem;min-height:1.2em;margin:8px 0;}
+#auth-status.auth-ok, #gate-status.auth-ok{color:var(--pen-dark);}
+#auth-status.auth-error, #gate-status.auth-error{color:var(--danger,#b0523f);}
 #account-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
 #import-dropzone{border:2px dashed var(--line);border-radius:9px;padding:12px 14px;}
 #import-dropzone.dragover{border-color:var(--pen);background:var(--pen-soft);}
@@ -458,6 +458,19 @@ a{color:var(--pen);}
 #import-preview .imp-sa strong{font-family:'Fraunces',serif;}
 #import-preview ul{margin:4px 0 0 0;padding-left:18px;color:var(--ink-soft);}
 .modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:18px;}
+
+/* Pantalla d'inici de sessió obligatòria (mode online) */
+#login-gate{z-index:200;background:var(--paper-alt);}
+#login-gate .modal{max-width:420px;padding:30px 32px;}
+.login-gate-brand{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;margin-bottom:4px;}
+.login-gate-brand .logo-mark{width:48px;height:48px;border-radius:14px;}
+.login-gate-brand .app-name{font-family:'Fraunces',serif;font-weight:700;font-size:1.4rem;color:var(--ink);}
+#login-gate .modal h2{margin:14px 0 2px;font-size:1.15rem;}
+#login-gate .modal-actions{justify-content:center;flex-wrap:wrap;}
+body.no-scroll{overflow:hidden;}
+body.gate-open #topbar,
+body.gate-open #app-shell,
+body.gate-open #mobile-bottombar{visibility:hidden;}
 .dropbox-uri-wrap{display:flex;align-items:center;gap:8px;background:var(--paper-alt);border:1px solid var(--line);border-radius:8px;padding:8px 10px;}
 .dropbox-uri-wrap code{flex:1;min-width:0;font-size:.78rem;color:var(--pen-dark);word-break:break-all;}
 #file-preview-modal .modal{
@@ -1132,6 +1145,31 @@ a{color:var(--pen);}
   </div>
 </div>
 
+<!-- Pantalla d'inici de sessió obligatòria (mode online) -->
+<div class="modal-backdrop" id="login-gate">
+  <div class="modal">
+    <div class="login-gate-brand">
+      <svg class="logo-mark" viewBox="0 0 100 100"><rect width="100" height="100" rx="18" fill="#33507A"/><path d="M30 20h30a8 8 0 0 1 8 8v52H30z" fill="#F3F6F3"/><line x1="38" y1="36" x2="58" y2="36" stroke="#33507A" stroke-width="3"/><line x1="38" y1="48" x2="58" y2="48" stroke="#33507A" stroke-width="3"/><line x1="38" y1="60" x2="52" y2="60" stroke="#33507A" stroke-width="3"/></svg>
+      <span class="app-name">Quadern</span>
+    </div>
+    <h2 id="login-gate-title" data-i18n="Inicia sessió">Inicia sessió</h2>
+    <p class="hint" id="login-gate-hint" data-i18n="Entra amb el teu compte per accedir a l'app.">Entra amb el teu compte per accedir a l'app.</p>
+    <div class="modal-field">
+      <label data-i18n="Correu electrònic">Correu electrònic</label>
+      <input type="email" id="gate-email" placeholder="tu@exemple.cat" data-i18n-ph="tu@exemple.cat" autocomplete="email" onkeydown="if(event.key==='Enter')gateAuthSubmit()">
+    </div>
+    <div class="modal-field">
+      <label data-i18n="Contrasenya">Contrasenya</label>
+      <input type="password" id="gate-password" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')gateAuthSubmit()">
+    </div>
+    <div id="gate-status"></div>
+    <div class="modal-actions">
+      <button class="btn btn-primary" id="gate-submit" onclick="gateAuthSubmit()" data-i18n="Entra">Entra</button>
+      <button class="btn btn-ghost" id="gate-toggle" onclick="gateAuthToggle()" data-i18n="Crea un compte">Crea un compte</button>
+    </div>
+  </div>
+</div>
+
 <div class="modal-backdrop" id="dropbox-modal" onclick="if(event.target===this)closeDropboxModal()">
   <div class="modal">
     <h2 data-i18n="Connecta amb Dropbox">Connecta amb Dropbox</h2>
@@ -1153,6 +1191,7 @@ a{color:var(--pen);}
 --------------------------------------------------------- */
 let state = { areas: [], selectedAreaId: null };
 let editTarget = null;
+let settingsProgramOpen = false;
 let showAgenda = true;
 let agendaShowAll = false;
 let showSettings = false;
@@ -1382,6 +1421,8 @@ const I18N_ES = {
   'Ja tinc un compte': 'Ya tengo una cuenta',
   'Entra amb el teu compte per sincronitzar i protegir les dades.': 'Entra con tu cuenta para sincronizar y proteger los datos.',
   'Crea un compte nou per protegir les teues dades al núvol.': 'Crea una cuenta nueva para proteger tus datos en la nube.',
+  'Entra amb el teu compte per accedir a l\'app.': 'Inicia sesión para acceder a la app.',
+  'Crea un compte nou per accedir a l\'app.': 'Crea una cuenta nueva para acceder a la app.',
   'No s\'ha pogut iniciar sessió.': 'No se ha podido iniciar sesión.',
   'Correu electrònic': 'Correo electrónico',
   'Contrasenya': 'Contraseña',
@@ -1837,6 +1878,7 @@ async function restoreAuthSession(){
     supabaseClient.auth.onAuthStateChange((event, session) => {
       authSession = session || null;
       updateAuthUI();
+      updateLoginGate();
       if(event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED'){
         loadRemoteState();
       }
@@ -2017,6 +2059,102 @@ async function signOut(){
   updateAuthUI();
   setSyncStatus(tr('Sessió tancada'));
   render();
+  updateLoginGate();
+}
+
+/* --- Pantalla d'inici de sessió obligatòria (mode online) --- */
+function isLocalMode(){
+  const host = (window.location.hostname || '').toLowerCase();
+  return window.location.protocol === 'file:' || host === 'localhost' || host === '127.0.0.1' || host === '[::1]' || host === '0.0.0.0';
+}
+function loginRequired(){ return remoteEnabled() && !isLocalMode(); }
+function updateLoginGate(){
+  const gate = document.getElementById('login-gate');
+  if(!gate) return;
+  const show = loginRequired() && !loggedIn();
+  gate.classList.toggle('open', show);
+  document.body.classList.toggle('no-scroll', show);
+  document.body.classList.toggle('gate-open', show);
+  if(show){
+    resetGateAuth();
+    const email = document.getElementById('gate-email');
+    if(email) setTimeout(() => email.focus(), 50);
+  }
+}
+let gateAuthMode = 'login';
+function resetGateAuth(){
+  gateAuthMode = 'login';
+  const email = document.getElementById('gate-email');
+  const pass = document.getElementById('gate-password');
+  if(email) email.value = '';
+  if(pass) pass.value = '';
+  const submit = document.getElementById('gate-submit');
+  const toggle = document.getElementById('gate-toggle');
+  const title = document.getElementById('login-gate-title');
+  const hint = document.getElementById('login-gate-hint');
+  if(submit) submit.textContent = tr('Entra');
+  if(toggle) toggle.textContent = tr('Crea un compte');
+  if(title) title.textContent = tr('Inicia sessió');
+  if(hint) hint.textContent = tr('Entra amb el teu compte per accedir a l\'app.');
+  gateSetStatus('');
+}
+function gateSetStatus(msg, ok){
+  const st = document.getElementById('gate-status');
+  if(!st) return;
+  st.textContent = msg || '';
+  st.className = ok ? 'auth-ok' : 'auth-error';
+}
+function gateAuthToggle(){
+  gateAuthMode = gateAuthMode === 'login' ? 'signup' : 'login';
+  const submit = document.getElementById('gate-submit');
+  const toggle = document.getElementById('gate-toggle');
+  const title = document.getElementById('login-gate-title');
+  const hint = document.getElementById('login-gate-hint');
+  if(submit) submit.textContent = gateAuthMode === 'login' ? tr('Entra') : tr('Crea el compte');
+  if(toggle) toggle.textContent = gateAuthMode === 'login' ? tr('Crea un compte') : tr('Ja tinc un compte');
+  if(title) title.textContent = gateAuthMode === 'login' ? tr('Inicia sessió') : tr('Crea un compte');
+  if(hint) hint.textContent = gateAuthMode === 'login'
+    ? tr('Entra amb el teu compte per accedir a l\'app.')
+    : tr('Crea un compte nou per accedir a l\'app.');
+  gateSetStatus('');
+}
+async function gateAuthSubmit(){
+  if(!remoteEnabled()) return;
+  const emailEl = document.getElementById('gate-email');
+  const passEl = document.getElementById('gate-password');
+  const email = (emailEl && emailEl.value || '').trim();
+  const pass = passEl ? passEl.value : '';
+  if(!email || !pass){ gateSetStatus(tr('Omple el correu i la contrasenya.')); return; }
+  try{
+    if(gateAuthMode === 'signup'){
+      const res = await supabaseClient.auth.signUp({ email, password: pass });
+      if(res.error) throw res.error;
+      if(res.data && res.data.session){
+        updateLoginGate();
+        await loadRemoteState();
+        return;
+      }
+      gateSetStatus(tr('Compte creat. Revisa el teu correu per confirmar-lo i després inicia sessió.'), true);
+      gateAuthMode = 'login';
+      const submit = document.getElementById('gate-submit');
+      const toggle = document.getElementById('gate-toggle');
+      const title = document.getElementById('login-gate-title');
+      const hint = document.getElementById('login-gate-hint');
+      if(submit) submit.textContent = tr('Entra');
+      if(toggle) toggle.textContent = tr('Crea un compte');
+      if(title) title.textContent = tr('Inicia sessió');
+      if(hint) hint.textContent = tr('Entra amb el teu compte per accedir a l\'app.');
+      return;
+    }
+    const res = await supabaseClient.auth.signInWithPassword({ email, password: pass });
+    if(res.error) throw res.error;
+    updateLoginGate();
+    await loadRemoteState();
+  }catch(e){
+    console.warn('Error d\'autenticació', e);
+    const msg = (e && (e.message || e.error_description)) || tr('No s\'ha pogut iniciar sessió.');
+    gateSetStatus(msg);
+  }
 }
 function colorForNewArea(){ return AREA_COLORS[state.areas.length % AREA_COLORS.length]; }
 function colorForAreaName(name){
@@ -2471,14 +2609,14 @@ function settingsHTML(){
         </select>
       </div>
     </div>
-    <div class="settings-row settings-collapse" onclick="toggleSettingsCollapse(this)" role="button" aria-expanded="false">
+    <div class="settings-row settings-collapse ${settingsProgramOpen?'open':''}" onclick="toggleSettingsCollapse(this)" role="button" aria-expanded="${settingsProgramOpen?'true':'false'}">
       <div class="settings-label">
         <b>${tr('Elements de la programació')}</b>
         <small>${tr('Tria quins elements apareixen a les sessions de la programació.')}</small>
       </div>
       <span class="settings-chevron" aria-hidden="true"></span>
     </div>
-    <div class="settings-sub settings-collapse-body hidden">
+    <div class="settings-sub settings-collapse-body ${settingsProgramOpen?'':'hidden'}">
       <div class="settings-row">
         <div class="settings-label">
           <b>${tr('Durada de les sessions')}</b>
@@ -2566,6 +2704,7 @@ function toggleSettingsCollapse(el){
   body.classList.toggle('hidden');
   el.classList.toggle('open');
   el.setAttribute('aria-expanded', body.classList.contains('hidden') ? 'false' : 'true');
+  settingsProgramOpen = !body.classList.contains('hidden');
 }
 function setDarkMode(on){
   if(!state.settings) state.settings = {};
@@ -3725,7 +3864,7 @@ function trashCardHTML(a){
 -------------------------------------------------------- */
 function showAgendaView(){ showAgenda = true; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; agendaShowAll = false; editTarget = null; render(); closeDrawerIfMobile(); }
 function showCalendarView(){ showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = true; showMobileAreas = false; showMobileResources = false; editTarget = null; render(); closeDrawerIfMobile(); }
-function showSettingsView(){ showAgenda = false; showSettings = true; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; render(); closeDrawerIfMobile(); }
+function showSettingsView(){ settingsProgramOpen = false; showAgenda = false; showSettings = true; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; render(); closeDrawerIfMobile(); }
 function showFilesView(){ if(showMobileResources) pushViewState('resources'); showAgenda = false; showSettings = false; showFiles = true; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; render(); closeDrawerIfMobile(); pruneMissingDropboxFiles(); enrichLinkTitles(); }
 function showArchivedView(){ if(showMobileResources) pushViewState('resources'); showAgenda = false; showSettings = false; showFiles = false; showArchived = true; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; render(); closeDrawerIfMobile(); }
 function showTrashView(){ if(showMobileResources) pushViewState('resources'); showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = true; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; render(); closeDrawerIfMobile(); enrichLinkTitles(); }
@@ -5841,17 +5980,20 @@ document.addEventListener('DOMContentLoaded', async () => {
   loadState();
   expireDoneAreas();
   applyTheme();
+  updateLoginGate();
   await handleDropboxRedirect();
   initDropbox();
   if(!state.selectedAreaId && state.areas.length) state.selectedAreaId = state.areas[0].id;
   render();
   applyI18n();
+  updateLoginGate();
   pruneMissingDropboxFiles();
   initImportDropzone();
   initAttachDropzone();
   if(remoteEnabled()){
     await restoreAuthSession();
     loadRemoteState();
+    updateLoginGate();
   }else{
     setSyncStatus(tr('Sense núvol configurat'));
   }
