@@ -187,7 +187,7 @@ a{color:var(--pen);}
 #sidebar-footer .foot-note#sync-status.ok{color:#4a7a57;}
 
 /* Main */
-#main-wrap{flex:1;min-width:0;}
+#main-wrap{flex:1;min-width:0;touch-action:pan-y;}
 #main-content{padding:32px 40px 80px;max-width:980px;margin:0 auto;touch-action:pan-y;}
 @media(max-width:1100px){#main-content{padding:28px 24px 70px;}}
 .screen-anim{transition:transform .3s ease, opacity .3s ease;}
@@ -321,7 +321,11 @@ a{color:var(--pen);}
   padding:5px 14px;font-size:.8rem;font-weight:600;cursor:pointer;font-family:inherit;
   transition:background .12s ease, color .12s ease, border-color .12s ease;
 }
-.cal-mark-btn:hover{border-color:var(--pen);color:var(--ink);}
+.cal-mark-btn.festiu{background:var(--danger-soft);border-color:var(--danger);color:var(--danger);}
+.cal-mark-btn.inici,.cal-mark-btn.fi{background:var(--green-tint);border-color:var(--green-ink);color:var(--green-ink);}
+.cal-mark-btn.avaluacio{background:var(--gold-soft);border-color:var(--gold);color:var(--gold-dark);}
+.cal-mark-btn.reunio{background:var(--pen-soft);border-color:var(--pen);color:var(--pen-dark);}
+.cal-mark-btn.festiu:hover,.cal-mark-btn.inici:hover,.cal-mark-btn.fi:hover,.cal-mark-btn.avaluacio:hover,.cal-mark-btn.reunio:hover{filter:brightness(1.05);}
 .cal-mark-btn.active{background:var(--pen);border-color:var(--pen);color:#fff;}
 [data-theme="dark"] .cal-mark-btn.active{color:#0F141A;}
 .cal-mark-btn.active.festiu{background:var(--danger);border-color:var(--danger);color:#fff;}
@@ -339,6 +343,16 @@ a{color:var(--pen);}
 .cal-note-pop textarea:focus{outline:none;border-color:var(--pen);}
 .cal-note-actions{display:flex;gap:6px;justify-content:flex-end;margin-top:8px;}
 .cal-note-text{font-size:.84rem;color:var(--ink);line-height:1.45;margin:4px 0 2px;white-space:pre-wrap;word-break:break-word;}
+.cal-info-mark{border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin:8px 0;}
+.cal-info-mark.avaluacio{background:var(--gold-soft);border-color:var(--gold);}
+.cal-info-mark.reunio{background:var(--pen-soft);border-color:var(--pen);}
+.cal-info-mark-head{display:flex;align-items:center;gap:6px;font-size:.84rem;}
+.cal-info-mark-head b{color:var(--ink);}
+.cal-info-badge{font-size:.6rem;font-weight:700;padding:1px 6px;border-radius:4px;text-transform:uppercase;letter-spacing:.03em;line-height:1.5;}
+.cal-info-badge.avaluacio{background:var(--gold-soft);color:var(--gold-dark);border:1px solid var(--gold);}
+.cal-info-badge.reunio{background:var(--pen-soft);color:var(--pen-dark);border:1px solid var(--pen);}
+.cal-info-mark .cal-note-text{margin:2px 0 0;}
+.cal-info-mark .cal-note-actions{margin-top:4px;}
 
 @media(min-width:861px){
   .cal-view-month .cal-grid-body{height:max(440px, calc(100vh - 330px));}
@@ -1108,6 +1122,8 @@ body.mode-data .duration-bar-wrap{flex:0 1 52px;min-width:44px;}
 }
 @media(max-width:860px){
   .week-view{grid-template-columns:1fr;}
+  #week-view-wrap .week-view{width:100%;}
+  body.cal-full #main-content > .settings-card.cal-card #week-view-wrap{flex:1;min-height:0;display:flex;flex-direction:column;width:100%;max-width:none;}
 }
 @media(max-width:860px){
   .data-setup-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
@@ -2715,13 +2731,19 @@ function schoolYearStart(now){
 }
 function hasCalendarForUpcomingYear(){
   const cd = state.calendarData;
-  if(!cd || !cd.startDate) return false;
-  const s = parseISODate(cd.startDate);
-  if(!s) return false;
-  const start = schoolYearStart(new Date());
-  const end = new Date(start);
-  end.setFullYear(start.getFullYear() + 1);
-  return s >= start && s < end;
+  if(!cd) return false;
+  const ay = currentAcadYear();
+  const c = (cd.courses && cd.courses[ay]) || null;
+  if(c && c.start) return true;
+  if(!cd.courses && cd.startDate){
+    const s = parseISODate(cd.startDate);
+    if(!s) return false;
+    const start = schoolYearStart(new Date());
+    const end = new Date(start);
+    end.setFullYear(start.getFullYear() + 1);
+    return s >= start && s < end;
+  }
+  return false;
 }
 function maybeShowCalendarPrompt(){
   const now = new Date();
@@ -5686,10 +5708,75 @@ function initCalMonthSwipe(){
     }
   }, true);
 }
+function currentAcadYear(){
+  const now = new Date();
+  return now.getMonth() >= 8 ? now.getFullYear() : now.getFullYear() - 1;
+}
+function acadYearOf(y, m){ return m >= 8 ? y : y - 1; }
+function courseStartEndForMonth(y, m){
+  const cd = state.calendarData || {};
+  const ay = acadYearOf(y, m);
+  const c = (cd.courses && cd.courses[ay]) || null;
+  if(c && (c.start || c.end)) return { start: c.start || null, end: c.end || null };
+  if(ay === currentAcadYear()) return { start: cd.startDate || null, end: cd.endDate || null };
+  return { start: null, end: null };
+}
+function areaStillNeedsSessions(a, iso){
+  const flat = flatSessions(a);
+  if(!flat.length) return false;
+  let hasUnscheduled = false, doneCount = 0;
+  for(const f of flat){
+    if(!f.se.date){ hasUnscheduled = true; }
+    else if(f.se.date <= iso){ doneCount++; }
+  }
+  if(hasUnscheduled) return true;
+  const needed = areaSessionsNeeded(a);
+  if(needed != null && doneCount >= needed) return false;
+  const start = courseStartDateGlobal();
+  if(!start) return false;
+  const days = Array.isArray(a.weekDays) ? a.weekDays : [];
+  const holidays = new Set((state.calendarData && state.calendarData.holidays) || []);
+  let classDays = 0;
+  const cur = new Date(start + 'T00:00:00');
+  const end = new Date(iso + 'T00:00:00');
+  while(cur <= end){
+    if(days.indexOf(cur.getDay()) !== -1 && !holidays.has(toISODate(cur))) classDays++;
+    cur.setDate(cur.getDate() + 1);
+  }
+  return doneCount < classDays;
+}
+function classesWithoutSessionOnDay(iso){
+  if(!dataModeEnabled() || !iso) return false;
+  const d = parseISODate(iso); if(!d) return false;
+  const dow = d.getDay();
+  if(dow === 0 || dow === 6) return false;
+  const start = courseStartDateGlobal();
+  if(!start || iso < start) return false;
+  const cd = state.calendarData || {};
+  const holidays = new Set(Array.isArray(cd.holidays) ? cd.holidays : []);
+  if(holidays.has(iso)) return false;
+  const sched = new Set(sessionsOnDay(iso).map(x => x.area.id));
+  for(const a of state.areas){
+    if(!a.active) continue;
+    const days = Array.isArray(a.weekDays) ? a.weekDays : [];
+    if(days.indexOf(dow) === -1) continue;
+    if(sched.has(a.id)) continue;
+    if(areaStillNeedsSessions(a, iso)) return true;
+  }
+  return false;
+}
+function calNotePreview(mark){
+  if(!mark) return '';
+  const parts = [];
+  if(mark.avaluacio && mark.avaluacio.note) parts.push(tr('Av') + ': ' + mark.avaluacio.note);
+  if(mark.reunio && mark.reunio.note) parts.push(tr('Re') + ': ' + mark.reunio.note);
+  return parts.join(' · ');
+}
 function calViewMonthHTML(y, m){
   const cd = state.calendarData || {};
   const holidays = new Set(Array.isArray(cd.holidays) ? cd.holidays : []);
   const marks = (cd.marks && typeof cd.marks === 'object') ? cd.marks : {};
+  const course = courseStartEndForMonth(y, m);
   const first = new Date(y, m, 1);
   const dim = new Date(y, m+1, 0).getDate();
   const colOf1 = (first.getDay()+6)%7;
@@ -5701,17 +5788,17 @@ function calViewMonthHTML(y, m){
     const isWeekend = (dow === 0 || dow === 6);
     const iso = calDateIso(y, m, d);
     const isH = iso && holidays.has(iso);
-    const isStart = iso && cd.startDate === iso;
-    const isEnd = iso && cd.endDate === iso;
+    const isStart = iso && course.start === iso;
+    const isEnd = iso && course.end === iso;
     const cls = ['cal-cell','cal-cell-click', isWeekend ? 'cal-cell-weekend' : '', isH ? 'cal-cell-holiday' : '', (isStart || isEnd) ? 'cal-cell-special' : ''].filter(Boolean).join(' ');
     const marker = isStart ? 'I' : isEnd ? 'F' : '';
-    const dot = (dataModeEnabled() && iso && sessionsOnDay(iso).length) ? '<span class="cal-cell-session-dot"></span>' : '';
-    const mark = (iso && marks[iso]) ? marks[iso] : null;
-    const badge = mark
-      ? `<span class="cal-cell-badge ${mark.type === 'avaluacio' ? 'avaluacio' : 'reunio'}">${mark.type === 'avaluacio' ? tr('Av') : tr('Re')}</span>`
+    const dot = (iso && classesWithoutSessionOnDay(iso)) ? '<span class="cal-cell-session-dot"></span>' : '';
+    const mark = (iso && marks[iso]) ? getCalMark(iso) : null;
+    const badges = mark
+      ? `<span class="cal-cell-badges">${(mark.avaluacio && mark.avaluacio.note ? `<span class="cal-cell-badge avaluacio">${tr('Av')}</span>` : '') + (mark.reunio && mark.reunio.note ? `<span class="cal-cell-badge reunio">${tr('Re')}</span>` : '')}</span>`
       : '';
-    const note = (mark && mark.note) ? `<span class="cal-cell-note">${esc(mark.note)}</span>` : '';
-    const content = `<span class="cal-cell-day">${d}</span>${marker ? `<span class="cal-cell-mark">${marker}</span>` : ''}${badge ? `<span class="cal-cell-badges">${badge}</span>` : ''}${note}${dot}`;
+    const note = mark ? `<span class="cal-cell-note">${esc(calNotePreview(mark))}</span>` : '';
+    const content = `<span class="cal-cell-day">${d}</span>${marker ? `<span class="cal-cell-mark">${marker}</span>` : ''}${badges}${note}${dot}`;
     cells += `<button type="button" class="${cls}" data-iso="${iso}" onclick="calDayClick('${iso}', this)" title="${esc(tr('Marca o consulta aquest dia'))}">${content}</button>`;
   }
   return `<div class="cal-grid-wrap"><div class="cal-grid-head">${headers.map(h=>`<span class="cal-grid-hd">${h}</span>`).join('')}</div><div class="cal-grid-body">${cells}</div></div>`;
@@ -5734,7 +5821,23 @@ function toggleCalMarkMode(mode){
 }
 function getCalMark(iso){
   const marks = (state.calendarData && state.calendarData.marks) || {};
-  return marks[iso] || null;
+  const m = marks[iso];
+  if(!m) return null;
+  if(m.type){ // format antic: { type, note } -> { tipus: { note } }
+    const nm = {};
+    if(m.note) nm[m.type] = { note: m.note };
+    marks[iso] = nm;
+    return nm;
+  }
+  return m;
+}
+function getCalMarks(iso){
+  const m = getCalMark(iso);
+  if(!m) return [];
+  const out = [];
+  if(m.avaluacio && m.avaluacio.note) out.push({ type: 'avaluacio', note: m.avaluacio.note });
+  if(m.reunio && m.reunio.note) out.push({ type: 'reunio', note: m.reunio.note });
+  return out;
 }
 function calDayClick(iso, btn){
   if(!iso) return;
@@ -5752,10 +5855,21 @@ function calMarkFestiuIniciFi(iso){
     const h = new Set(Array.isArray(state.calendarData.holidays) ? state.calendarData.holidays : []);
     if(h.has(iso)) h.delete(iso); else h.add(iso);
     state.calendarData.holidays = Array.from(h);
-  } else if(calMarkMode === 'inici'){
-    state.calendarData.startDate = (state.calendarData.startDate === iso) ? null : iso;
-  } else if(calMarkMode === 'fi'){
-    state.calendarData.endDate = (state.calendarData.endDate === iso) ? null : iso;
+  } else if(calMarkMode === 'inici' || calMarkMode === 'fi'){
+    const d = parseISODate(iso); if(!d) return;
+    const ay = acadYearOf(d.getFullYear(), d.getMonth());
+    if(!state.calendarData.courses) state.calendarData.courses = {};
+    if(!state.calendarData.courses[ay]) state.calendarData.courses[ay] = {};
+    const c = state.calendarData.courses[ay];
+    if(calMarkMode === 'inici'){
+      c.start = (c.start === iso) ? null : iso;
+      if(c.start) state.calendarData.startDate = c.start;
+      else if(state.calendarData.startDate === iso) state.calendarData.startDate = null;
+    } else {
+      c.end = (c.end === iso) ? null : iso;
+      if(c.end) state.calendarData.endDate = c.end;
+      else if(state.calendarData.endDate === iso) state.calendarData.endDate = null;
+    }
   }
   if(!state.settings) state.settings = {};
   state.settings.courseStartDate = state.calendarData.startDate || null;
@@ -5786,12 +5900,13 @@ function openCalNotePopover(iso, btn){
   calNoteSuppressClose = true;
   calNoteISO = iso;
   const existing = getCalMark(iso);
+  const existingNote = (existing && existing[calMarkMode]) ? existing[calMarkMode].note : '';
   const pop = document.createElement('div');
   pop.className = 'cal-note-pop';
   pop.id = 'cal-note-pop';
   pop.innerHTML = `
     <h4>${tr(calMarkMode === 'avaluacio' ? 'Avaluació' : 'Reunió')}</h4>
-    <textarea id="cal-note-input" placeholder="${esc(tr('Escriu una nota…'))}">${esc(existing && existing.note ? existing.note : '')}</textarea>
+    <textarea id="cal-note-input" placeholder="${esc(tr('Escriu una nota…'))}">${esc(existingNote)}</textarea>
     <div class="cal-note-actions">
       <button type="button" class="btn btn-sm btn-ghost" onclick="closeCalNotePopover()">${tr('Cancel·la')}</button>
       <button type="button" class="btn btn-sm btn-primary" onclick="saveCalNote()">${tr('Desa')}</button>
@@ -5804,17 +5919,26 @@ function openCalNotePopover(iso, btn){
 function openCalDayInfo(iso, btn){
   closeCalNotePopover();
   calNoteSuppressClose = true;
-  const mark = getCalMark(iso);
-  if(!mark) return;
+  const marks = getCalMarks(iso);
+  if(!marks.length) return;
   const pop = document.createElement('div');
   pop.className = 'cal-note-pop';
   pop.id = 'cal-note-pop';
-  const typeLabel = mark.type === 'avaluacio' ? tr('Avaluació') : tr('Reunió');
+  const body = marks.map(mk => `
+    <div class="cal-info-mark ${mk.type}">
+      <div class="cal-info-mark-head">
+        <span class="cal-info-badge ${mk.type}">${mk.type === 'avaluacio' ? tr('Av') : tr('Re')}</span>
+        <b>${mk.type === 'avaluacio' ? tr('Avaluació') : tr('Reunió')}</b>
+      </div>
+      <p class="cal-note-text">${esc(mk.note || '')}</p>
+      <div class="cal-note-actions">
+        <button type="button" class="btn btn-sm btn-ghost" onclick="deleteCalMark('${iso}','${mk.type}')">${tr('Elimina')}</button>
+      </div>
+    </div>`).join('');
   pop.innerHTML = `
-    <h4>${typeLabel} · ${fmtShort(iso)}</h4>
-    <p class="cal-note-text">${esc(mark.note || '')}</p>
+    <h4>${fmtShort(iso)}</h4>
+    ${body}
     <div class="cal-note-actions">
-      <button type="button" class="btn btn-sm btn-ghost" onclick="deleteCalMark('${iso}')">${tr('Elimina')}</button>
       <button type="button" class="btn btn-sm btn-primary" onclick="closeCalNotePopover()">${tr('Tanca')}</button>
     </div>`;
   document.body.appendChild(pop);
@@ -5826,18 +5950,27 @@ function saveCalNote(){
   if(!state.calendarData) state.calendarData = {};
   if(!state.calendarData.marks) state.calendarData.marks = {};
   const note = ta.value.trim();
+  const day = state.calendarData.marks[calNoteISO] || (state.calendarData.marks[calNoteISO] = {});
   if(note){
-    state.calendarData.marks[calNoteISO] = { type: calMarkMode, note: note };
+    day[calMarkMode] = { note: note };
   } else {
-    delete state.calendarData.marks[calNoteISO];
+    delete day[calMarkMode];
+    if(!Object.keys(day).length) delete state.calendarData.marks[calNoteISO];
   }
   const wasMarking = !!calMarkMode;
   closeCalNotePopover();
   if(wasMarking) calMarkMode = null;
   saveState(); render();
 }
-function deleteCalMark(iso){
-  if(state.calendarData && state.calendarData.marks) delete state.calendarData.marks[iso];
+function deleteCalMark(iso, type){
+  const marks = state.calendarData && state.calendarData.marks;
+  if(!marks || !marks[iso]) return;
+  if(type){
+    delete marks[iso][type];
+    if(!Object.keys(marks[iso]).length) delete marks[iso];
+  }else{
+    delete marks[iso];
+  }
   closeCalNotePopover();
   saveState(); render();
 }
@@ -5856,14 +5989,6 @@ document.addEventListener('click', (e) => {
 function calendariHTML(){
   closeCalNotePopover();
   calViewMonthNow();
-  const cd = state.calendarData;
-  const has = !!(cd && Array.isArray(cd.holidays) && cd.holidays.length);
-  const fmt = s => s ? new Date(s + 'T00:00:00').toLocaleDateString('ca-ES') : '—';
-  const summary = (cd && cd.startDate) ? `${fmt(cd.startDate)} — ${fmt(cd.endDate)}` : '';
-  const buttons = has
-    ? `<button class="btn btn-sm btn-ghost" onclick="openCalModal()">${tr('Modifica')}</button>
-       <button class="btn btn-sm btn-danger" onclick="calDelete()">${tr('Esborra')}</button>`
-    : `<button class="btn btn-sm btn-primary" onclick="openCalModal()">${tr('Configura')}</button>`;
   const dataTabs = dataModeEnabled() ? `
     <div class="cal-v-tabs">
       <button class="cal-tab active" id="cal-v-tab-month" onclick="showMonthView()">${tr('Mes')}</button>
@@ -5888,25 +6013,9 @@ function calendariHTML(){
         </div>
         <div class="cal-view-month" id="cal-month-slide">${calViewMonthHTML(calViewYear, calViewMonth)}</div>
       </div>
-      <div class="cal-grid-legend">
-        <span class="cal-legend cal-legend-weekend">${tr('cap de setmana')}</span>
-        <span class="cal-legend cal-legend-holiday">${tr('festiu')}</span>
-        <span class="cal-legend">${tr('inici/fi de curs')}</span>
-        <span class="cal-legend cal-legend-avaluacio">${tr('avaluació')}</span>
-        <span class="cal-legend cal-legend-reunio">${tr('reunió')}</span>
-      </div>
       ${markBar}
     </div>`;
   const weekWrap = dataModeEnabled() ? `<div id="week-view-wrap" style="display:none"></div>` : '';
-  const registered = hasCalendarForUpcomingYear();
-  const configRow = `
-    <div class="settings-row">
-      <div class="settings-label">
-        <b>${tr('Curs')}</b>
-        <small>${summary || tr('Encara no has configurat el calendari del curs.')}</small>
-      </div>
-      <div class="settings-input">${buttons}</div>
-    </div>`;
   return `
   <div class="settings-header cal-header">
     <h1 class="display">${tr('Calendari escolar')}</h1>
@@ -5914,10 +6023,8 @@ function calendariHTML(){
   </div>
   ${dataTabs}
   <div class="settings-card cal-card">
-    ${registered ? '' : configRow}
     ${monthWrap}
     ${weekWrap}
-    ${registered ? configRow : ''}
   </div>`;
 }
 let weeklyViewISO = null;
@@ -6256,6 +6363,14 @@ function calSave(){
   state.calendarData.holidays = holidays;
   state.calendarData.startDate = cal.startDate || null;
   state.calendarData.endDate = cal.endDate || null;
+  if(cal.startDate){
+    const d = parseISODate(cal.startDate);
+    const ay = d ? acadYearOf(d.getFullYear(), d.getMonth()) : currentAcadYear();
+    if(!state.calendarData.courses) state.calendarData.courses = {};
+    if(!state.calendarData.courses[ay]) state.calendarData.courses[ay] = {};
+    state.calendarData.courses[ay].start = cal.startDate;
+    state.calendarData.courses[ay].end = cal.endDate || null;
+  }
   if(!state.settings) state.settings = {};
   state.settings.courseStartDate = cal.startDate || null;
   if(dataModeEnabled()) recomputeAllDates();
@@ -7490,7 +7605,7 @@ function adjacentMobileScreen(name, dir){
 }
 let screenSwipe = { startX:0, startY:0, axis:null, active:false, tracking:false };
 function initScreenSwipe(){
-  const main = document.getElementById('main-content');
+  const main = document.getElementById('main-wrap');
   if(!main) return;
   const inMonthSlider = (el) => {
     const slider = document.getElementById('cal-month-slider');
