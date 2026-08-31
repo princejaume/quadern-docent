@@ -231,7 +231,8 @@ a{color:var(--pen);}
 .color-modal-custom input[type=color]{width:40px;height:30px;padding:0;border:1px solid var(--line);border-radius:6px;background:none;cursor:pointer;}
 .color-modal-custom input[type=color]::-webkit-color-swatch-wrapper{padding:0;}
 .color-modal-custom input[type=color]::-webkit-color-swatch{border:none;border-radius:5px;}
-#cal-modal .modal{max-width:620px;}
+#cal-modal .modal{max-width:640px;}
+#area-config-modal .modal{max-width:660px;}
 .cal-tabs{display:flex;gap:6px;margin-bottom:14px;border-bottom:1px solid var(--line);}
 .cal-tab{background:none;border:none;padding:8px 14px;font-size:.88rem;font-weight:600;color:var(--ink-soft);border-bottom:2px solid transparent;cursor:pointer;}
 .cal-tab.active{color:var(--pen);border-bottom-color:var(--pen);}
@@ -249,6 +250,21 @@ a{color:var(--pen);}
 .cal-cell:not(.cal-cell-empty):not(.cal-cell-weekend):not(.cal-cell-holiday):not(.cal-cell-special):hover{background:var(--pen-soft);}
 .cal-cell-special{position:relative;background:var(--green-tint);color:var(--ink);}
 .cal-cell-special .cal-cell-mark{position:absolute;top:2px;right:4px;font-size:.6rem;font-weight:700;color:var(--green-ink);}
+#cal-grid .cal-grid-head,#cal-grid .cal-grid-body{grid-template-columns:repeat(5,1fr) minmax(0,.65fr) minmax(0,.65fr);}
+#cal-grid .cal-cell.cal-cell-weekend{height:26px;font-size:.72rem;}
+#cal-grid .cal-cell:not(.cal-cell-empty){cursor:pointer;}
+.cal-legend-special::before{background:var(--green-tint);border-color:var(--green-ink);}
+.cal-mode-bar{display:flex;align-items:center;gap:8px;margin-top:14px;flex-wrap:wrap;}
+.cal-mode-label{font-size:.78rem;font-weight:600;color:var(--ink-soft);}
+.cal-mode-btn{
+  border:1px solid var(--line);background:var(--paper);color:var(--ink-soft);border-radius:20px;
+  padding:5px 14px;font-size:.8rem;font-weight:600;cursor:pointer;font-family:inherit;
+  transition:background .12s ease, color .12s ease, border-color .12s ease;
+}
+.cal-mode-btn:hover{border-color:var(--pen);color:var(--ink);}
+.cal-mode-btn.active{background:var(--pen);border-color:var(--pen);color:#fff;}
+[data-theme="dark"] .cal-mode-btn.active{color:#0F141A;}
+.cal-mode-hint{font-size:.8rem;color:var(--ink-faint);margin-top:8px;min-height:1.2em;}
 .cal-grid-legend{display:flex;gap:14px;margin-top:10px;flex-wrap:wrap;font-size:.75rem;color:var(--ink-soft);}
 #cal-month-view-wrap{max-width:440px;margin:0 auto;}
 #cal-month-view-wrap .cal-grid-legend{justify-content:center;}
@@ -454,6 +470,11 @@ body.mode-data .cal-view-month .cal-cell:not(.cal-cell-empty){cursor:pointer;}
 }
 .modal h2{margin:0 0 4px;font-size:1.35rem;}
 .modal p.hint{color:var(--ink-soft);font-size:.85rem;line-height:1.5;margin-top:0;}
+.modal{scrollbar-width:thin;scrollbar-color:var(--line) transparent;}
+.modal::-webkit-scrollbar{width:10px;height:10px;}
+.modal::-webkit-scrollbar-track{background:transparent;}
+.modal::-webkit-scrollbar-thumb{background:var(--line);border-radius:8px;}
+.modal::-webkit-scrollbar-thumb:hover{background:var(--pen);}
 .modal-field{margin-bottom:14px;}
 .modal-field label{display:block;font-size:.78rem;font-weight:600;margin-bottom:5px;color:var(--ink-soft);}
 .modal-field input[type=text], .modal-field select{
@@ -954,10 +975,11 @@ body.mode-data .duration-bar-wrap{flex:0 1 52px;min-width:44px;}
 /* Formulari inicial de mode Data */
 #data-setup-modal .modal{max-width:640px;}
 .data-setup-scroll{display:flex;flex-direction:column;gap:12px;padding-top:4px;}
+.data-setup-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;align-items:start;}
 .data-setup-area{border:1px solid var(--line);border-radius:10px;background:var(--white);padding:12px 14px;box-shadow:var(--shadow);}
 .data-setup-area-head{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:.95rem;}
 .data-setup-day{display:flex;flex-direction:row;align-items:center;gap:8px;}
-.data-setup-day .wd-day{min-width:46px;}
+.data-setup-day .wd-day{min-width:34px;padding:5px 6px;font-size:.72rem;}
 #data-setup-status{font-size:.8rem;color:var(--danger);min-height:1.2em;margin-top:6px;}
 
 /* Vista setmanal */
@@ -1003,7 +1025,21 @@ body.mode-data .duration-bar-wrap{flex:0 1 52px;min-width:44px;}
   #data-setup-modal h2,#data-setup-modal p.hint,#year-start-modal h2,#year-start-modal p.hint{padding:16px 16px 0;}
 }
 @media(max-width:860px){
+  #area-config-modal{padding:0;}
+  #area-config-modal .modal{
+    max-width:100%;width:100%;max-height:100%;height:100%;border-radius:0;padding:0;
+    display:flex;flex-direction:column;overflow:hidden;
+  }
+  #area-config-modal #area-config-body{flex:1;overflow-y:auto;padding:16px 16px 6px;-webkit-overflow-scrolling:touch;}
+  #area-config-modal .modal-actions{flex:none;padding:12px 16px 14px;border-top:1px solid var(--line);background:var(--white);margin-top:0;}
+  #area-config-modal h2,#area-config-modal p.hint{padding:16px 16px 0;}
+  .cal-header{display:none;}
+}
+@media(max-width:860px){
   .week-view{grid-template-columns:1fr;}
+}
+@media(max-width:860px){
+  .data-setup-grid{grid-template-columns:1fr;}
 }
 </style>
 </head>
@@ -1262,12 +1298,7 @@ body.mode-data .duration-bar-wrap{flex:0 1 52px;min-width:44px;}
 <div class="modal-backdrop" id="cal-modal" onclick="if(event.target===this)closeCalModal()">
   <div class="modal cal-modal">
     <h2 data-i18n="Calendari escolar">Calendari escolar</h2>
-    <p class="hint" data-i18n="Marca els dies de festa al calendari, o enganxa una llista de dates.">Marca els dies de festa al calendari, o enganxa una llista de dates.</p>
-
-    <div class="cal-tabs">
-      <button class="cal-tab active" id="cal-tab-cal" onclick="calTab('cal')" data-i18n="Calendari">Calendari</button>
-      <button class="cal-tab" id="cal-tab-list" onclick="calTab('list')" data-i18n="Llista de dates">Llista de dates</button>
-    </div>
+    <p class="hint" data-i18n="Marca els dies de festa i l'inici i fi del curs al calendari.">Marca els dies de festa i l'inici i fi del curs al calendari.</p>
 
     <div id="cal-pane-cal">
       <div class="cal-controls">
@@ -1282,18 +1313,16 @@ body.mode-data .duration-bar-wrap{flex:0 1 52px;min-width:44px;}
       <div class="cal-grid-legend">
         <span class="cal-legend cal-legend-weekend" data-i18n="cap de setmana">cap de setmana</span>
         <span class="cal-legend cal-legend-holiday" data-i18n="festiu">festiu</span>
-        <span class="cal-legend" data-i18n="fes clic per marcar">fes clic per marcar</span>
+        <span class="cal-legend cal-legend-special" data-i18n="inici/fi de curs">inici/fi de curs</span>
       </div>
+      <div class="cal-mode-bar">
+        <span class="cal-mode-label" data-i18n="Tria el que vols marcar:">Tria el que vols marcar:</span>
+        <button type="button" class="cal-mode-btn active" id="cal-mode-festiu" onclick="calMode('festiu')" data-i18n="Festius">Festius</button>
+        <button type="button" class="cal-mode-btn" id="cal-mode-inici" onclick="calMode('inici')" data-i18n="Inici curs">Inici curs</button>
+        <button type="button" class="cal-mode-btn" id="cal-mode-fi" onclick="calMode('fi')" data-i18n="Fi curs">Fi curs</button>
+      </div>
+      <div class="cal-mode-hint" id="cal-mode-hint"></div>
       <div id="cal-holidays-list"></div>
-    </div>
-
-    <div id="cal-pane-list" style="display:none">
-      <label class="cal-list-label" data-i18n="Enganxa el text del calendari: data d'inici i fi del curs i dies festius. El programa n'extreu les dates (ex. 'El curs comença el 8 de setembre i acaba el 30 de juny. Festius: 12 d'octubre, del 23 de desembre al 7 de gener…').">Enganxa el text del calendari: data d'inici i fi del curs i dies festius. El programa n'extreu les dates (ex. "El curs comença el 8 de setembre i acaba el 30 de juny. Festius: 12 d'octubre, del 23 de desembre al 7 de gener…").</label>
-      <textarea id="cal-list-input" rows="8" placeholder="El curs comença el 8 de setembre de 2026 i acaba el 30 de juny de 2027. Festius: 12 d'octubre, 1 de novembre, del 23 de desembre al 7 de gener…"></textarea>
-      <div class="cal-actions">
-        <button class="btn btn-primary btn-sm" onclick="calParseText()" data-i18n="Analitza el text">Analitza el text</button>
-      </div>
-      <div id="cal-list-result"></div>
     </div>
 
     <div id="cal-status"></div>
@@ -1371,7 +1400,6 @@ body.mode-data .duration-bar-wrap{flex:0 1 52px;min-width:44px;}
 <div class="modal-backdrop" id="data-setup-modal" onclick="if(event.target===this)cancelDataSetup()">
   <div class="modal">
     <h2 data-i18n="Configura el mode Data">Configura el mode Data</h2>
-    <p class="hint" data-i18n="Estableix la data d'inici de curs i, per a cada àrea activa, els dies de classe i les hores d'inici de cada sessió.">Estableix la data d'inici de curs i, per a cada àrea activa, els dies de classe i les hores d'inici de cada sessió.</p>
     <div class="data-setup-scroll" id="data-setup-body"></div>
     <div id="data-setup-status"></div>
     <div class="modal-actions">
@@ -1591,6 +1619,15 @@ const I18N_ES = {
   'Configura': 'Configurar',
   '{n} festius desats.': '{n} festivos guardados.',
   'Marca els dies de festa al calendari, o enganxa una llista de dates.': 'Marca los días festivos en el calendario, o pega una lista de fechas.',
+  'Marca els dies de festa i l\'inici i fi del curs al calendari.': 'Marca los días festivos y el inicio y fin del curso en el calendario.',
+  'Tria el que vols marcar:': 'Elige qué quieres marcar:',
+  'Festius': 'Festivos',
+  'Inici curs': 'Inicio de curso',
+  'Fi curs': 'Fin de curso',
+  'Fes clic a un dia per marcar-lo o desmarcar-lo com a festiu.': 'Haz clic en un día para marcarlo o desmarcarlo como festivo.',
+  'Fes clic al dia d\'inici de curs.': 'Haz clic en el día de inicio de curso.',
+  'Fes clic al dia de fi de curs.': 'Haz clic en el día de fin de curso.',
+  'Configurar calendari': 'Configurar calendario',
   'Calendari': 'Calendario',
   'Llista de dates': 'Lista de fechas',
   'Enganxa les dates de festa (una per línia o separades per comes). Formats admesos: 08/09/2026, 08-09-2026, 8/9/26.': 'Pega las fechas festivas (una por línea o separadas por comas). Formatos admitidos: 08/09/2026, 08-09-2026, 8/9/26.',
@@ -2206,6 +2243,11 @@ function setSyncStatus(text, ok){
    MODE DATA — Dates de sessions, SA i àrees
 --------------------------------------------------------- */
 function dataModeEnabled(){ return !!(state.settings && state.settings.mode === 'data'); }
+function courseStartDateGlobal(){
+  if(state.settings && state.settings.courseStartDate) return state.settings.courseStartDate;
+  if(state.calendarData && state.calendarData.startDate) return state.calendarData.startDate;
+  return null;
+}
 
 /* --- Utilitats de dates --- */
 function toISODate(d){
@@ -2281,7 +2323,7 @@ function sessionsOnDay(iso){
 function recomputeAreaDates(area, fromFlatIdx, keepAnchor){
   if(!dataModeEnabled() || !area) return;
   const flat = flatSessions(area);
-  const base0 = state.settings.courseStartDate;
+  const base0 = courseStartDateGlobal();
   const days = Array.isArray(area.weekDays) ? area.weekDays : [];
   let prevDate = null;
   for(let i = 0; i < flat.length; i++){
@@ -2497,17 +2539,17 @@ function openDataSetup(){
   if(!body) return;
   const areas = state.areas.filter(a => a.active);
   body.innerHTML = `
-    <div class="settings-row column">
+    <div class="settings-row">
       <div class="settings-label">
-        <b>${tr('Data d\'inici de curs')}</b>
-        <small>${tr('S\'usa per calcular la primera sessió de cada àrea.')}</small>
+        <b>${tr('Configurar calendari')}</b>
+        <small>${tr('Marca els dies de festa i l\'inici i fi del curs al calendari.')}</small>
       </div>
       <div class="settings-input">
-        ${dateFieldHTML('data-setup-csd', state.settings.courseStartDate || '', 'dataSetupCSD')}
+        <button class="btn btn-sm btn-primary" onclick="openCalModal()">${tr('Configurar calendari')}</button>
       </div>
     </div>
     ${areas.length
-      ? areas.map(a => dataSetupAreaHTML(a)).join('')
+      ? `<div class="data-setup-grid">${areas.map(a => dataSetupAreaHTML(a)).join('')}</div>`
       : `<p class="empty-hint">${tr('No tens cap àrea activa.')}</p>`}`;
   const st = document.getElementById('data-setup-status');
   if(st) st.textContent = '';
@@ -2561,11 +2603,6 @@ function dataSetupTime(areaId, dow, value){
   saveState();
 }
 function saveDataSetup(){
-  const input = document.getElementById('data-setup-csd');
-  if(input){
-    const d = parseShortDate(input.value);
-    if(d) state.settings.courseStartDate = toISODate(d);
-  }
   recomputeAllDates();
   saveState();
   closeDataSetup();
@@ -2580,6 +2617,41 @@ function cancelDataSetup(){
 function closeDataSetup(){
   const m = document.getElementById('data-setup-modal');
   if(m) m.classList.remove('open');
+}
+
+/* --- Calendari del proper curs --- */
+function schoolYearStart(now){
+  const y = now.getFullYear();
+  const sep = new Date(y, 8, 1);
+  return now >= sep ? new Date(y, 8, 1) : new Date(y-1, 8, 1);
+}
+function hasCalendarForUpcomingYear(){
+  const cd = state.calendarData;
+  if(!cd || !cd.startDate) return false;
+  const s = parseISODate(cd.startDate);
+  if(!s) return false;
+  const start = schoolYearStart(new Date());
+  const end = new Date(start);
+  end.setFullYear(start.getFullYear() + 1);
+  return s >= start && s < end;
+}
+function maybeShowCalendarPrompt(){
+  const now = new Date();
+  if(now.getMonth() !== 8) return;
+  if(hasCalendarForUpcomingYear()) return;
+  if(!state.settings) state.settings = {};
+  const key = 'calendarPrompt' + now.getFullYear();
+  const data = state.settings[key] || {};
+  if(data.count >= 3) return;
+  const today = toISODate(now);
+  if(!today) return;
+  const days = Array.isArray(data.days) ? data.days : [];
+  if(days.indexOf(today) !== -1) return;
+  data.count = (data.count || 0) + 1;
+  data.days = days.concat([today]);
+  state.settings[key] = data;
+  saveState();
+  openCalModal();
 }
 
 /* --- Diàleg anual (1 de juliol) --- */
@@ -4803,8 +4875,8 @@ function areaClassesToday(a){
 }
 function agendaHTML(){
   const dayFilter = dayDetectionEnabled() && !agendaShowAll;
+  const today = toISODate(new Date());
   if(dataModeEnabled()){
-    const today = toISODate(new Date());
     let changed = false;
     for(const a of state.areas){
       if(!a.active || a.doneOn || a.currentSessionId === '__done__') continue;
@@ -4814,7 +4886,9 @@ function agendaHTML(){
     if(changed) saveState();
   }
   const activeAll = state.areas.filter(a => a.active).sort((x, y) => (x.doneOn ? 1 : 0) - (y.doneOn ? 1 : 0));
-  const active = dayFilter ? activeAll.filter(areaClassesToday) : activeAll;
+  const active = dataModeEnabled()
+    ? (agendaShowAll ? activeAll : activeAll.filter(a => flatSessions(a).some(f => f.se.date === today)))
+    : (dayFilter ? activeAll.filter(areaClassesToday) : activeAll);
   const inactive = state.areas.length - activeAll.length;
   let body;
   if(!state.areas.length){
@@ -4849,7 +4923,7 @@ function agendaHTML(){
         ${tr('Urgent')}
       </button>`
     : '';
-  const seeAllBtn = dayDetectionEnabled() && !agendaShowAll && activeAll.length
+  const seeAllBtn = !agendaShowAll && activeAll.length && (dataModeEnabled() || dayDetectionEnabled())
     ? `<button class="btn btn-ghost btn-sm" title="${esc(tr('Mostra totes les àrees actives indiferentment del dia.'))}" onclick="agendaShowAll = true; render()">${tr('Vore totes')}</button>`
     : '';
   const todayLine = dataModeEnabled()
@@ -5228,16 +5302,6 @@ function openAreaConfigModal(id){
         <input type="text" value="${esc(area.course||'')}" placeholder="${tr('ex: 1r ESO')}" onchange="renameCourse('${area.id}', this.value)">
       </div>
     </div>
-    ${dataModeEnabled() ? `
-    <div class="settings-row column">
-      <div class="settings-label">
-        <b>${tr('Inici de curs')}</b>
-        <small>${tr('Data d\'inici de curs. Si ja està registrada, apareix preescrita i es pot modificar.')}</small>
-      </div>
-      <div class="settings-input">
-        ${dateFieldHTML('area-csd-'+area.id, state.settings.courseStartDate || '', 'setCourseStartDate')}
-      </div>
-    </div>` : ''}
     <div class="settings-row">
       <div class="settings-label">
         <b>${tr('Mostra a l\'agenda')}</b>
@@ -5394,6 +5458,7 @@ function calDelete(){
   if(!state.calendarData) return;
   if(!confirm(tr('Vols esborrar les dades del calendari escolar?'))) return;
   state.calendarData = null;
+  if(state.settings) state.settings.courseStartDate = null;
   saveState(); render();
 }
 function calendariMonths(){
@@ -5554,22 +5619,26 @@ function calendariHTML(){
       </div>
     </div>`;
   const weekWrap = dataModeEnabled() ? `<div id="week-view-wrap" style="display:none"></div>` : '';
-  return `
-  <div class="settings-header">
-    <h1 class="display">${tr('Calendari escolar')}</h1>
-    <p class="settings-note">${tr('Dies de festa del curs i període escolar.')}</p>
-  </div>
-  ${dataTabs}
-  <div class="settings-card cal-card">
+  const registered = hasCalendarForUpcomingYear();
+  const configRow = `
     <div class="settings-row">
       <div class="settings-label">
         <b>${tr('Curs')}</b>
         <small>${summary || tr('Encara no has configurat el calendari del curs.')}</small>
       </div>
       <div class="settings-input">${buttons}</div>
-    </div>
+    </div>`;
+  return `
+  <div class="settings-header cal-header">
+    <h1 class="display">${tr('Calendari escolar')}</h1>
+    <p class="settings-note">${tr('Dies de festa del curs i període escolar.')}</p>
+  </div>
+  ${dataTabs}
+  <div class="settings-card cal-card">
+    ${registered ? '' : configRow}
     ${monthWrap}
     ${weekWrap}
+    ${registered ? configRow : ''}
   </div>`;
 }
 let weeklyViewISO = null;
@@ -5613,7 +5682,7 @@ function renderWeekView(wrap, iso){
   const d = parseISODate(iso); if(!d) return;
   const diff = (d.getDay() + 6) % 7;
   const monday = new Date(d); monday.setDate(d.getDate() - diff);
-  const courseStart = (state.settings && state.settings.courseStartDate) || null;
+  const courseStart = courseStartDateGlobal();
   const days = [];
   for(let i=0;i<5;i++){
     const day = new Date(monday); day.setDate(monday.getDate()+i);
@@ -5649,7 +5718,6 @@ function renderWeekView(wrap, iso){
       <button class="btn btn-ghost btn-sm" onclick="weekShift(-7)" aria-label="${esc(tr('Setmana anterior'))}">◀</button>
       <span class="week-title">${esc(weekTitle)}</span>
       <button class="btn btn-ghost btn-sm" onclick="weekShift(7)" aria-label="${esc(tr('Setmana següent'))}">▶</button>
-      <button class="btn btn-ghost btn-sm" onclick="showMonthView()">${esc(tr('Mes'))}</button>
     </div>
     <div class="week-view">${cols}</div>`;
 }
@@ -5664,10 +5732,8 @@ function weekShift(delta){
 }
 function openCalModal(){
   const now = new Date();
-  let year = now.getFullYear();
-  if(now.getMonth() < 8) year -= 1;
   cal = {
-    monthIdx: 8, year: year, weekStart: 'L',
+    monthIdx: now.getMonth(), year: now.getFullYear(), weekStart: 'L', mode: 'festiu',
     startDate: (state.calendarData && state.calendarData.startDate) || null,
     endDate: (state.calendarData && state.calendarData.endDate) || null,
     allHolidays: new Set((state.calendarData && state.calendarData.holidays) || [])
@@ -5676,6 +5742,7 @@ function openCalModal(){
   calTab('cal');
   renderCalGrid();
   renderCalHolidayList();
+  updateCalModeUI();
   updateCalStatus('');
   const m = document.getElementById('cal-modal');
   if(m) m.classList.add('open');
@@ -5699,13 +5766,27 @@ function updateCalStatus(msg){
 }
 function calTab(which){
   const paneCal = document.getElementById('cal-pane-cal');
-  const paneList = document.getElementById('cal-pane-list');
-  const tabCal = document.getElementById('cal-tab-cal');
-  const tabList = document.getElementById('cal-tab-list');
   if(paneCal) paneCal.style.display = which==='cal' ? '' : 'none';
-  if(paneList) paneList.style.display = which==='list' ? '' : 'none';
-  if(tabCal) tabCal.classList.toggle('active', which==='cal');
-  if(tabList) tabList.classList.toggle('active', which==='list');
+}
+function calMode(m){
+  cal.mode = m;
+  updateCalModeUI();
+}
+function updateCalModeUI(){
+  ['festiu','inici','fi'].forEach(k => {
+    const b = document.getElementById('cal-mode-'+k);
+    if(b) b.classList.toggle('active', cal.mode === k);
+  });
+  const hint = document.getElementById('cal-mode-hint');
+  if(hint){
+    hint.textContent = cal.mode === 'festiu'
+      ? tr('Fes clic a un dia per marcar-lo o desmarcar-lo com a festiu.')
+      : cal.mode === 'inici'
+        ? tr('Fes clic al dia d\'inici de curs.')
+        : cal.mode === 'fi'
+          ? tr('Fes clic al dia de fi de curs.')
+          : '';
+  }
 }
 function calSetMonth(v){ cal.monthIdx = parseInt(v,10); renderCalGrid(); }
 function calSetYear(v){ cal.year = parseInt(v,10); renderCalGrid(); }
@@ -5746,16 +5827,20 @@ function renderCalGrid(){
     const cls = ['cal-cell', isWeekend ? 'cal-cell-weekend' : '', isH ? 'cal-cell-holiday' : '', (isStart || isEnd) ? 'cal-cell-special' : ''].filter(Boolean).join(' ');
     const marker = isStart ? 'I' : isEnd ? 'F' : '';
     const content = marker ? `${d}<span class="cal-cell-mark">${marker}</span>` : d;
-    cells += isWeekend
-      ? `<span class="${cls}">${content}</span>`
-      : `<button class="${cls}" onclick="calToggleDate('${iso}')">${content}</button>`;
+    cells += `<button class="${cls}" onclick="calToggleDate('${iso}')">${content}</button>`;
   }
   html += `<div class="cal-grid-body">${cells}</div>`;
   wrap.innerHTML = html;
 }
 function calToggleDate(iso){
   if(!iso) return;
-  if(cal.allHolidays.has(iso)) cal.allHolidays.delete(iso); else cal.allHolidays.add(iso);
+  if(cal.mode === 'inici'){
+    cal.startDate = (cal.startDate === iso) ? null : iso;
+  } else if(cal.mode === 'fi'){
+    cal.endDate = (cal.endDate === iso) ? null : iso;
+  } else {
+    if(cal.allHolidays.has(iso)) cal.allHolidays.delete(iso); else cal.allHolidays.add(iso);
+  }
   renderCalGrid();
   renderCalHolidayList();
 }
@@ -5892,6 +5977,9 @@ function calSave(){
   state.calendarData.holidays = holidays;
   state.calendarData.startDate = cal.startDate || null;
   state.calendarData.endDate = cal.endDate || null;
+  if(!state.settings) state.settings = {};
+  state.settings.courseStartDate = cal.startDate || null;
+  if(dataModeEnabled()) recomputeAllDates();
   saveState(); render(); closeCalModal();
 }
 function removeFilesFromArea(area){
@@ -7162,6 +7250,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   updateLoginGate();
   initScreenSwipe();
   maybeShowYearPrompt();
+  maybeShowCalendarPrompt();
   pruneMissingDropboxFiles();
   initImportDropzone();
   initAttachDropzone();
