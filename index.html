@@ -190,6 +190,11 @@ a{color:var(--pen);}
 #main-wrap{flex:1;min-width:0;}
 #main-content{padding:32px 40px 80px;max-width:980px;margin:0 auto;touch-action:pan-y;}
 @media(max-width:1100px){#main-content{padding:28px 24px 70px;}}
+.screen-anim{transition:transform .3s ease, opacity .3s ease;}
+.screen-out-left{transform:translateX(-50%);opacity:.35;}
+.screen-out-right{transform:translateX(50%);opacity:.35;}
+.screen-in-from-right{transform:translateX(50%);opacity:.35;}
+.screen-in-from-left{transform:translateX(-50%);opacity:.35;}
 
 .empty-state{
   display:flex;flex-direction:column;align-items:flex-start;gap:14px;
@@ -233,6 +238,8 @@ a{color:var(--pen);}
 .color-modal-custom input[type=color]::-webkit-color-swatch{border:none;border-radius:5px;}
 #cal-modal .modal{max-width:640px;}
 #area-config-modal .modal{max-width:660px;}
+.area-config-danger{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;padding-top:14px;border-top:1px solid var(--line);}
+.area-config-danger .btn{flex:1;min-width:140px;}
 .cal-tabs{display:flex;gap:6px;margin-bottom:14px;border-bottom:1px solid var(--line);}
 .cal-tab{background:none;border:none;padding:8px 14px;font-size:.88rem;font-weight:600;color:var(--ink-soft);border-bottom:2px solid transparent;cursor:pointer;}
 .cal-tab.active{color:var(--pen);border-bottom-color:var(--pen);}
@@ -266,7 +273,7 @@ a{color:var(--pen);}
 [data-theme="dark"] .cal-mode-btn.active{color:#0F141A;}
 .cal-mode-hint{font-size:.8rem;color:var(--ink-faint);margin-top:8px;min-height:1.2em;}
 .cal-grid-legend{display:flex;gap:14px;margin-top:10px;flex-wrap:wrap;font-size:.75rem;color:var(--ink-soft);}
-#cal-month-view-wrap{max-width:440px;margin:0 auto;}
+#cal-month-view-wrap{max-width:none;margin:0 auto;display:flex;flex-direction:column;min-height:0;}
 #cal-month-view-wrap .cal-grid-legend{justify-content:center;}
 .cal-month-slider{position:relative;overflow:hidden;margin-top:16px;touch-action:pan-y;}
 .cal-month-nav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;}
@@ -279,18 +286,81 @@ a{color:var(--pen);}
 .cal-month-title{font-family:'Fraunces',serif;font-weight:600;font-size:1.05rem;color:var(--ink);}
 .cal-view-month{min-width:0;width:100%;}
 .cal-view-month .cal-grid-wrap{font-size:.82rem;box-shadow:0 1px 2px rgba(0,0,0,.05);}
-.cal-view-month .cal-cell{cursor:default;}
-body.mode-data .cal-view-month .cal-cell:not(.cal-cell-empty){cursor:pointer;}
-.cal-view-month .cal-cell:not(.cal-cell-empty):not(.cal-cell-weekend):not(.cal-cell-holiday):not(.cal-cell-special){cursor:default;}
-.cal-view-month .cal-cell:not(.cal-cell-empty):not(.cal-cell-weekend):not(.cal-cell-holiday):not(.cal-cell-special):hover{background:var(--white);}
+.cal-view-month .cal-cell{cursor:pointer;}
+.cal-view-month .cal-cell.cal-cell-empty{cursor:default;}
+.cal-view-month .cal-cell:not(.cal-cell-empty):not(.cal-cell-weekend):not(.cal-cell-holiday):not(.cal-cell-special):hover{background:var(--pen-soft);}
 .cal-month-anim{transition:transform .28s ease, opacity .28s ease;}
 .cal-month-out-left{transform:translateX(-80px);opacity:0;}
 .cal-month-out-right{transform:translateX(80px);opacity:0;}
 .cal-month-in-from-right{transform:translateX(80px);opacity:0;}
 .cal-month-in-from-left{transform:translateX(-80px);opacity:0;}
+.cal-cell-click{cursor:pointer;}
+.cal-view-month .cal-cell.cal-cell-click:not(.cal-cell-empty):hover{background:var(--pen-soft);}
+.cal-view-month .cal-cell.cal-cell-click:not(.cal-cell-empty):not(.cal-cell-weekend):not(.cal-cell-holiday):not(.cal-cell-special){cursor:pointer;}
+
+/* Calendari gran (estil Google Calendar): caselles altes */
+.cal-view-month .cal-grid-body{grid-auto-rows:1fr;}
+.cal-view-month .cal-cell{height:auto;min-height:56px;flex-direction:column;justify-content:flex-start;align-items:center;padding:6px 3px;overflow:hidden;}
+.cal-view-month .cal-cell-day{font-family:'IBM Plex Mono',monospace;font-size:.85rem;font-weight:600;line-height:1.2;}
+.cal-view-month .cal-cell.cal-cell-empty{min-height:56px;}
+
+/* Contingut dins de cada cel·la (marcadors) */
+.cal-cell{position:relative;}
+.cal-cell-mark{position:absolute;top:2px;right:4px;font-size:.6rem;font-weight:700;color:var(--green-ink);}
+.cal-cell-badges{display:flex;gap:3px;margin-top:2px;justify-content:center;flex-wrap:wrap;}
+.cal-cell-badge{font-size:.52rem;font-weight:700;padding:1px 5px;border-radius:4px;text-transform:uppercase;letter-spacing:.03em;line-height:1.4;flex:none;}
+.cal-cell-badge.avaluacio{background:var(--gold-soft);color:var(--gold-dark);border:1px solid var(--gold);}
+.cal-cell-badge.reunio{background:var(--pen-soft);color:var(--pen-dark);border:1px solid var(--pen);}
+.cal-cell-note{font-size:.6rem;color:var(--ink-soft);margin-top:2px;line-height:1.3;width:100%;text-align:left;padding:0 2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:break-word;}
+.cal-cell-session-dot{position:absolute;bottom:3px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:var(--pen);}
+
+/* Barra de marcatge (festius, inici/fi, avaluacions, reunions) */
+.cal-mark-bar{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:14px;}
+.cal-mark-btn{
+  border:1px solid var(--line);background:var(--paper);color:var(--ink-soft);border-radius:20px;
+  padding:5px 14px;font-size:.8rem;font-weight:600;cursor:pointer;font-family:inherit;
+  transition:background .12s ease, color .12s ease, border-color .12s ease;
+}
+.cal-mark-btn:hover{border-color:var(--pen);color:var(--ink);}
+.cal-mark-btn.active{background:var(--pen);border-color:var(--pen);color:#fff;}
+[data-theme="dark"] .cal-mark-btn.active{color:#0F141A;}
+.cal-mark-btn.active.festiu{background:var(--danger);border-color:var(--danger);color:#fff;}
+.cal-mark-btn.active.inici,.cal-mark-btn.active.fi{background:var(--green-ink);border-color:var(--green-ink);color:#fff;}
+.cal-mark-btn.active.avaluacio{background:var(--gold-dark);border-color:var(--gold-dark);color:#fff;}
+.cal-mark-btn.active.reunio{background:var(--pen-dark);border-color:var(--pen-dark);color:#fff;}
+
+/* Popover de nota (avaluació / reunió) */
+.cal-note-pop{
+  position:fixed;z-index:130;width:260px;background:var(--white);
+  border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);padding:12px;
+}
+.cal-note-pop h4{margin:0 0 6px;font-size:.9rem;}
+.cal-note-pop textarea{width:100%;border:1px solid var(--line);border-radius:7px;padding:8px;font-size:.82rem;background:var(--paper);color:var(--ink);resize:vertical;min-height:56px;font-family:inherit;}
+.cal-note-pop textarea:focus{outline:none;border-color:var(--pen);}
+.cal-note-actions{display:flex;gap:6px;justify-content:flex-end;margin-top:8px;}
+.cal-note-text{font-size:.84rem;color:var(--ink);line-height:1.45;margin:4px 0 2px;white-space:pre-wrap;word-break:break-word;}
+
+@media(min-width:861px){
+  .cal-view-month .cal-grid-body{height:max(440px, calc(100vh - 330px));}
+}
+@media(max-width:860px){
+  body.cal-full #main-wrap{display:flex;flex-direction:column;}
+  body.cal-full #main-content{flex:1;min-height:0;display:flex;flex-direction:column;max-width:none;padding-bottom:72px;}
+  body.cal-full #main-content > .settings-card.cal-card{flex:1;min-height:0;display:flex;flex-direction:column;overflow:visible;}
+  body.cal-full #main-content > .settings-card.cal-card #cal-month-view-wrap{flex:1;min-height:0;display:flex;flex-direction:column;max-width:none;}
+  body.cal-full #main-content > .settings-card.cal-card .cal-month-slider{flex:1;min-height:0;display:flex;flex-direction:column;}
+  body.cal-full #main-content > .settings-card.cal-card .cal-view-month{flex:1;min-height:0;display:flex;flex-direction:column;}
+  body.cal-full #main-content > .settings-card.cal-card .cal-view-month .cal-grid-wrap{flex:1;min-height:0;display:flex;flex-direction:column;border-radius:9px;}
+  body.cal-full #main-content > .settings-card.cal-card .cal-view-month .cal-grid-body{flex:1;min-height:0;display:grid;grid-template-columns:repeat(7,1fr);grid-auto-rows:1fr;}
+  body.cal-full #main-content > .settings-card.cal-card .cal-view-month .cal-cell,
+  body.cal-full #main-content > .settings-card.cal-card .cal-view-month .cal-cell.cal-cell-empty{height:auto;min-height:0;}
+  .cal-mark-bar{margin-top:10px;}
+}
 .cal-legend::before{content:'';display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px;border:1px solid var(--line);}
 .cal-legend-weekend::before{background:var(--gold-soft);}
 .cal-legend-holiday::before{background:var(--danger-soft);}
+.cal-legend-avaluacio::before{background:var(--gold-soft);border-color:var(--gold);}
+.cal-legend-reunio::before{background:var(--pen-soft);border-color:var(--pen);}
 .cal-list-label{display:block;font-size:.85rem;color:var(--ink-soft);margin-bottom:8px;line-height:1.5;}
 #cal-list-input{width:100%;border:1px solid var(--line);border-radius:8px;padding:10px;font-size:.85rem;background:var(--paper);font-family:inherit;color:var(--ink);resize:vertical;}
 #cal-list-result{font-size:.82rem;color:var(--pen-dark);min-height:1.2em;margin-top:8px;}
@@ -977,7 +1047,8 @@ body.mode-data .duration-bar-wrap{flex:0 1 52px;min-width:44px;}
 .data-setup-scroll{display:flex;flex-direction:column;gap:12px;padding-top:4px;}
 .data-setup-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;align-items:start;}
 .data-setup-area{border:1px solid var(--line);border-radius:10px;background:var(--white);padding:12px 14px;box-shadow:var(--shadow);}
-.data-setup-area-head{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:.95rem;}
+.data-setup-area-head{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:.95rem;min-width:0;}
+.data-setup-area-head b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;}
 .data-setup-day{display:flex;flex-direction:row;align-items:center;gap:8px;}
 .data-setup-day .wd-day{min-width:34px;padding:5px 6px;font-size:.72rem;}
 #data-setup-status{font-size:.8rem;color:var(--danger);min-height:1.2em;margin-top:6px;}
@@ -1000,7 +1071,7 @@ body.mode-data .duration-bar-wrap{flex:0 1 52px;min-width:44px;}
 .week-area:hover{filter:brightness(1.05);}
 .week-area.empty{border-style:dashed;}
 .week-area-head{display:flex;align-items:center;gap:5px;min-width:0;}
-.week-area-name{flex:1;font-size:.72rem;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.week-area-name{flex:1;font-size:.78rem;font-weight:700;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .week-dot{width:8px;height:8px;border-radius:50%;flex:none;}
 .week-time{font-family:'IBM Plex Mono',monospace;color:var(--gold-dark);font-weight:600;font-size:.68rem;flex:none;}
 .week-sess{
@@ -1039,6 +1110,11 @@ body.mode-data .duration-bar-wrap{flex:0 1 52px;min-width:44px;}
   .week-view{grid-template-columns:1fr;}
 }
 @media(max-width:860px){
+  .data-setup-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .data-setup-area .date-time-input{width:64px;font-size:.66rem;padding:4px 1px;}
+  .data-setup-day .wd-day{min-width:28px;padding:4px 4px;}
+}
+@media(max-width:380px){
   .data-setup-grid{grid-template-columns:1fr;}
 }
 </style>
@@ -1282,14 +1358,13 @@ body.mode-data .duration-bar-wrap{flex:0 1 52px;min-width:44px;}
 </div>
 
 <!-- Configuració de l'àrea modal -->
-<div class="modal-backdrop" id="area-config-modal" onclick="if(event.target===this)tryCloseAreaConfig()">
+<div class="modal-backdrop" id="area-config-modal" onclick="if(event.target===this)cancelAreaConfig()">
   <div class="modal">
     <h2 data-i18n="Configuració de l'àrea">Configuració de l'àrea</h2>
-    <p class="hint" data-i18n="Opcions de configuració de l'àrea.">Opcions de configuració de l'àrea.</p>
     <div id="area-config-body"></div>
     <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="tryCloseAreaConfig()" data-i18n="Tanca">Tanca</button>
-      <button class="btn btn-primary" id="area-config-continue-btn" onclick="confirmAreaConfig()" data-i18n="Fet" style="display:none">Fet</button>
+      <button class="btn btn-primary" id="area-config-save-btn" onclick="confirmAreaConfig()" data-i18n="Desa">Desa</button>
+      <button class="btn btn-ghost" id="area-config-continue-btn" onclick="confirmAreaConfig()" data-i18n="Fet" style="display:none">Fet</button>
     </div>
   </div>
 </div>
@@ -1627,6 +1702,16 @@ const I18N_ES = {
   'Fes clic a un dia per marcar-lo o desmarcar-lo com a festiu.': 'Haz clic en un día para marcarlo o desmarcarlo como festivo.',
   'Fes clic al dia d\'inici de curs.': 'Haz clic en el día de inicio de curso.',
   'Fes clic al dia de fi de curs.': 'Haz clic en el día de fin de curso.',
+  'Festiu': 'Festivo',
+  'Avaluació': 'Evaluación',
+  'Reunió': 'Reunión',
+  'avaluació': 'evaluación',
+  'reunió': 'reunión',
+  'Av': 'Ev',
+  'Escriu una nota…': 'Escribe una nota…',
+  'Marca o consulta aquest dia': 'Marca o consulta este día',
+  'Fes clic a un dia per afegir-hi una nota d\'avaluació.': 'Haz clic en un día para añadir una nota de evaluación.',
+  'Fes clic a un dia per afegir-hi una nota de reunió.': 'Haz clic en un día para añadir una nota de reunión.',
   'Configurar calendari': 'Configurar calendario',
   'Calendari': 'Calendario',
   'Llista de dates': 'Lista de fechas',
@@ -1848,6 +1933,9 @@ const I18N_ES = {
   'Eliminat: {d}': 'Eliminado: {d}',
   'Restaura': 'Restaurar',
   'Elimina': 'Eliminar',
+  'Desa': 'Guardar',
+  'Arxiva l\'àrea': 'Archivar el área',
+  'Elimina l\'àrea': 'Eliminar el área',
   'Les àrees eliminades es conserven 1 any i els arxius 30 dies abans de suprimir-se definitivament.': 'Las áreas eliminadas se conservan 1 año y los archivos 30 días antes de eliminarse definitivamente.',
   'Buidar la paperera': 'Vaciar la papelera',
   'Àrees eliminades': 'Áreas eliminadas',
@@ -5022,12 +5110,6 @@ function areaVistaHTML(area){
       <button class="btn btn-ghost btn-icon" title="${tr('Configuració de l\'àrea')}" onclick="openAreaConfigModal('${area.id}')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.01a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.01a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.01a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
       </button>
-      <button class="btn btn-ghost btn-icon" title="${tr('Arxiva la programació')}" onclick="archiveArea('${area.id}')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 8v13H3V8"/><path d="M1 3h22v5H1z"/><path d="M10 12h4"/></svg>
-      </button>
-      <button class="btn btn-danger btn-icon" title="${tr('Elimina la programació (a la paperera)')}" onclick="trashArea('${area.id}')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M9 7V4h6v3m-8 0 1 13h8l1-13"/></svg>
-      </button>
     </div>
   </div>
   <div id="sa-list">${sas}</div>
@@ -5287,11 +5369,26 @@ function closeColorModal(){
 
 let areaConfigTargetId = null;
 let areaConfigCreating = false;
+let areaConfigSnapshot = null;
 function openAreaConfigModal(id){
   areaConfigTargetId = id;
   const area = state.areas.find(a=>a.id===id); if(!area) return;
+  if(!areaConfigSnapshot || areaConfigSnapshot.areaId !== id){
+    areaConfigSnapshot = {
+      areaId: id,
+      course: area.course || '',
+      active: !!area.active,
+      weekDays: Array.isArray(area.weekDays) ? area.weekDays.slice() : [],
+      sessionTimes: Object.assign({}, area.sessionTimes || {})
+    };
+  }
   const creating = areaConfigCreating;
   const body = document.getElementById('area-config-body');
+  const danger = creating ? '' : `
+    <div class="area-config-danger">
+      <button class="btn btn-ghost" onclick="archiveAreaFromConfig()">${tr('Arxiva l\'àrea')}</button>
+      <button class="btn btn-danger" onclick="trashAreaFromConfig()">${tr('Elimina l\'àrea')}</button>
+    </div>`;
   if(body) body.innerHTML = `
     <div class="settings-row">
       <div class="settings-label">
@@ -5317,11 +5414,16 @@ function openAreaConfigModal(id){
       ${weekDayPickerHTML(area)}
       <div class="settings-input"><span class="wd-count">${trf('{n} sessions / setmana', { n: areaWeeklySessions(area) })}</span></div>
     </div>
+    ${danger}
     <p class="req-hint" id="area-config-msg"></p>`;
   const contBtn = document.getElementById('area-config-continue-btn');
   if(contBtn) contBtn.style.display = creating ? 'inline-flex' : 'none';
+  const saveBtn = document.getElementById('area-config-save-btn');
+  if(saveBtn) saveBtn.style.display = creating ? 'none' : 'inline-flex';
   const m = document.getElementById('area-config-modal');
+  const wasOpen = m && m.classList.contains('open');
   if(m) m.classList.add('open');
+  if(!wasOpen && isMobile()) history.pushState({view:'area-config'}, '');
 }
 function openAreaConfigForCreate(id){
   areaConfigCreating = true;
@@ -5347,7 +5449,16 @@ function confirmAreaConfig(){
   }
   closeAreaConfigModal();
 }
-function tryCloseAreaConfig(){
+function restoreAreaConfigSnapshot(){
+  if(!areaConfigSnapshot) return;
+  const area = state.areas.find(a=>a.id===areaConfigSnapshot.areaId);
+  if(!area) return;
+  area.course = areaConfigSnapshot.course;
+  area.active = areaConfigSnapshot.active;
+  area.weekDays = areaConfigSnapshot.weekDays.slice();
+  area.sessionTimes = areaConfigSnapshot.sessionTimes ? Object.assign({}, areaConfigSnapshot.sessionTimes) : {};
+}
+function cancelAreaConfig(){
   if(areaConfigCreating){
     const area = state.areas.find(a=>a.id===areaConfigTargetId);
     if(area && !(area.course||'').trim()){
@@ -5358,14 +5469,29 @@ function tryCloseAreaConfig(){
       showAreaConfigMsg(tr('Marca almenys un dia de classe per continuar.'));
       return;
     }
+    closeAreaConfigModal();
+    return;
   }
+  restoreAreaConfigSnapshot();
   closeAreaConfigModal();
+  saveState(); render();
+}
+function archiveAreaFromConfig(){
+  const id = areaConfigTargetId;
+  closeAreaConfigModal();
+  archiveArea(id);
+}
+function trashAreaFromConfig(){
+  const id = areaConfigTargetId;
+  closeAreaConfigModal();
+  trashArea(id);
 }
 function closeAreaConfigModal(){
   const m = document.getElementById('area-config-modal');
   if(m) m.classList.remove('open');
   areaConfigTargetId = null;
   areaConfigCreating = false;
+  areaConfigSnapshot = null;
 }
 function setAreaActive(id, on){
   const area = state.areas.find(a=>a.id===id); if(!area) return;
@@ -5498,8 +5624,9 @@ function updateCalMonthTitle(){
   const t = document.getElementById('cal-month-title');
   if(t) t.textContent = `${tr(CAL_MONTHS[calViewMonth])} ${calViewYear}`;
 }
-function calMonthShift(delta){
+function calViewMonthShift(delta){
   if(calViewYear === null || calViewMonth === null) calViewMonthNow();
+  closeCalNotePopover();
   const slide = document.getElementById('cal-month-slide');
   if(!slide || calMonthAnimating) return;
   calMonthAnimating = true;
@@ -5548,7 +5675,7 @@ function initCalMonthSwipe(){
   slider.addEventListener('touchend', (e) => {
     if(axis !== 'h') return;
     const dx = e.changedTouches[0].clientX - sx;
-    if(Math.abs(dx) >= 60) calMonthShift(dx < 0 ? 1 : -1);
+    if(Math.abs(dx) >= 60) calViewMonthShift(dx < 0 ? 1 : -1);
     setTimeout(() => { swiping = false; }, 80);
   });
   slider.addEventListener('click', (e) => {
@@ -5562,6 +5689,7 @@ function initCalMonthSwipe(){
 function calViewMonthHTML(y, m){
   const cd = state.calendarData || {};
   const holidays = new Set(Array.isArray(cd.holidays) ? cd.holidays : []);
+  const marks = (cd.marks && typeof cd.marks === 'object') ? cd.marks : {};
   const first = new Date(y, m, 1);
   const dim = new Date(y, m+1, 0).getDate();
   const colOf1 = (first.getDay()+6)%7;
@@ -5575,19 +5703,158 @@ function calViewMonthHTML(y, m){
     const isH = iso && holidays.has(iso);
     const isStart = iso && cd.startDate === iso;
     const isEnd = iso && cd.endDate === iso;
-    const cls = ['cal-cell', isWeekend ? 'cal-cell-weekend' : '', isH ? 'cal-cell-holiday' : '', (isStart || isEnd) ? 'cal-cell-special' : ''].filter(Boolean).join(' ');
+    const cls = ['cal-cell','cal-cell-click', isWeekend ? 'cal-cell-weekend' : '', isH ? 'cal-cell-holiday' : '', (isStart || isEnd) ? 'cal-cell-special' : ''].filter(Boolean).join(' ');
     const marker = isStart ? 'I' : isEnd ? 'F' : '';
     const dot = (dataModeEnabled() && iso && sessionsOnDay(iso).length) ? '<span class="cal-cell-session-dot"></span>' : '';
-    const content = `${d}${marker ? `<span class="cal-cell-mark">${marker}</span>` : ''}${dot}`;
-    if(dataModeEnabled()){
-      cells += `<button type="button" class="${cls}" onclick="showWeeklyView('${iso}')" title="${esc(tr('Vista setmanal'))}">${content}</button>`;
-    } else {
-      cells += `<span class="${cls}">${content}</span>`;
-    }
+    const mark = (iso && marks[iso]) ? marks[iso] : null;
+    const badge = mark
+      ? `<span class="cal-cell-badge ${mark.type === 'avaluacio' ? 'avaluacio' : 'reunio'}">${mark.type === 'avaluacio' ? tr('Av') : tr('Re')}</span>`
+      : '';
+    const note = (mark && mark.note) ? `<span class="cal-cell-note">${esc(mark.note)}</span>` : '';
+    const content = `<span class="cal-cell-day">${d}</span>${marker ? `<span class="cal-cell-mark">${marker}</span>` : ''}${badge ? `<span class="cal-cell-badges">${badge}</span>` : ''}${note}${dot}`;
+    cells += `<button type="button" class="${cls}" data-iso="${iso}" onclick="calDayClick('${iso}', this)" title="${esc(tr('Marca o consulta aquest dia'))}">${content}</button>`;
   }
   return `<div class="cal-grid-wrap"><div class="cal-grid-head">${headers.map(h=>`<span class="cal-grid-hd">${h}</span>`).join('')}</div><div class="cal-grid-body">${cells}</div></div>`;
 }
+
+/* --- Marcatge directe al calendari (festius, inici/fi, avaluació, reunió) --- */
+let calMarkMode = null;
+function calMarkHintText(){
+  if(calMarkMode === 'festiu') return tr('Fes clic a un dia per marcar-lo o desmarcar-lo com a festiu.');
+  if(calMarkMode === 'inici') return tr('Fes clic al dia d\'inici de curs.');
+  if(calMarkMode === 'fi') return tr('Fes clic al dia de fi de curs.');
+  if(calMarkMode === 'avaluacio') return tr('Fes clic a un dia per afegir-hi una nota d\'avaluació.');
+  if(calMarkMode === 'reunio') return tr('Fes clic a un dia per afegir-hi una nota de reunió.');
+  return '';
+}
+function toggleCalMarkMode(mode){
+  closeCalNotePopover();
+  calMarkMode = (calMarkMode === mode) ? null : mode;
+  render();
+}
+function getCalMark(iso){
+  const marks = (state.calendarData && state.calendarData.marks) || {};
+  return marks[iso] || null;
+}
+function calDayClick(iso, btn){
+  if(!iso) return;
+  if(calMarkMode){
+    if(calMarkMode === 'avaluacio' || calMarkMode === 'reunio') openCalNotePopover(iso, btn);
+    else calMarkFestiuIniciFi(iso);
+    return;
+  }
+  if(getCalMark(iso)){ openCalDayInfo(iso, btn); return; }
+  if(dataModeEnabled()) showWeeklyView(iso);
+}
+function calMarkFestiuIniciFi(iso){
+  if(!state.calendarData) state.calendarData = {};
+  if(calMarkMode === 'festiu'){
+    const h = new Set(Array.isArray(state.calendarData.holidays) ? state.calendarData.holidays : []);
+    if(h.has(iso)) h.delete(iso); else h.add(iso);
+    state.calendarData.holidays = Array.from(h);
+  } else if(calMarkMode === 'inici'){
+    state.calendarData.startDate = (state.calendarData.startDate === iso) ? null : iso;
+  } else if(calMarkMode === 'fi'){
+    state.calendarData.endDate = (state.calendarData.endDate === iso) ? null : iso;
+  }
+  if(!state.settings) state.settings = {};
+  state.settings.courseStartDate = state.calendarData.startDate || null;
+  saveState(); render();
+}
+let calNoteISO = null;
+let calNoteSuppressClose = false;
+function positionCalPopover(pop, btn){
+  const r = btn ? btn.getBoundingClientRect() : null;
+  const pw = pop.offsetWidth || 260, ph = pop.offsetHeight || 150;
+  let x, y;
+  if(r){
+    x = r.left + r.width/2 - pw/2;
+    y = r.bottom + 6;
+  }else{
+    x = (window.innerWidth - pw)/2;
+    y = (window.innerHeight - ph)/2;
+  }
+  if(x < 8) x = 8;
+  if(x + pw > window.innerWidth - 8) x = window.innerWidth - pw - 8;
+  if(y < 8) y = 8;
+  if(y + ph > window.innerHeight - 8) y = r ? Math.max(8, r.top - ph - 6) : 8;
+  pop.style.left = x + 'px';
+  pop.style.top = y + 'px';
+}
+function openCalNotePopover(iso, btn){
+  closeCalNotePopover();
+  calNoteSuppressClose = true;
+  calNoteISO = iso;
+  const existing = getCalMark(iso);
+  const pop = document.createElement('div');
+  pop.className = 'cal-note-pop';
+  pop.id = 'cal-note-pop';
+  pop.innerHTML = `
+    <h4>${tr(calMarkMode === 'avaluacio' ? 'Avaluació' : 'Reunió')}</h4>
+    <textarea id="cal-note-input" placeholder="${esc(tr('Escriu una nota…'))}">${esc(existing && existing.note ? existing.note : '')}</textarea>
+    <div class="cal-note-actions">
+      <button type="button" class="btn btn-sm btn-ghost" onclick="closeCalNotePopover()">${tr('Cancel·la')}</button>
+      <button type="button" class="btn btn-sm btn-primary" onclick="saveCalNote()">${tr('Desa')}</button>
+    </div>`;
+  document.body.appendChild(pop);
+  positionCalPopover(pop, btn);
+  const ta = document.getElementById('cal-note-input');
+  if(ta) ta.focus();
+}
+function openCalDayInfo(iso, btn){
+  closeCalNotePopover();
+  calNoteSuppressClose = true;
+  const mark = getCalMark(iso);
+  if(!mark) return;
+  const pop = document.createElement('div');
+  pop.className = 'cal-note-pop';
+  pop.id = 'cal-note-pop';
+  const typeLabel = mark.type === 'avaluacio' ? tr('Avaluació') : tr('Reunió');
+  pop.innerHTML = `
+    <h4>${typeLabel} · ${fmtShort(iso)}</h4>
+    <p class="cal-note-text">${esc(mark.note || '')}</p>
+    <div class="cal-note-actions">
+      <button type="button" class="btn btn-sm btn-ghost" onclick="deleteCalMark('${iso}')">${tr('Elimina')}</button>
+      <button type="button" class="btn btn-sm btn-primary" onclick="closeCalNotePopover()">${tr('Tanca')}</button>
+    </div>`;
+  document.body.appendChild(pop);
+  positionCalPopover(pop, btn);
+}
+function saveCalNote(){
+  const ta = document.getElementById('cal-note-input');
+  if(!ta || !calNoteISO) return;
+  if(!state.calendarData) state.calendarData = {};
+  if(!state.calendarData.marks) state.calendarData.marks = {};
+  const note = ta.value.trim();
+  if(note){
+    state.calendarData.marks[calNoteISO] = { type: calMarkMode, note: note };
+  } else {
+    delete state.calendarData.marks[calNoteISO];
+  }
+  const wasMarking = !!calMarkMode;
+  closeCalNotePopover();
+  if(wasMarking) calMarkMode = null;
+  saveState(); render();
+}
+function deleteCalMark(iso){
+  if(state.calendarData && state.calendarData.marks) delete state.calendarData.marks[iso];
+  closeCalNotePopover();
+  saveState(); render();
+}
+function closeCalNotePopover(){
+  const pop = document.getElementById('cal-note-pop');
+  if(pop) pop.remove();
+  calNoteISO = null;
+}
+document.addEventListener('click', (e) => {
+  const pop = document.getElementById('cal-note-pop');
+  if(pop && !pop.contains(e.target)){
+    if(calNoteSuppressClose){ calNoteSuppressClose = false; return; }
+    closeCalNotePopover();
+  }
+});
 function calendariHTML(){
+  closeCalNotePopover();
   calViewMonthNow();
   const cd = state.calendarData;
   const has = !!(cd && Array.isArray(cd.holidays) && cd.holidays.length);
@@ -5602,13 +5869,22 @@ function calendariHTML(){
       <button class="cal-tab active" id="cal-v-tab-month" onclick="showMonthView()">${tr('Mes')}</button>
       <button class="cal-tab" id="cal-v-tab-week" onclick="showWeeklyViewToday()">${tr('Setmana')}</button>
     </div>` : '';
+  const markBar = `
+    <div class="cal-mark-bar">
+      <button type="button" class="cal-mark-btn festiu${calMarkMode==='festiu'?' active':''}" onclick="toggleCalMarkMode('festiu')">${tr('Festiu')}</button>
+      <button type="button" class="cal-mark-btn inici${calMarkMode==='inici'?' active':''}" onclick="toggleCalMarkMode('inici')">${tr('Inici curs')}</button>
+      <button type="button" class="cal-mark-btn fi${calMarkMode==='fi'?' active':''}" onclick="toggleCalMarkMode('fi')">${tr('Fi curs')}</button>
+      <button type="button" class="cal-mark-btn avaluacio${calMarkMode==='avaluacio'?' active':''}" onclick="toggleCalMarkMode('avaluacio')">${tr('Avaluació')}</button>
+      <button type="button" class="cal-mark-btn reunio${calMarkMode==='reunio'?' active':''}" onclick="toggleCalMarkMode('reunio')">${tr('Reunió')}</button>
+    </div>
+    ${calMarkMode ? `<div class="cal-mode-hint">${calMarkHintText()}</div>` : ''}`;
   const monthWrap = `
     <div id="cal-month-view-wrap">
       <div class="cal-month-slider" id="cal-month-slider">
         <div class="cal-month-nav">
-          <button type="button" class="cal-month-nav-btn" onclick="calMonthShift(-1)" aria-label="${esc(tr('Mes anterior'))}">‹</button>
+          <button type="button" class="cal-month-nav-btn" onclick="calViewMonthShift(-1)" aria-label="${esc(tr('Mes anterior'))}">‹</button>
           <span class="cal-month-title" id="cal-month-title">${esc(tr(CAL_MONTHS[calViewMonth]))} ${calViewYear}</span>
-          <button type="button" class="cal-month-nav-btn" onclick="calMonthShift(1)" aria-label="${esc(tr('Següent mes'))}">›</button>
+          <button type="button" class="cal-month-nav-btn" onclick="calViewMonthShift(1)" aria-label="${esc(tr('Següent mes'))}">›</button>
         </div>
         <div class="cal-view-month" id="cal-month-slide">${calViewMonthHTML(calViewYear, calViewMonth)}</div>
       </div>
@@ -5616,7 +5892,10 @@ function calendariHTML(){
         <span class="cal-legend cal-legend-weekend">${tr('cap de setmana')}</span>
         <span class="cal-legend cal-legend-holiday">${tr('festiu')}</span>
         <span class="cal-legend">${tr('inici/fi de curs')}</span>
+        <span class="cal-legend cal-legend-avaluacio">${tr('avaluació')}</span>
+        <span class="cal-legend cal-legend-reunio">${tr('reunió')}</span>
       </div>
+      ${markBar}
     </div>`;
   const weekWrap = dataModeEnabled() ? `<div id="week-view-wrap" style="display:none"></div>` : '';
   const registered = hasCalendarForUpcomingYear();
@@ -7140,6 +7419,11 @@ function markViewState(view){
   if(isMobile()) history.replaceState({view:view}, '');
 }
 window.addEventListener('popstate', function(e){
+  const acm = document.getElementById('area-config-modal');
+  if(acm && acm.classList.contains('open')){
+    cancelAreaConfig();
+    return;
+  }
   const m = document.getElementById('attach-modal');
   if(m && m.classList.contains('open')){
     closingAttachFromBack = true;
@@ -7173,12 +7457,31 @@ function currentMobileScreen(){
   if(showSettings) return 'settings';
   return null;
 }
-function goToMobileScreen(name){
-  if(name === 'agenda') showAgendaView();
-  else if(name === 'calendar') showCalendarView();
-  else if(name === 'areas') showMobileAreasView();
-  else if(name === 'resources') showMobileResourcesView();
-  else if(name === 'settings') showSettingsView();
+function goToMobileScreen(name, dir){
+  const main = document.getElementById('main-content');
+  const switchNow = () => {
+    if(name === 'agenda') showAgendaView();
+    else if(name === 'calendar') showCalendarView();
+    else if(name === 'areas') showMobileAreasView();
+    else if(name === 'resources') showMobileResourcesView();
+    else if(name === 'settings') showSettingsView();
+  };
+  if(!main || !isMobile() || !dir){
+    switchNow();
+    return;
+  }
+  const out = dir > 0 ? 'screen-out-left' : 'screen-out-right';
+  const inn = dir > 0 ? 'screen-in-from-right' : 'screen-in-from-left';
+  main.classList.add('screen-anim', out);
+  setTimeout(() => {
+    switchNow();
+    main.classList.remove('screen-anim', out);
+    main.classList.add(inn);
+    void main.offsetWidth;
+    main.classList.add('screen-anim');
+    main.classList.remove(inn);
+    setTimeout(() => { main.classList.remove('screen-anim'); }, 300);
+  }, 140);
 }
 function adjacentMobileScreen(name, dir){
   const i = MOBILE_SCREEN_ORDER.indexOf(name);
@@ -7221,8 +7524,9 @@ function initScreenSwipe(){
     const dx = e.changedTouches[0].clientX - screenSwipe.startX;
     if(Math.abs(dx) < 60){ screenSwipe.active = false; return; }
     const cur = currentMobileScreen();
-    const next = cur ? adjacentMobileScreen(cur, dx < 0 ? 1 : -1) : null;
-    if(next) goToMobileScreen(next);
+    const dir = dx < 0 ? 1 : -1;
+    const next = cur ? adjacentMobileScreen(cur, dir) : null;
+    if(next) goToMobileScreen(next, dir);
     setTimeout(() => { screenSwipe.active = false; }, 80);
   });
   main.addEventListener('click', (e) => {
