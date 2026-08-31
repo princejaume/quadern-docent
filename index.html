@@ -188,7 +188,7 @@ a{color:var(--pen);}
 
 /* Main */
 #main-wrap{flex:1;min-width:0;}
-#main-content{padding:32px 40px 80px;max-width:980px;margin:0 auto;}
+#main-content{padding:32px 40px 80px;max-width:980px;margin:0 auto;touch-action:pan-y;}
 @media(max-width:1100px){#main-content{padding:28px 24px 70px;}}
 
 .empty-state{
@@ -250,14 +250,28 @@ a{color:var(--pen);}
 .cal-cell-special{position:relative;background:var(--green-tint);color:var(--ink);}
 .cal-cell-special .cal-cell-mark{position:absolute;top:2px;right:4px;font-size:.6rem;font-weight:700;color:var(--green-ink);}
 .cal-grid-legend{display:flex;gap:14px;margin-top:10px;flex-wrap:wrap;font-size:.75rem;color:var(--ink-soft);}
-.cal-view{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:16px;}
-@media(max-width:960px){.cal-view{grid-template-columns:repeat(auto-fill,minmax(270px,1fr));}}
-.cal-view-month{min-width:0;}
+#cal-month-view-wrap{max-width:440px;margin:0 auto;}
+#cal-month-view-wrap .cal-grid-legend{justify-content:center;}
+.cal-month-slider{position:relative;overflow:hidden;margin-top:16px;touch-action:pan-y;}
+.cal-month-nav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;}
+.cal-month-nav-btn{
+  background:none;border:1px solid var(--line);color:var(--pen);font-size:1.05rem;cursor:pointer;
+  width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+  transition:background .12s ease, border-color .12s ease;
+}
+.cal-month-nav-btn:hover{background:var(--pen-soft);border-color:var(--pen);}
+.cal-month-title{font-family:'Fraunces',serif;font-weight:600;font-size:1.05rem;color:var(--ink);}
+.cal-view-month{min-width:0;width:100%;}
 .cal-view-month .cal-grid-wrap{font-size:.82rem;box-shadow:0 1px 2px rgba(0,0,0,.05);}
-.cal-view-month-title{font-size:.85rem;font-weight:600;color:var(--pen-dark);text-align:center;margin-bottom:10px;}
-.cal-view .cal-cell{cursor:default;}
-body.mode-data .cal-view .cal-cell:not(.cal-cell-empty){cursor:pointer;}
-.cal-view .cal-cell:not(.cal-cell-empty):not(.cal-cell-weekend):not(.cal-cell-holiday):not(.cal-cell-special):hover{background:var(--white);}
+.cal-view-month .cal-cell{cursor:default;}
+body.mode-data .cal-view-month .cal-cell:not(.cal-cell-empty){cursor:pointer;}
+.cal-view-month .cal-cell:not(.cal-cell-empty):not(.cal-cell-weekend):not(.cal-cell-holiday):not(.cal-cell-special){cursor:default;}
+.cal-view-month .cal-cell:not(.cal-cell-empty):not(.cal-cell-weekend):not(.cal-cell-holiday):not(.cal-cell-special):hover{background:var(--white);}
+.cal-month-anim{transition:transform .28s ease, opacity .28s ease;}
+.cal-month-out-left{transform:translateX(-80px);opacity:0;}
+.cal-month-out-right{transform:translateX(80px);opacity:0;}
+.cal-month-in-from-right{transform:translateX(80px);opacity:0;}
+.cal-month-in-from-left{transform:translateX(-80px);opacity:0;}
 .cal-legend::before{content:'';display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px;border:1px solid var(--line);}
 .cal-legend-weekend::before{background:var(--gold-soft);}
 .cal-legend-holiday::before{background:var(--danger-soft);}
@@ -955,18 +969,23 @@ body.mode-data .duration-bar-wrap{flex:0 1 52px;min-width:44px;}
 .week-day.weekend{background:var(--gold-soft);}
 .week-day-head{font-size:.72rem;font-weight:600;color:var(--ink-soft);text-transform:capitalize;text-align:center;padding:6px 4px;background:var(--paper-alt);border-bottom:1px solid var(--line);}
 .week-day-body{display:flex;flex-direction:column;gap:6px;padding:6px;}
-.week-area{display:flex;flex-direction:column;gap:5px;border:1px solid var(--line);border-radius:7px;padding:6px;background:var(--paper);}
+.week-area{
+  display:flex;flex-direction:column;align-items:stretch;gap:5px;width:100%;
+  border:1px solid var(--line);border-radius:7px;padding:8px 9px;
+  cursor:pointer;text-align:left;font-family:inherit;color:inherit;
+  transition:filter .12s ease, box-shadow .12s ease;
+}
+.week-area:hover{filter:brightness(1.05);}
+.week-area.empty{border-style:dashed;}
 .week-area-head{display:flex;align-items:center;gap:5px;min-width:0;}
 .week-area-name{flex:1;font-size:.72rem;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .week-dot{width:8px;height:8px;border-radius:50%;flex:none;}
-.week-block{display:flex;align-items:center;gap:4px;flex-wrap:wrap;font-size:.72rem;border-radius:5px;padding:2px 4px;}
-.week-block.has-session{background:var(--pen-soft);color:var(--pen-dark);cursor:pointer;}
-.week-block.has-session:hover{filter:brightness(1.05);}
-.week-block.empty{border:1px dashed var(--line);color:var(--ink-faint);background:none;width:100%;cursor:pointer;justify-content:center;padding:6px 4px;text-align:center;}
-.week-block.empty:hover{background:var(--pen-soft);}
-.week-time{font-family:'IBM Plex Mono',monospace;color:var(--gold-dark);font-weight:600;}
-.week-sess{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.week-sess.faint{color:var(--ink-faint);font-size:.68rem;}
+.week-time{font-family:'IBM Plex Mono',monospace;color:var(--gold-dark);font-weight:600;font-size:.68rem;flex:none;}
+.week-sess{
+  min-width:0;font-size:.74rem;font-weight:600;color:var(--pen-dark);line-height:1.35;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:break-word;
+}
+.week-sess.faint{color:var(--ink-faint);font-size:.7rem;font-weight:400;}
 .week-none{color:var(--ink-faint);font-size:.7rem;text-align:center;padding:8px 0;}
 
 /* Marcador de sessions a la vista mensual (mode Data) */
@@ -3054,7 +3073,7 @@ function renderMain(){
   if(showFiles){ main.innerHTML = filesHTML(); return; }
   if(showResources){ main.innerHTML = recursosHTML(); return; }
   if(showReminder){ main.innerHTML = recordatoriHTML(); return; }
-  if(showCalendar){ main.innerHTML = calendariHTML(); return; }
+  if(showCalendar){ main.innerHTML = calendariHTML(); initCalMonthSwipe(); return; }
   if(showAgenda){ main.innerHTML = agendaHTML(); return; }
   const area = state.areas.find(a=>a.id===state.selectedAreaId);
   if(!area){ showAgenda = true; renderSidebar(); main.innerHTML = agendaHTML(); return; }
@@ -5402,6 +5421,79 @@ function calendariMonths(){
   }
   return months;
 }
+let calViewYear = null, calViewMonth = null, calMonthAnimating = false;
+function calViewMonthNow(){
+  if(calViewYear === null || calViewMonth === null){
+    const now = new Date();
+    calViewYear = now.getFullYear();
+    calViewMonth = now.getMonth();
+  }
+}
+function updateCalMonthTitle(){
+  const t = document.getElementById('cal-month-title');
+  if(t) t.textContent = `${tr(CAL_MONTHS[calViewMonth])} ${calViewYear}`;
+}
+function calMonthShift(delta){
+  if(calViewYear === null || calViewMonth === null) calViewMonthNow();
+  const slide = document.getElementById('cal-month-slide');
+  if(!slide || calMonthAnimating) return;
+  calMonthAnimating = true;
+  const toNext = delta > 0;
+  slide.classList.add('cal-month-anim');
+  slide.classList.add(toNext ? 'cal-month-out-left' : 'cal-month-out-right');
+  setTimeout(() => {
+    calViewMonth += delta;
+    if(calViewMonth < 0){ calViewMonth = 11; calViewYear--; }
+    if(calViewMonth > 11){ calViewMonth = 0; calViewYear++; }
+    slide.classList.remove('cal-month-out-left','cal-month-out-right');
+    slide.classList.remove('cal-month-anim');
+    slide.innerHTML = calViewMonthHTML(calViewYear, calViewMonth);
+    updateCalMonthTitle();
+    slide.classList.add(toNext ? 'cal-month-in-from-right' : 'cal-month-in-from-left');
+    void slide.offsetWidth;
+    slide.classList.add('cal-month-anim');
+    slide.classList.remove('cal-month-in-from-right','cal-month-in-from-left');
+    setTimeout(() => {
+      slide.classList.remove('cal-month-anim');
+      calMonthAnimating = false;
+    }, 320);
+  }, 250);
+}
+function initCalMonthSwipe(){
+  const slider = document.getElementById('cal-month-slider');
+  if(!slider) return;
+  let sx = 0, sy = 0, axis = null, swiping = false;
+  slider.addEventListener('touchstart', (e) => {
+    if(e.touches.length !== 1) return;
+    sx = e.touches[0].clientX;
+    sy = e.touches[0].clientY;
+    axis = null;
+    swiping = false;
+  }, { passive: true });
+  slider.addEventListener('touchmove', (e) => {
+    if(e.touches.length !== 1) return;
+    const dx = e.touches[0].clientX - sx;
+    const dy = e.touches[0].clientY - sy;
+    if(axis === null && (Math.abs(dx) > 10 || Math.abs(dy) > 10)) axis = Math.abs(dx) > Math.abs(dy) ? 'h' : 'v';
+    if(axis === 'h'){
+      swiping = true;
+      if(e.cancelable) e.preventDefault();
+    }
+  }, { passive: false });
+  slider.addEventListener('touchend', (e) => {
+    if(axis !== 'h') return;
+    const dx = e.changedTouches[0].clientX - sx;
+    if(Math.abs(dx) >= 60) calMonthShift(dx < 0 ? 1 : -1);
+    setTimeout(() => { swiping = false; }, 80);
+  });
+  slider.addEventListener('click', (e) => {
+    if(swiping){
+      e.preventDefault();
+      e.stopPropagation();
+      swiping = false;
+    }
+  }, true);
+}
 function calViewMonthHTML(y, m){
   const cd = state.calendarData || {};
   const holidays = new Set(Array.isArray(cd.holidays) ? cd.holidays : []);
@@ -5428,12 +5520,10 @@ function calViewMonthHTML(y, m){
       cells += `<span class="${cls}">${content}</span>`;
     }
   }
-  return `<div class="cal-view-month">
-    <div class="cal-view-month-title">${tr(CAL_MONTHS[m])} ${y}</div>
-    <div class="cal-grid-wrap"><div class="cal-grid-head">${headers.map(h=>`<span class="cal-grid-hd">${h}</span>`).join('')}</div><div class="cal-grid-body">${cells}</div></div>
-  </div>`;
+  return `<div class="cal-grid-wrap"><div class="cal-grid-head">${headers.map(h=>`<span class="cal-grid-hd">${h}</span>`).join('')}</div><div class="cal-grid-body">${cells}</div></div>`;
 }
 function calendariHTML(){
+  calViewMonthNow();
   const cd = state.calendarData;
   const has = !!(cd && Array.isArray(cd.holidays) && cd.holidays.length);
   const fmt = s => s ? new Date(s + 'T00:00:00').toLocaleDateString('ca-ES') : '—';
@@ -5449,7 +5539,14 @@ function calendariHTML(){
     </div>` : '';
   const monthWrap = `
     <div id="cal-month-view-wrap">
-      <div class="cal-view">${calendariMonths().map(mo => calViewMonthHTML(mo.y, mo.m)).join('')}</div>
+      <div class="cal-month-slider" id="cal-month-slider">
+        <div class="cal-month-nav">
+          <button type="button" class="cal-month-nav-btn" onclick="calMonthShift(-1)" aria-label="${esc(tr('Mes anterior'))}">‹</button>
+          <span class="cal-month-title" id="cal-month-title">${esc(tr(CAL_MONTHS[calViewMonth]))} ${calViewYear}</span>
+          <button type="button" class="cal-month-nav-btn" onclick="calMonthShift(1)" aria-label="${esc(tr('Següent mes'))}">›</button>
+        </div>
+        <div class="cal-view-month" id="cal-month-slide">${calViewMonthHTML(calViewYear, calViewMonth)}</div>
+      </div>
       <div class="cal-grid-legend">
         <span class="cal-legend cal-legend-weekend">${tr('cap de setmana')}</span>
         <span class="cal-legend cal-legend-holiday">${tr('festiu')}</span>
@@ -5533,14 +5630,16 @@ function renderWeekView(wrap, iso){
       const time = (a.sessionTimes && a.sessionTimes[dow]) || '';
       const timeLabel = time ? `<span class="week-time">${esc(time)}</span>` : '';
       const s = sessionsOnDay(dd.iso).find(x => x.area.id === a.id);
+      const soft = hexToRgba(a.color, 0.10);
+      const head = `<span class="week-area-head"><span class="week-dot" style="background:${a.color}"></span><b class="week-area-name">${esc(a.name)}</b>${timeLabel}</span>`;
       let body;
       if(s){
         const sName = sessionCleanName(s.se) || s.se.name;
-        body = `<button type="button" class="week-block has-session" onclick="openAreaAtSession('${a.id}','${s.sa.id}','${s.se.id}',true)" title="${esc(tr('Obre la sessió'))}">${timeLabel}<span class="week-sess">${esc(sName)}</span></button>`;
+        body = `<button type="button" class="week-area" style="background:${soft};border-left:3px solid ${a.color}" onclick="openAreaAtSession('${a.id}','${s.sa.id}','${s.se.id}',true)" title="${esc(tr('Obre la sessió'))}">${head}<span class="week-sess">${esc(sName)}</span></button>`;
       } else {
-        body = `<button type="button" class="week-block empty" onclick="openAreaSessions('${a.id}',true)" title="${esc(tr('Sense sessió programada. Clica per configurar.'))}">${timeLabel}<span class="week-sess faint">${esc(tr('Sense sessió programada'))}</span></button>`;
+        body = `<button type="button" class="week-area empty" style="background:${soft};border-left:3px solid ${a.color}" onclick="openAreaSessions('${a.id}',true)" title="${esc(tr('Sense sessió programada. Clica per configurar.'))}">${head}<span class="week-sess faint">${esc(tr('Sense sessió programada'))}</span></button>`;
       }
-      blocks.push(`<div class="week-area"><div class="week-area-head"><span class="week-dot" style="background:${a.color}"></span><b class="week-area-name">${esc(a.name)}</b></div>${body}</div>`);
+      blocks.push(body);
     }
     return `<div class="week-day ${dow===0||dow===6?'weekend':''}"><div class="week-day-head">${fmtDay(dd)}</div><div class="week-day-body">${blocks.join('') || '<span class="week-none">—</span>'}</div></div>`;
   }).join('');
@@ -6975,6 +7074,79 @@ window.addEventListener('popstate', function(e){
 });
 
 /* ---------------------------------------------------------
+   NAVEGACIÓ PER DESLLIÇAMENT ENTRE PANTALLES (mòbil)
+--------------------------------------------------------- */
+const MOBILE_SCREEN_ORDER = ['agenda','calendar','areas','resources','settings'];
+function currentMobileScreen(){
+  if(showAgenda) return 'agenda';
+  if(showCalendar) return 'calendar';
+  if(showMobileAreas) return 'areas';
+  if(showMobileResources) return 'resources';
+  if(showSettings) return 'settings';
+  return null;
+}
+function goToMobileScreen(name){
+  if(name === 'agenda') showAgendaView();
+  else if(name === 'calendar') showCalendarView();
+  else if(name === 'areas') showMobileAreasView();
+  else if(name === 'resources') showMobileResourcesView();
+  else if(name === 'settings') showSettingsView();
+}
+function adjacentMobileScreen(name, dir){
+  const i = MOBILE_SCREEN_ORDER.indexOf(name);
+  if(i === -1) return null;
+  return MOBILE_SCREEN_ORDER[(i + dir + MOBILE_SCREEN_ORDER.length) % MOBILE_SCREEN_ORDER.length];
+}
+let screenSwipe = { startX:0, startY:0, axis:null, active:false, tracking:false };
+function initScreenSwipe(){
+  const main = document.getElementById('main-content');
+  if(!main) return;
+  const inMonthSlider = (el) => {
+    const slider = document.getElementById('cal-month-slider');
+    return slider && el && slider.contains(el);
+  };
+  main.addEventListener('touchstart', (e) => {
+    if(!isMobile() || e.touches.length !== 1) return;
+    if(inMonthSlider(e.target)) return;
+    screenSwipe.startX = e.touches[0].clientX;
+    screenSwipe.startY = e.touches[0].clientY;
+    screenSwipe.axis = null;
+    screenSwipe.active = false;
+    screenSwipe.tracking = true;
+  }, { passive: true });
+  main.addEventListener('touchmove', (e) => {
+    if(!isMobile() || !screenSwipe.tracking) return;
+    const dx = e.touches[0].clientX - screenSwipe.startX;
+    const dy = e.touches[0].clientY - screenSwipe.startY;
+    if(screenSwipe.axis === null && (Math.abs(dx) > 10 || Math.abs(dy) > 10)){
+      screenSwipe.axis = Math.abs(dx) > Math.abs(dy) ? 'h' : 'v';
+    }
+    if(screenSwipe.axis === 'h'){
+      screenSwipe.active = true;
+      if(e.cancelable) e.preventDefault();
+    }
+  }, { passive: false });
+  main.addEventListener('touchend', (e) => {
+    if(!isMobile() || !screenSwipe.tracking) return;
+    screenSwipe.tracking = false;
+    if(screenSwipe.axis !== 'h'){ screenSwipe.active = false; return; }
+    const dx = e.changedTouches[0].clientX - screenSwipe.startX;
+    if(Math.abs(dx) < 60){ screenSwipe.active = false; return; }
+    const cur = currentMobileScreen();
+    const next = cur ? adjacentMobileScreen(cur, dx < 0 ? 1 : -1) : null;
+    if(next) goToMobileScreen(next);
+    setTimeout(() => { screenSwipe.active = false; }, 80);
+  });
+  main.addEventListener('click', (e) => {
+    if(screenSwipe.active){
+      e.preventDefault();
+      e.stopPropagation();
+      screenSwipe.active = false;
+    }
+  }, true);
+}
+
+/* ---------------------------------------------------------
    INICI
 --------------------------------------------------------- */
 document.addEventListener('DOMContentLoaded', async () => {
@@ -6988,6 +7160,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   render();
   applyI18n();
   updateLoginGate();
+  initScreenSwipe();
   maybeShowYearPrompt();
   pruneMissingDropboxFiles();
   initImportDropzone();
