@@ -42,6 +42,8 @@
   --gold-soft:#F6E8C3;
   --danger:#B0523F;
   --danger-soft:#F5E4DF;
+  --green-tint:#E3F0E4;
+  --green-ink:#2E6B34;
   --white:#FFFFFF;
   --radius:12px;
   --sidebar-w:280px;
@@ -63,6 +65,8 @@
   --gold-soft:#3A2E14;
   --danger:#DC826B;
   --danger-soft:#3D2C27;
+  --green-tint:#203024;
+  --green-ink:#8FD49A;
   --white:#1D242D;
   --shadow:0 1px 2px rgba(0,0,0,.4), 0 6px 20px -8px rgba(0,0,0,.5);
   --chevron:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23C6CFD9' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
@@ -236,15 +240,15 @@ a{color:var(--pen);}
 .cal-grid-wrap{border:1px solid var(--line);border-radius:9px;overflow:hidden;}
 .cal-grid-head,.cal-grid-body{display:grid;grid-template-columns:repeat(7,1fr);}
 .cal-grid-hd{text-align:center;font-size:.72rem;font-weight:600;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.04em;padding:7px 0;background:var(--paper-alt);border-bottom:1px solid var(--line);}
-.cal-cell{display:flex;align-items:center;justify-content:center;height:38px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);font-size:.85rem;font-family:'IBM Plex Mono',monospace;}
+.cal-cell{display:flex;align-items:center;justify-content:center;height:38px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);font-size:.85rem;font-family:'IBM Plex Mono',monospace;color:var(--ink);}
 .cal-cell:nth-child(7n){border-right:none;}
 .cal-cell-empty{background:var(--paper);}
 .cal-cell-weekend{background:var(--gold-soft);color:var(--gold-dark);font-weight:600;}
 .cal-cell-holiday{background:var(--danger-soft);color:var(--danger);font-weight:700;}
 .cal-cell:not(.cal-cell-empty):not(.cal-cell-weekend):not(.cal-cell-holiday):not(.cal-cell-special){background:var(--white);cursor:pointer;}
 .cal-cell:not(.cal-cell-empty):not(.cal-cell-weekend):not(.cal-cell-holiday):not(.cal-cell-special):hover{background:var(--pen-soft);}
-.cal-cell-special{position:relative;background:var(--green-tint, #E3F0E4);}
-.cal-cell-special .cal-cell-mark{position:absolute;top:2px;right:4px;font-size:.6rem;font-weight:700;color:#2e6b34;}
+.cal-cell-special{position:relative;background:var(--green-tint);color:var(--ink);}
+.cal-cell-special .cal-cell-mark{position:absolute;top:2px;right:4px;font-size:.6rem;font-weight:700;color:var(--green-ink);}
 .cal-grid-legend{display:flex;gap:14px;margin-top:10px;flex-wrap:wrap;font-size:.75rem;color:var(--ink-soft);}
 .cal-view{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:16px;}
 @media(max-width:960px){.cal-view{grid-template-columns:repeat(auto-fill,minmax(270px,1fr));}}
@@ -252,6 +256,7 @@ a{color:var(--pen);}
 .cal-view-month .cal-grid-wrap{font-size:.82rem;box-shadow:0 1px 2px rgba(0,0,0,.05);}
 .cal-view-month-title{font-size:.85rem;font-weight:600;color:var(--pen-dark);text-align:center;margin-bottom:10px;}
 .cal-view .cal-cell{cursor:default;}
+body.mode-data .cal-view .cal-cell:not(.cal-cell-empty){cursor:pointer;}
 .cal-view .cal-cell:not(.cal-cell-empty):not(.cal-cell-weekend):not(.cal-cell-holiday):not(.cal-cell-special):hover{background:var(--white);}
 .cal-legend::before{content:'';display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px;border:1px solid var(--line);}
 .cal-legend-weekend::before{background:var(--gold-soft);}
@@ -635,6 +640,8 @@ body.gate-open #mobile-bottombar{visibility:hidden;}
   .backup-actions .btn{width:100%;justify-content:center;}
 }
 .settings-view .settings-card{max-width:680px;}
+.cal-card{max-width:none;}
+body.cal-full #main-content{max-width:none;}
 .settings-card-title{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-faint);font-weight:600;padding:16px 18px 0;}
 .files-toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:18px;}
 .files-search{flex:1 1 220px;min-width:180px;border:1px solid var(--line);border-radius:8px;background:var(--white);padding:9px 12px;font-size:.9rem;color:var(--ink);}
@@ -756,7 +763,7 @@ body.gate-open #mobile-bottombar{visibility:hidden;}
 .settings-row.centered .settings-label{text-align:center;}
 .settings-row.centered .settings-input{justify-content:center;flex-wrap:wrap;}
 .settings-row.column{flex-direction:column;align-items:flex-start;gap:12px;}
-.weekday-picker{display:flex;gap:6px;flex-wrap:wrap;}
+.weekday-picker{display:flex;flex-direction:column;align-items:flex-start;gap:8px;}
 .wd-day{min-width:46px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink-soft);font-size:.82rem;font-weight:600;cursor:pointer;font-family:'IBM Plex Mono',monospace;}
 .wd-day:hover{border-color:var(--pen);}
 .wd-day.active{background:var(--pen);border-color:var(--pen);color:#fff;}
@@ -926,7 +933,7 @@ body.mode-data .duration-bar-wrap{flex:0 1 52px;min-width:44px;}
 .sa-date-chip{display:inline-flex;align-items:center;flex:none;}
 
 /* Picker de dies de classe amb hores */
-.wd-day-wrap{display:flex;flex-direction:column;align-items:center;gap:4px;}
+.wd-day-wrap{display:flex;flex-direction:row;align-items:center;gap:8px;}
 .wd-time,.date-time-input{width:86px;padding:4px 2px;border:1px solid var(--line);border-radius:7px;background:var(--paper);color:var(--ink);font-family:'IBM Plex Mono',monospace;font-size:.72rem;text-align:center;}
 .wd-time:focus,.date-time-input:focus{outline:none;border-color:var(--pen);}
 
@@ -935,7 +942,7 @@ body.mode-data .duration-bar-wrap{flex:0 1 52px;min-width:44px;}
 .data-setup-scroll{display:flex;flex-direction:column;gap:12px;padding-top:4px;}
 .data-setup-area{border:1px solid var(--line);border-radius:10px;background:var(--white);padding:12px 14px;box-shadow:var(--shadow);}
 .data-setup-area-head{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:.95rem;}
-.data-setup-day{display:flex;flex-direction:column;align-items:center;gap:4px;}
+.data-setup-day{display:flex;flex-direction:row;align-items:center;gap:8px;}
 .data-setup-day .wd-day{min-width:46px;}
 #data-setup-status{font-size:.8rem;color:var(--danger);min-height:1.2em;margin-top:6px;}
 
@@ -943,13 +950,14 @@ body.mode-data .duration-bar-wrap{flex:0 1 52px;min-width:44px;}
 .cal-v-tabs{display:flex;gap:6px;margin-bottom:14px;border-bottom:1px solid var(--line);}
 .week-nav{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
 .week-title{font-family:'Fraunces',serif;font-weight:600;font-size:1.05rem;color:var(--ink);flex:1;min-width:160px;}
-.week-view{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;}
+.week-view{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;}
 .week-day{border:1px solid var(--line);border-radius:9px;background:var(--white);overflow:hidden;display:flex;flex-direction:column;min-width:0;}
 .week-day.weekend{background:var(--gold-soft);}
 .week-day-head{font-size:.72rem;font-weight:600;color:var(--ink-soft);text-transform:capitalize;text-align:center;padding:6px 4px;background:var(--paper-alt);border-bottom:1px solid var(--line);}
 .week-day-body{display:flex;flex-direction:column;gap:6px;padding:6px;}
-.week-area{display:flex;flex-direction:column;gap:2px;border:1px solid var(--line);border-radius:7px;padding:6px;background:var(--paper);}
-.week-area-name{font-size:.72rem;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.week-area{display:flex;flex-direction:column;gap:5px;border:1px solid var(--line);border-radius:7px;padding:6px;background:var(--paper);}
+.week-area-head{display:flex;align-items:center;gap:5px;min-width:0;}
+.week-area-name{flex:1;font-size:.72rem;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .week-dot{width:8px;height:8px;border-radius:50%;flex:none;}
 .week-block{display:flex;align-items:center;gap:4px;flex-wrap:wrap;font-size:.72rem;border-radius:5px;padding:2px 4px;}
 .week-block.has-session{background:var(--pen-soft);color:var(--pen-dark);cursor:pointer;}
@@ -3037,6 +3045,7 @@ function renderSidebar(){
 
 function renderMain(){
   const main = document.getElementById('main-content');
+  document.body.classList.toggle('cal-full', showCalendar);
   if(showMobileAreas){ main.innerHTML = mobileAreasHTML(); return; }
   if(showMobileResources){ main.innerHTML = mobileResourcesHTML(); return; }
   if(showSettings){ main.innerHTML = settingsHTML(); updateAuthUI(); updatePWAButtons(); return; }
@@ -5413,9 +5422,7 @@ function calViewMonthHTML(y, m){
     const marker = isStart ? 'I' : isEnd ? 'F' : '';
     const dot = (dataModeEnabled() && iso && sessionsOnDay(iso).length) ? '<span class="cal-cell-session-dot"></span>' : '';
     const content = `${d}${marker ? `<span class="cal-cell-mark">${marker}</span>` : ''}${dot}`;
-    if(isWeekend){
-      cells += `<span class="${cls}">${content}</span>`;
-    } else if(dataModeEnabled()){
+    if(dataModeEnabled()){
       cells += `<button type="button" class="${cls}" onclick="showWeeklyView('${iso}')" title="${esc(tr('Vista setmanal'))}">${content}</button>`;
     } else {
       cells += `<span class="${cls}">${content}</span>`;
@@ -5456,7 +5463,7 @@ function calendariHTML(){
     <p class="settings-note">${tr('Dies de festa del curs i període escolar.')}</p>
   </div>
   ${dataTabs}
-  <div class="settings-card">
+  <div class="settings-card cal-card">
     <div class="settings-row">
       <div class="settings-label">
         <b>${tr('Curs')}</b>
@@ -5469,7 +5476,7 @@ function calendariHTML(){
   </div>`;
 }
 let weeklyViewISO = null;
-function showWeeklyView(iso){
+function enterWeekView(iso, push){
   weeklyViewISO = iso;
   const wrap = document.getElementById('week-view-wrap');
   const monthView = document.getElementById('cal-month-view-wrap');
@@ -5479,9 +5486,17 @@ function showWeeklyView(iso){
   if(tW) tW.classList.add('active');
   if(monthView) monthView.style.display = 'none';
   if(wrap){ wrap.style.display = ''; renderWeekView(wrap, iso); }
+  const st = { view:'cal-week', iso: iso };
+  try{
+    if(push) history.pushState(st, '');
+    else history.replaceState(st, '');
+  }catch(e){}
+}
+function showWeeklyView(iso){
+  enterWeekView(iso, true);
 }
 function showWeeklyViewToday(){
-  showWeeklyView(toISODate(new Date()));
+  enterWeekView(toISODate(new Date()), true);
 }
 function showMonthView(){
   weeklyViewISO = null;
@@ -5493,19 +5508,23 @@ function showMonthView(){
   if(tW) tW.classList.remove('active');
   if(monthView) monthView.style.display = '';
   if(wrap) wrap.style.display = 'none';
+  if(history.state && history.state.view === 'cal-week'){
+    try{ history.replaceState({view:'cal-month'}, ''); }catch(e){}
+  }
 }
 function renderWeekView(wrap, iso){
   const d = parseISODate(iso); if(!d) return;
   const diff = (d.getDay() + 6) % 7;
   const monday = new Date(d); monday.setDate(d.getDate() - diff);
+  const courseStart = (state.settings && state.settings.courseStartDate) || null;
   const days = [];
-  for(let i=0;i<7;i++){
+  for(let i=0;i<5;i++){
     const day = new Date(monday); day.setDate(monday.getDate()+i);
     days.push({ iso: toISODate(day), date: day });
   }
   const locale = lang()==='es' ? 'es-ES' : 'ca-ES';
   const fmtDay = dd => dd.date.toLocaleDateString(locale, { weekday:'short', day:'numeric', month:'short' });
-  const cols = days.map(dd => {
+  const cols = days.filter(dd => !courseStart || dd.iso >= courseStart).map(dd => {
     const dow = dd.date.getDay();
     const blocks = [];
     for(const a of state.areas){
@@ -5517,11 +5536,11 @@ function renderWeekView(wrap, iso){
       let body;
       if(s){
         const sName = sessionCleanName(s.se) || s.se.name;
-        body = `<button type="button" class="week-block has-session" onclick="openAreaAtSession('${a.id}','${s.sa.id}','${s.se.id}')" title="${esc(tr('Obre la sessió'))}">${timeLabel}<span class="week-sess">${esc(sName)}</span></button>`;
+        body = `<button type="button" class="week-block has-session" onclick="openAreaAtSession('${a.id}','${s.sa.id}','${s.se.id}',true)" title="${esc(tr('Obre la sessió'))}">${timeLabel}<span class="week-sess">${esc(sName)}</span></button>`;
       } else {
-        body = `<button type="button" class="week-block empty" onclick="openAreaConfigModal('${a.id}')" title="${esc(tr('Sense sessió programada. Clica per configurar.'))}">${timeLabel}<span class="week-sess faint">${esc(tr('Sense sessió programada'))}</span></button>`;
+        body = `<button type="button" class="week-block empty" onclick="openAreaSessions('${a.id}',true)" title="${esc(tr('Sense sessió programada. Clica per configurar.'))}">${timeLabel}<span class="week-sess faint">${esc(tr('Sense sessió programada'))}</span></button>`;
       }
-      blocks.push(`<div class="week-area"><span class="week-dot" style="background:${a.color}"></span><b class="week-area-name">${esc(a.name)}</b>${body}</div>`);
+      blocks.push(`<div class="week-area"><div class="week-area-head"><span class="week-dot" style="background:${a.color}"></span><b class="week-area-name">${esc(a.name)}</b></div>${body}</div>`);
     }
     return `<div class="week-day ${dow===0||dow===6?'weekend':''}"><div class="week-day-head">${fmtDay(dd)}</div><div class="week-day-body">${blocks.join('') || '<span class="week-none">—</span>'}</div></div>`;
   }).join('');
@@ -5542,6 +5561,7 @@ function weekShift(delta){
   weeklyViewISO = toISODate(d);
   const wrap = document.getElementById('week-view-wrap');
   if(wrap) renderWeekView(wrap, weeklyViewISO);
+  try{ history.replaceState({view:'cal-week', iso: weeklyViewISO}, ''); }catch(e){}
 }
 function openCalModal(){
   const now = new Date();
@@ -5968,14 +5988,24 @@ function renameSession(areaId, saId, sessionId, value){
   autoNameSA(areaId, saId);
   saveState();
 }
-function openAreaAtSession(areaId, saId, sessionId){
+function openAreaAtSession(areaId, saId, sessionId, fromCal){
   const area = state.areas.find(a=>a.id===areaId); if(!area) return;
   const sa = area.situacions.find(x=>x.id===saId); if(!sa) return;
   const s = sa.sessions.find(x=>x.id===sessionId); if(!s) return;
+  if(fromCal){ try{ history.pushState({view:'area'}, ''); }catch(e){} }
   state.selectedAreaId = areaId;
   showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false;
   prepareAreaView(area);
   sa.open = true; s.open = true; saveState();
+  editTarget = null;
+  render(); closeDrawerIfMobile();
+}
+function openAreaSessions(areaId, fromCal){
+  const area = state.areas.find(a=>a.id===areaId); if(!area) return;
+  if(fromCal){ try{ history.pushState({view:'area'}, ''); }catch(e){} }
+  state.selectedAreaId = areaId;
+  showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false;
+  prepareAreaView(area);
   editTarget = null;
   render(); closeDrawerIfMobile();
 }
@@ -6923,7 +6953,6 @@ function markViewState(view){
   if(isMobile()) history.replaceState({view:view}, '');
 }
 window.addEventListener('popstate', function(e){
-  if(!isMobile()) return;
   const m = document.getElementById('attach-modal');
   if(m && m.classList.contains('open')){
     closingAttachFromBack = true;
@@ -6932,6 +6961,12 @@ window.addEventListener('popstate', function(e){
     return;
   }
   const v = e.state && e.state.view;
+  if(v === 'cal-week' && e.state.iso){
+    showCalendarView();
+    enterWeekView(e.state.iso, false);
+    return;
+  }
+  if(!isMobile()) return;
   if(v === 'area'){
     showMobileAreasView();
   }else if(v === 'resources'){
