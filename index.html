@@ -597,6 +597,8 @@ a{color:var(--pen);}
 .settings-header h1{margin:0 0 4px;}
 .settings-note{color:var(--ink-soft);font-size:.9rem;margin:0;}
 .settings-card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;max-width:680px;}
+.settings-view{display:flex;flex-direction:column;gap:14px;}
+.settings-view .settings-card{max-width:680px;}
 .settings-card-title{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-faint);font-weight:600;padding:16px 18px 0;}
 .files-toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:18px;}
 .files-search{flex:1 1 220px;min-width:180px;border:1px solid var(--line);border-radius:8px;background:var(--white);padding:9px 12px;font-size:.9rem;color:var(--ink);}
@@ -699,6 +701,10 @@ a{color:var(--pen);}
 .settings-sub .settings-row{padding-left:38px;}
 .settings-sub .settings-sub .settings-row{padding-left:64px;}
 .settings-sub .settings-row:last-of-type{border-bottom:none;}
+.settings-collapse{cursor:pointer;user-select:none;}
+.settings-collapse:hover .settings-label b{color:var(--pen);}
+.settings-chevron{width:14px;height:14px;flex:none;background:var(--chevron) no-repeat center/contain;transition:transform .15s ease;}
+.settings-collapse.open .settings-chevron{transform:rotate(180deg);}
 .hidden{display:none !important;}
 
 /* ---------- Mobile bottom bar ---------- */
@@ -1233,7 +1239,7 @@ const I18N_ES = {
   'Castellà': 'Castellano',
   'Configuració general de l\'aplicació.': 'Configuración general de la aplicación.',
   'Durada de les sessions': 'Duración de las sesiones',
-  'Activa o desactiva l\'opció d\'establir la durada de les activitats i les sessions a les programacions.': 'Activa o desactiva la opción de establecer la duración de las actividades y las sesiones en las programaciones.',
+  'Estableix la durada de les activitats i les sessions a les programacions.': 'Establece la duración de las actividades y las sesiones en las programaciones.',
   'Minuts per sessió': 'Minutos por sesión',
   'Durada per defecte d\'una sessió.': 'Duración por defecto de una sesión.',
   'minuts': 'minutos',
@@ -1584,8 +1590,8 @@ const I18N_ES = {
   'Programacions guardades': 'Programaciones guardadas',
   'Elements eliminats': 'Elementos eliminados',
   'Instal·la l\'app': 'Instalar la app',
-  'Instal·la el Quadern al teu dispositiu': 'Instala el Cuaderno en tu dispositivo',
-  'Afegeix l\'aplicació a la pantalla d\'inici per accedir-hi més ràpidament, fins i tot fora de línia.': 'Añade la aplicación a la pantalla de inicio para acceder más rápido, incluso sin conexión.',
+  'Instal·la el Quadern': 'Instala el Cuaderno',
+  'Afegeix l\'aplicació a la pantalla d\'inici per accedir-hi més ràpidament.': 'Añade la aplicación a la pantalla de inicio para acceder más rápido.',
   'Instal·la': 'Instalar',
   'L\'app ja està instal·lada': 'La app ya está instalada',
   'El Quadern ja està instal·lat al teu dispositiu.': 'El Cuaderno ya está instalado en tu dispositivo.'
@@ -1770,7 +1776,7 @@ function dropboxSettingsHTML(){
   return `<div class="settings-row">
     <div class="settings-label">
       <b>${tr('Arxius adjunts (Dropbox)')}</b>
-      <small>${tr('Els arxius que adjuntes es guarden al teu Dropbox personal. ')}${connected ? tr('Els nous arxius aniran al teu Dropbox.') : tr('Connecta el teu compte per guardar-hi els arxius.')}</small>
+      <small>${connected ? tr('Els arxius que adjuntes es guarden al teu Dropbox personal. ') + tr('Els nous arxius aniran al teu Dropbox.') : tr('Connecta el teu compte per guardar-hi els arxius.')}</small>
     </div>
     <div class="settings-input">
       <button class="btn btn-sm ${connected ? 'btn-danger' : 'btn-primary'}" onclick="dbxToggle()">${connected ? tr('Desconnecta') : tr('Connecta amb Dropbox')}</button>
@@ -2384,7 +2390,6 @@ function settingsHTML(){
   const askDel = askDeleteFilesEnabled();
   const attPrev = attachmentPreviewEnabled();
   const l = lang();
-  const elemOpen = programElementsEnabled();
   const dd = dayDetectionEnabled();
   const eObj = sessionObjectiusEnabled();
   const eMet = sessionMetodologiaEnabled();
@@ -2396,6 +2401,7 @@ function settingsHTML(){
     <p class="settings-note">${tr('Configuració general de l\'aplicació.')}</p>
   </div>
 
+  <div class="settings-view">
   <div class="settings-card">
     <div class="settings-card-title">${tr('General')}</div>
     <div class="settings-row">
@@ -2424,6 +2430,24 @@ function settingsHTML(){
       </div>
       <label class="switch" title="${tr('Mode fosc')}"><input type="checkbox" ${dark?'checked':''} onchange="setDarkMode(this.checked)"><span class="slider"></span></label>
     </div>
+    <div class="settings-row" id="pwa-card" style="display:none;">
+      <div class="settings-label">
+        <b>${tr('Instal·la el Quadern')}</b>
+        <small>${tr('Afegeix l\'aplicació a la pantalla d\'inici per accedir-hi més ràpidament.')}</small>
+      </div>
+      <div class="settings-input">
+        <button class="btn btn-sm btn-gold" id="pwa-install-btn" onclick="installPWA()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          ${tr('Instal·la')}
+        </button>
+      </div>
+    </div>
+    <div class="settings-row" id="pwa-already-installed" style="display:none;">
+      <div class="settings-label">
+        <b>${tr('L\'app ja està instal·lada')}</b>
+        <small>${tr('El Quadern ja està instal·lat al teu dispositiu.')}</small>
+      </div>
+    </div>
   </div>
 
   <div class="settings-card">
@@ -2447,18 +2471,18 @@ function settingsHTML(){
         </select>
       </div>
     </div>
-    <div class="settings-row">
+    <div class="settings-row settings-collapse" onclick="toggleSettingsCollapse(this)" role="button" aria-expanded="false">
       <div class="settings-label">
         <b>${tr('Elements de la programació')}</b>
         <small>${tr('Tria quins elements apareixen a les sessions de la programació.')}</small>
       </div>
-      <label class="switch" title="${tr('Elements de la programació')}"><input type="checkbox" ${elemOpen?'checked':''} onchange="setProgramElements(this.checked)"><span class="slider"></span></label>
+      <span class="settings-chevron" aria-hidden="true"></span>
     </div>
-    <div class="settings-sub ${elemOpen?'':'hidden'}">
+    <div class="settings-sub settings-collapse-body hidden">
       <div class="settings-row">
         <div class="settings-label">
           <b>${tr('Durada de les sessions')}</b>
-          <small>${tr('Activa o desactiva l\'opció d\'establir la durada de les activitats i les sessions a les programacions.')}</small>
+          <small>${tr('Estableix la durada de les activitats i les sessions a les programacions.')}</small>
         </div>
         <label class="switch" title="${tr('Activa/desactiva a l\'agenda')}"><input type="checkbox" ${de?'checked':''} onchange="setSessionDurationEnabled(this.checked)"><span class="slider"></span></label>
       </div>
@@ -2533,34 +2557,16 @@ function settingsHTML(){
       </div>
     </div>
   </div>
-
-  <div class="settings-card" id="pwa-card" style="display:none;">
-    <div class="settings-card-title">${tr('Instal·la l\'app')}</div>
-    <div class="settings-row">
-      <div class="settings-label">
-        <b>${tr('Instal·la el Quadern al teu dispositiu')}</b>
-        <small>${tr('Afegeix l\'aplicació a la pantalla d\'inici per accedir-hi més ràpidament, fins i tot fora de línia.')}</small>
-      </div>
-      <div class="settings-input">
-        <button class="btn btn-sm btn-gold" id="pwa-install-btn" onclick="installPWA()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          ${tr('Instal·la')}
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <div class="settings-card" id="pwa-already-installed" style="display:none;">
-    <div class="settings-card-title">${tr('Instal·la l\'app')}</div>
-    <div class="settings-row">
-      <div class="settings-label">
-        <b>${tr('L\'app ja està instal·lada')}</b>
-        <small>${tr('El Quadern ja està instal·lat al teu dispositiu.')}</small>
-      </div>
-    </div>
   </div>`;
 }
 
+function toggleSettingsCollapse(el){
+  const body = el.closest('.settings-card').querySelector('.settings-collapse-body');
+  if(!body) return;
+  body.classList.toggle('hidden');
+  el.classList.toggle('open');
+  el.setAttribute('aria-expanded', body.classList.contains('hidden') ? 'false' : 'true');
+}
 function setDarkMode(on){
   if(!state.settings) state.settings = {};
   state.settings.darkMode = !!on;
@@ -2592,14 +2598,6 @@ function setDayDetection(on){
 }
 
 /* --- Elements de la programació (Objectius, Metodologia, Seguiment, Recursos) --- */
-function programElementsEnabled(){
-  return !(state.settings && state.settings.programElements === false);
-}
-function setProgramElements(on){
-  if(!state.settings) state.settings = {};
-  state.settings.programElements = !!on;
-  saveState(); render();
-}
 function sessionObjectiusEnabled(){ return !!(state.settings && state.settings.sessionElemObjectius); }
 function sessionMetodologiaEnabled(){ return !!(state.settings && state.settings.sessionElemMetodologia); }
 function sessionSeguimentEnabled(){ return !!(state.settings && state.settings.sessionElemSeguiment); }
