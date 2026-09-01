@@ -245,7 +245,7 @@ a{color:var(--pen);}
 .cal-tab.active{color:var(--pen);border-bottom-color:var(--pen);}
 .cal-controls{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center;}
 .cal-controls select{border:1px solid var(--line);border-radius:8px;padding:7px 9px;font-size:.85rem;background:var(--paper);color:var(--ink);}
-.cal-grid-wrap{border:1px solid var(--line);border-radius:9px;overflow:hidden;}
+.cal-grid-wrap{border:1px solid var(--line);}
 .cal-grid-head,.cal-grid-body{display:grid;grid-template-columns:repeat(7,1fr);}
 .cal-grid-hd{text-align:center;font-size:.72rem;font-weight:600;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.04em;padding:7px 0;background:var(--paper-alt);border-bottom:1px solid var(--line);}
 .cal-cell{display:flex;align-items:center;justify-content:center;height:38px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);font-size:.85rem;font-family:'IBM Plex Mono',monospace;color:var(--ink);}
@@ -287,7 +287,7 @@ a{color:var(--pen);}
 .cal-month-nav-btn:hover{background:var(--pen-soft);border-color:var(--pen);}
 .cal-month-title{font-family:'Fraunces',serif;font-weight:600;font-size:1.05rem;color:var(--ink);}
 .cal-view-month{min-width:0;width:100%;}
-.cal-view-month .cal-grid-wrap{font-size:.82rem;box-shadow:0 1px 2px rgba(0,0,0,.05);}
+.cal-view-month .cal-grid-wrap{font-size:.82rem;}
 .cal-view-month .cal-cell{cursor:pointer;}
 .cal-view-month .cal-cell.cal-cell-empty{cursor:default;}
 .cal-view-month .cal-cell:not(.cal-cell-empty):not(.cal-cell-weekend):not(.cal-cell-holiday):not(.cal-cell-special):hover{background:var(--pen-soft);}
@@ -314,6 +314,9 @@ a{color:var(--pen);}
 .cal-cell-badge.avaluacio{background:var(--gold-soft);color:var(--gold-dark);border:1px solid var(--gold);}
 .cal-cell-badge.reunio{background:var(--pen-soft);color:var(--pen-dark);border:1px solid var(--pen);}
 .cal-cell-note{font-size:.6rem;color:var(--ink-soft);margin-top:2px;line-height:1.3;width:100%;text-align:left;padding:0 2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:break-word;}
+@media(max-width:860px){
+  .cal-view-month .cal-cell-note{display:none;}
+}
 .cal-cell-session-dot{position:absolute;bottom:3px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:var(--pen);}
 
 /* Barra de marcatge (festius, inici/fi, avaluacions, reunions) */
@@ -336,9 +339,9 @@ a{color:var(--pen);}
 .cal-mark-btn.active.reunio{background:var(--pen-dark);border-color:var(--pen-dark);color:#fff;}
 .cal-mark-toggle{display:none;}
 @media(max-width:860px){
-  .cal-mark-bar{flex-direction:column;align-items:stretch;gap:6px;background:var(--paper-alt);border:1px solid var(--line);border-radius:10px;padding:6px;}
+  .cal-mark-bar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch;gap:6px;background:var(--paper-alt);border:1px solid var(--line);border-radius:10px;padding:6px;}
   .cal-mark-toggle{
-    display:flex;align-items:center;justify-content:center;gap:7px;
+    display:flex;grid-column:1/-1;align-items:center;justify-content:center;gap:7px;
     background:none;border:none;color:var(--ink-soft);font-size:.8rem;font-weight:600;
     padding:6px 10px;cursor:pointer;font-family:inherit;border-radius:8px;
   }
@@ -375,12 +378,12 @@ a{color:var(--pen);}
 }
 @media(max-width:860px){
   body.cal-full #main-wrap{display:flex;flex-direction:column;}
-  body.cal-full #main-content{flex:1;min-height:0;display:flex;flex-direction:column;max-width:none;margin:0;padding-bottom:72px;}
-  body.cal-full #main-content > .settings-card.cal-card{flex:1;min-height:0;display:flex;flex-direction:column;overflow:visible;}
-  body.cal-full #main-content > .settings-card.cal-card #cal-month-view-wrap{flex:1;min-height:0;display:flex;flex-direction:column;max-width:none;margin:0;}
-  body.cal-full #main-content > .settings-card.cal-card .cal-month-slider{flex:1;min-height:0;display:flex;flex-direction:column;}
+  body.cal-full #main-content{flex:1;min-height:0;display:flex;flex-direction:column;max-width:none;margin:0;padding:0 0 calc(54px + env(safe-area-inset-bottom,0px));}
+  body.cal-full #main-content > .settings-card.cal-card{flex:1;min-height:0;display:flex;flex-direction:column;overflow:visible;margin:0;width:100%;max-width:none;border:none;border-radius:0;box-shadow:none;}
+  body.cal-full #main-content > .settings-card.cal-card #cal-month-view-wrap{flex:1;min-height:0;display:flex;flex-direction:column;max-width:none;margin:0;width:100%;}
+  body.cal-full #main-content > .settings-card.cal-card .cal-month-slider{flex:1;min-height:0;display:flex;flex-direction:column;margin-top:0;}
   body.cal-full #main-content > .settings-card.cal-card .cal-view-month{flex:1;min-height:0;display:flex;flex-direction:column;}
-  body.cal-full #main-content > .settings-card.cal-card .cal-view-month .cal-grid-wrap{flex:1;min-height:0;display:flex;flex-direction:column;border-radius:9px;}
+  body.cal-full #main-content > .settings-card.cal-card .cal-view-month .cal-grid-wrap{flex:1;min-height:0;display:flex;flex-direction:column;border:none;}
   body.cal-full #main-content > .settings-card.cal-card .cal-view-month .cal-grid-body{flex:1;min-height:0;display:grid;grid-template-columns:repeat(7,1fr);grid-auto-rows:1fr;}
   body.cal-full #main-content > .settings-card.cal-card .cal-view-month .cal-cell,
   body.cal-full #main-content > .settings-card.cal-card .cal-view-month .cal-cell.cal-cell-empty{height:auto;min-height:0;}
@@ -955,7 +958,8 @@ body.cal-full #main-content{max-width:none;}
 }
 .mobile-area-card{
   display:flex;align-items:center;gap:14px;
-  background:var(--white);border:1px solid var(--line);border-radius:14px;
+  background:color-mix(in srgb, var(--area-color, var(--pen)) 7%, var(--white));
+  border:1px solid var(--line);border-radius:14px;
   padding:18px 16px;box-shadow:var(--shadow);
   cursor:pointer;transition:filter .12s ease, transform .1s ease;
   border-left:5px solid var(--area-color,var(--pen));
@@ -1240,6 +1244,8 @@ body.mode-data .duration-bar-wrap{flex:0 1 52px;min-width:44px;}
   .week-view{grid-template-columns:1fr;}
   #week-view-wrap,#week-view-wrap .week-view,#week-view-wrap .week-day{width:100%;max-width:100%;}
   body.cal-full #main-content > .settings-card.cal-card #week-view-wrap{flex:1;min-height:0;display:flex;flex-direction:column;width:100%;max-width:none;}
+  body.cal-full #main-content > .settings-card.cal-card #week-view-wrap .week-view{flex:1;min-height:0;display:flex;flex-direction:column;}
+  body.cal-full #main-content > .settings-card.cal-card #week-view-wrap .week-day{flex:1;min-height:0;}
 }
 @media(max-width:860px){
   .data-setup-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
@@ -1917,6 +1923,7 @@ const I18N_ES = {
   'Data d\'inici': 'Fecha de inicio',
   'Salta': 'Saltar',
   'Vista setmanal': 'Vista semanal',
+  'Vore setmana': 'Ver semana',
   'Setmana': 'Semana',
   'Mes': 'Mes',
   'Sense sessió programada': 'Sin sesión programada',
@@ -6089,29 +6096,36 @@ function calViewMonthHTML(y, m){
   const dim = new Date(y, m+1, 0).getDate();
   const colOf1 = (first.getDay()+6)%7;
   const headers = ['Dl','Dt','Dc','Dj','Dv','Ds','Dg'];
-  let cells = '';
-  const prevDim = new Date(y, m, 0).getDate();
-  for(let i=colOf1-1; i>=0; i--) cells += `<span class="cal-cell cal-cell-empty cal-cell-muted">${prevDim - i}</span>`;
-  for(let d=1; d<=dim; d++){
-    const dow = new Date(y, m, d).getDay();
+  const cellHTML = (iso, d, muted) => {
+    const dow = iso ? parseISODate(iso).getDay() : null;
     const isWeekend = (dow === 0 || dow === 6);
-    const iso = calDateIso(y, m, d);
     const isH = iso && holidays.has(iso);
     const isStart = iso && course.start === iso;
     const isEnd = iso && course.end === iso;
-    const cls = ['cal-cell','cal-cell-click', isWeekend ? 'cal-cell-weekend' : '', isH ? 'cal-cell-holiday' : '', (isStart || isEnd) ? 'cal-cell-special' : ''].filter(Boolean).join(' ');
+    const cls = ['cal-cell','cal-cell-click', muted ? 'cal-cell-empty cal-cell-muted' : '', isWeekend ? 'cal-cell-weekend' : '', isH ? 'cal-cell-holiday' : '', (isStart || isEnd) ? 'cal-cell-special' : ''].filter(Boolean).join(' ');
     const marker = isStart ? 'I' : isEnd ? 'F' : '';
-    const dot = (iso && classesWithoutSessionOnDay(iso)) ? '<span class="cal-cell-session-dot"></span>' : '';
+    const dot = (!muted && iso && classesWithoutSessionOnDay(iso)) ? '<span class="cal-cell-session-dot"></span>' : '';
     const mark = (iso && marks[iso]) ? getCalMark(iso) : null;
     const badges = mark
       ? `<span class="cal-cell-badges">${(mark.avaluacio && mark.avaluacio.note ? `<span class="cal-cell-badge avaluacio">${tr('Av')}</span>` : '') + (mark.reunio && mark.reunio.note ? `<span class="cal-cell-badge reunio">${tr('Re')}</span>` : '')}</span>`
       : '';
     const note = mark ? `<span class="cal-cell-note">${esc(calNotePreview(mark))}</span>` : '';
     const content = `<span class="cal-cell-day">${d}</span>${marker ? `<span class="cal-cell-mark">${marker}</span>` : ''}${badges}${note}${dot}`;
-    cells += `<button type="button" class="${cls}" data-iso="${iso}" onclick="calDayClick('${iso}', this)" title="${esc(tr('Marca o consulta aquest dia'))}">${content}</button>`;
+    return `<button type="button" class="${cls}" data-iso="${iso}" onclick="calDayClick('${iso}', this)" title="${esc(tr('Marca o consulta aquest dia'))}">${content}</button>`;
+  };
+  let cells = '';
+  const prevDim = new Date(y, m, 0).getDate();
+  for(let i=colOf1-1; i>=0; i--){
+    const d = prevDim - i;
+    cells += cellHTML(calDateIso(y, m-1, d), d, true);
+  }
+  for(let d=1; d<=dim; d++){
+    cells += cellHTML(calDateIso(y, m, d), d, false);
   }
   const trailing = (7 - ((colOf1 + dim) % 7)) % 7;
-  for(let i=1; i<=trailing; i++) cells += `<span class="cal-cell cal-cell-empty cal-cell-muted">${i}</span>`;
+  for(let i=1; i<=trailing; i++){
+    cells += cellHTML(calDateIso(y, m+1, i), i, true);
+  }
   return `<div class="cal-grid-wrap"><div class="cal-grid-head">${headers.map(h=>`<span class="cal-grid-hd">${h}</span>`).join('')}</div><div class="cal-grid-body">${cells}</div></div>`;
 }
 
@@ -6260,7 +6274,9 @@ function openCalDayInfo(iso, btn){
     <h4>${fmtShort(iso)}</h4>
     ${body}
     <div class="cal-note-actions">
-      <button type="button" class="btn btn-sm btn-primary" onclick="closeCalNotePopover()">${tr('Tanca')}</button>
+      ${dataModeEnabled()
+        ? `<button type="button" class="btn btn-sm btn-primary" onclick="closeCalNotePopover(); showWeeklyView('${iso}')">${tr('Vore setmana')}</button>`
+        : `<button type="button" class="btn btn-sm btn-primary" onclick="closeCalNotePopover()">${tr('Tanca')}</button>`}
     </div>`;
   document.body.appendChild(pop);
   positionCalPopover(pop, btn);
@@ -6399,7 +6415,7 @@ function renderWeekView(wrap, iso){
     days.push({ iso: toISODate(day), date: day });
   }
   const locale = lang()==='es' ? 'es-ES' : 'ca-ES';
-  const fmtDay = dd => dd.date.toLocaleDateString(locale, { weekday:'short', day:'numeric', month:'short' });
+  const fmtDay = dd => dd.date.toLocaleDateString(locale, { weekday:'long', day:'numeric', month:'short' });
   const cols = days.filter(dd => !courseStart || dd.iso >= courseStart).map(dd => {
     const dow = dd.date.getDay();
     const blocks = [];
@@ -6409,7 +6425,7 @@ function renderWeekView(wrap, iso){
       const time = (a.sessionTimes && a.sessionTimes[dow]) || '';
       const timeLabel = time ? `<span class="week-time">${esc(time)}</span>` : '';
       const s = sessionsOnDay(dd.iso).find(x => x.area.id === a.id);
-      const soft = hexToRgba(a.color, 0.10);
+      const soft = hexToRgba(a.color, 0.16);
       const head = `<span class="week-area-head"><span class="week-dot" style="background:${a.color}"></span><b class="week-area-name">${esc(a.name)}</b>${timeLabel}</span>`;
       let body;
       if(s){
@@ -8000,7 +8016,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   updateLoginGate();
   initScreenSwipe();
   maybeShowYearPrompt();
-  maybeShowCalendarPrompt();
   pruneMissingDropboxFiles();
   initImportDropzone();
   initAttachDropzone();
