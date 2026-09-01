@@ -360,6 +360,14 @@ a{color:var(--pen);}
 .cal-note-pop h4{margin:0 0 6px;font-size:.9rem;}
 .cal-note-pop textarea{width:100%;border:1px solid var(--line);border-radius:7px;padding:8px;font-size:.82rem;background:var(--paper);color:var(--ink);resize:vertical;min-height:56px;font-family:inherit;}
 .cal-note-pop textarea:focus{outline:none;border-color:var(--pen);}
+.cal-note-time-label{display:block;font-size:.74rem;color:var(--ink-soft);margin:2px 0 4px;font-weight:600;}
+.cal-note-time{
+  width:100%;border:1px solid var(--line);border-radius:7px;padding:7px 9px;
+  font-size:.85rem;background:var(--paper);color:var(--ink);font-family:'IBM Plex Mono',monospace;
+  margin-bottom:8px;box-sizing:border-box;
+}
+.cal-note-time:focus{outline:none;border-color:var(--pen);}
+.cal-info-time{font-family:'IBM Plex Mono',monospace;font-size:.7rem;color:var(--ink-soft);margin-left:auto;}
 .cal-note-actions{display:flex;gap:6px;justify-content:flex-end;margin-top:8px;}
 .cal-note-text{font-size:.84rem;color:var(--ink);line-height:1.45;margin:4px 0 2px;white-space:pre-wrap;word-break:break-word;}
 .cal-info-mark{border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin:8px 0;}
@@ -375,6 +383,18 @@ a{color:var(--pen);}
 
 @media(min-width:861px){
   .cal-view-month .cal-grid-body{height:max(440px, calc(100vh - 330px));}
+}
+/* Calendari a pantalla completa (tots els dispositius): sense borde ni targeta */
+body.cal-full #main-content > .settings-card.cal-card{
+  border:none;box-shadow:none;border-radius:0;background:transparent;padding:0;max-width:none;margin:0;width:100%;
+}
+body.cal-full #main-content > .settings-card.cal-card #cal-month-view-wrap{max-width:none;margin:0;width:100%;}
+body.cal-full #main-content > .settings-card.cal-card .cal-month-slider{margin-top:0;}
+body.cal-full #main-content > .settings-card.cal-card .cal-view-month .cal-grid-wrap{border:none;}
+body.cal-full .cal-header{display:none;}
+body.cal-full #main-content > .settings-card.cal-card #week-view-wrap .week-day{border:none;}
+@media(min-width:861px){
+  body.cal-full #main-content > .settings-card.cal-card .cal-view-month .cal-grid-body{height:max(440px, calc(100vh - 300px));}
 }
 @media(max-width:860px){
   body.cal-full #main-wrap{display:flex;flex-direction:column;}
@@ -1119,13 +1139,40 @@ body.cal-full #main-content{max-width:none;}
 .task-check.on{background:var(--pen);border-color:var(--pen);color:#fff;}
 [data-theme="dark"] .task-check.on{color:#0F141A;}
 .task-text{flex:1;min-width:0;font-size:.95rem;color:var(--ink);word-break:break-word;line-height:1.4;}
-.task-del{
-  flex:none;background:none;border:none;color:var(--ink-faint);cursor:pointer;
+.task-item.done{opacity:.62;}
+.task-item.done .task-text{text-decoration:line-through;color:var(--ink-soft);}
+.task-handle{
+  flex:none;background:none;border:none;color:var(--ink-faint);cursor:grab;
   width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;
-  transition:background .12s ease, color .12s ease;
+  touch-action:none;
 }
-.task-del:hover{background:var(--danger-soft);color:var(--danger);}
-.task-del svg{width:16px;height:16px;}
+.task-handle:active{cursor:grabbing;}
+.task-handle:hover{background:var(--pen-soft);color:var(--ink);}
+.task-handle svg{width:16px;height:16px;}
+.task-item.dragging{opacity:.5;transform:scale(.98);box-shadow:0 6px 18px rgba(0,0,0,.15);z-index:5;position:relative;}
+.task-item.drag-over::before{
+  content:'';position:absolute;left:14px;right:14px;top:-5px;height:3px;border-radius:2px;background:var(--pen);
+}
+@keyframes taskRemoving{
+  0%{opacity:1;transform:translateX(0) scale(1);max-height:80px;}
+  100%{opacity:0;transform:translateX(60px) scale(.9);max-height:0;margin-bottom:0;padding-top:0;padding-bottom:0;border-width:0;}
+}
+.task-item.task-removing{animation:taskRemoving .3s ease forwards;overflow:hidden;pointer-events:none;}
+@keyframes taskNewIn{
+  0%{opacity:0;transform:translateY(-18px);max-height:0;margin-bottom:0;}
+  100%{opacity:1;transform:translateY(0);max-height:90px;}
+}
+.task-item.task-new{animation:taskNewIn .32s ease;}
+.tasks-done-toggle{
+  display:flex;align-items:center;gap:8px;width:100%;background:none;border:none;
+  color:var(--ink-soft);font-size:.85rem;font-weight:600;cursor:pointer;font-family:inherit;
+  padding:10px 4px;margin-top:8px;text-align:left;
+}
+.tasks-done-toggle:hover{color:var(--ink);}
+.tasks-done-toggle .tasks-done-arrow{margin-left:auto;transition:transform .18s ease;}
+.tasks-done-toggle.open .tasks-done-arrow{transform:rotate(180deg);}
+.tasks-done-list{display:flex;flex-direction:column;gap:8px;margin-top:4px;}
+.tasks-done-hint{font-size:.72rem;color:var(--ink-faint);margin:0;}
 .tasks-empty{text-align:center;color:var(--ink-faint);font-size:.85rem;padding:26px 0;}
 
 /* ---------- Mode Data ---------- */
@@ -1188,8 +1235,9 @@ body.mode-data .duration-bar-wrap{flex:0 1 52px;min-width:44px;}
 
 /* Vista setmanal */
 .cal-v-tabs{display:flex;gap:6px;margin-bottom:14px;border-bottom:1px solid var(--line);}
-.week-nav{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
-.week-title{font-family:'Fraunces',serif;font-weight:600;font-size:1.05rem;color:var(--ink);flex:1;min-width:160px;}
+.week-nav{display:grid;grid-template-columns:40px 1fr 40px;align-items:center;gap:8px;margin-bottom:12px;}
+.week-nav .btn{justify-self:center;}
+.week-title{font-family:'Fraunces',serif;font-weight:600;font-size:1.05rem;color:var(--ink);text-align:center;}
 .week-view{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;}
 .week-day{border:1px solid var(--line);border-radius:9px;background:var(--white);overflow:hidden;display:flex;flex-direction:column;min-width:0;}
 .week-day.weekend{background:var(--gold-soft);}
@@ -1213,6 +1261,27 @@ body.mode-data .duration-bar-wrap{flex:0 1 52px;min-width:44px;}
 }
 .week-sess.faint{color:var(--ink-faint);font-size:.7rem;font-weight:400;}
 .week-none{color:var(--ink-faint);font-size:.7rem;text-align:center;padding:8px 0;}
+.week-note{
+  display:flex;align-items:center;gap:6px;width:100%;
+  border:1px solid var(--line);border-radius:7px;padding:7px 8px;
+  cursor:pointer;text-align:left;font-family:inherit;color:inherit;flex-wrap:wrap;
+  transition:filter .12s ease;
+}
+.week-note:hover{filter:brightness(1.05);}
+.week-note.avaluacio{background:var(--gold-soft);border-color:var(--gold);}
+.week-note.reunio{background:var(--pen-soft);border-color:var(--pen);}
+.week-note-badge{font-size:.55rem;font-weight:700;padding:1px 5px;border-radius:4px;text-transform:uppercase;letter-spacing:.03em;flex:none;line-height:1.4;}
+.week-note-badge.avaluacio{background:var(--gold);color:var(--gold-dark);}
+.week-note-badge.reunio{background:var(--pen);color:#fff;}
+[data-theme="dark"] .week-note-badge.reunio{color:#0F141A;}
+.week-note-time{font-family:'IBM Plex Mono',monospace;color:var(--ink);font-weight:600;font-size:.7rem;flex:none;}
+.week-note-text{font-size:.74rem;color:var(--ink);font-weight:600;line-height:1.35;min-width:0;word-break:break-word;}
+.week-empty{
+  width:100%;border:1px dashed var(--line);border-radius:7px;padding:12px 8px;
+  background:var(--paper);color:var(--ink-soft);font-size:.8rem;cursor:pointer;
+  font-family:inherit;transition:background .12s ease, color .12s ease;
+}
+.week-empty:hover{background:var(--pen-soft);color:var(--ink);}
 
 /* Marcador de sessions a la vista mensual (mode Data) */
 .cal-cell{position:relative;}
@@ -1928,6 +1997,10 @@ const I18N_ES = {
   'Mes': 'Mes',
   'Sense sessió programada': 'Sin sesión programada',
   'Sense sessió programada. Clica per configurar.': 'Sin sesión programada. Haz clic para configurar.',
+  'Res programat': 'Nada programado',
+  'Ves a les àrees': 'Ir a las áreas',
+  'Vore la nota': 'Ver la nota',
+  'Hora': 'Hora',
   'Obre la sessió': 'Abrir la sesión',
   'Setmana del {d}': 'Semana del {d}',
   'Setmana anterior': 'Semana anterior',
@@ -2219,6 +2292,10 @@ const I18N_ES = {
   'No tens cap tasca pendent.': 'No tienes ninguna tarea pendiente.',
   'Marca com a feta': 'Marca como hecha',
   'Elimina la tasca': 'Eliminar la tarea',
+  'Mantén premut per reordenar': 'Mantén pulsado para reordenar',
+  'Torna a pendent': 'Volver a pendiente',
+  'Fetes ({n})': 'Hechas ({n})',
+  'Es mostren les tasques fetes de fa 3 mesos.': 'Se muestran las tareas hechas de los últimos 3 meses.',
   'Instal·la l\'app': 'Instalar la app',
   'Instal·la el Quadern': 'Instala el Cuaderno',
   'Afegeix l\'aplicació a la pantalla d\'inici per accedir-hi més ràpidament.': 'Añade la aplicación a la pantalla de inicio para acceder más rápido.',
@@ -3618,24 +3695,63 @@ function showMobileTasksView(){
   pushViewState('tasks');
   render(); closeDrawerIfMobile();
 }
+let tasksDoneOpen = false;
+let taskAudioCtx = null;
+function playTaskDoneSound(){
+  try{
+    if(!taskAudioCtx) taskAudioCtx = new (window.AudioContext||window.webkitAudioContext)();
+    const ctx = taskAudioCtx;
+    if(ctx.state === 'suspended') ctx.resume();
+    const now = ctx.currentTime;
+    [523.25, 783.99].forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      const t0 = now + i*0.09;
+      gain.gain.setValueAtTime(0, t0);
+      gain.gain.linearRampToValueAtTime(0.25, t0+0.02);
+      gain.gain.exponentialRampToValueAtTime(0.001, t0+0.35);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start(t0);
+      osc.stop(t0+0.4);
+    });
+  }catch(e){}
+}
 function mobileTasksHTML(){
-  const pending = (state.tasks||[]).filter(t => !t.done);
+  const all = state.tasks || [];
+  const pending = all.filter(t => !t.done);
+  const cutoff = Date.now() - 90*24*3600*1000;
+  const done = all.filter(t => t.done && t.doneAt >= cutoff);
   const items = pending.map(t => `
     <div class="task-item" data-id="${t.id}">
       <button class="task-check" onclick="taskToggle('${t.id}')" aria-label="${tr('Marca com a feta')}">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
       </button>
       <span class="task-text">${esc(t.text)}</span>
-      <button class="task-del" onclick="taskDelete('${t.id}')" aria-label="${tr('Elimina la tasca')}">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M9 7V4h6v3m-8 0 1 13h8l1-13"/></svg>
+      <span class="task-handle" data-id="${t.id}" title="${tr('Mantén premut per reordenar')}" onpointerdown="taskDragStart(event,'${t.id}')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="6" r="1.4"/><circle cx="15" cy="6" r="1.4"/><circle cx="9" cy="12" r="1.4"/><circle cx="15" cy="12" r="1.4"/><circle cx="9" cy="18" r="1.4"/><circle cx="15" cy="18" r="1.4"/></svg>
+      </span>
+    </div>`).join('');
+  const doneItems = done.map(t => `
+    <div class="task-item done" data-id="${t.id}">
+      <button class="task-check on" onclick="taskToggle('${t.id}')" aria-label="${tr('Torna a pendent')}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
       </button>
+      <span class="task-text">${esc(t.text)}</span>
     </div>`).join('');
   const empty = !pending.length ? `<p class="tasks-empty">${tr('No tens cap tasca pendent.')}</p>` : '';
+  const doneSection = done.length ? `
+    <div class="tasks-done-section">
+      <button class="tasks-done-toggle ${tasksDoneOpen?'open':''}" onclick="toggleTasksDone()" aria-expanded="${tasksDoneOpen?'true':'false'}">
+        ${trf('Fetes ({n})', { n: done.length })}
+        <svg class="tasks-done-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <p class="tasks-done-hint">${tr('Es mostren les tasques fetes de fa 3 mesos.')}</p>
+      ${tasksDoneOpen ? `<div class="tasks-done-list">${doneItems}</div>` : ''}
+    </div>` : '';
   return `
   <div class="mobile-tasks-header">
-    <button class="mobile-tasks-back" onclick="showMobileResourcesView()" aria-label="${tr('Torna als recursos')}">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="15 18 9 12 15 6"/></svg>
-    </button>
     <h1 class="display">${tr('Tasques')}</h1>
     <span style="width:36px"></span>
   </div>
@@ -3647,7 +3763,12 @@ function mobileTasksHTML(){
   </div>
   <p class="tasks-count">${trf('{n} tasques pendents', { n: pending.length })}</p>
   <div class="tasks-list">${items}</div>
-  ${empty}`;
+  ${empty}
+  ${doneSection}`;
+}
+function toggleTasksDone(){
+  tasksDoneOpen = !tasksDoneOpen;
+  render();
 }
 function tasksInputKey(e){ if(e.key === 'Enter') taskAdd(); }
 function taskAdd(){
@@ -3656,19 +3777,104 @@ function taskAdd(){
   if(!text) return;
   state.tasks.push({ id: uid(), text, done: false, createdAt: Date.now() });
   saveState(); render();
+  const items = document.querySelectorAll('.tasks-list .task-item[data-id]');
+  if(items.length) items[items.length-1].classList.add('task-new');
   const ni = document.getElementById('tasks-input');
   if(ni) ni.focus();
 }
 function taskToggle(id){
   const t = state.tasks.find(x => x.id === id);
   if(!t) return;
-  t.done = !t.done;
-  t.doneAt = t.done ? Date.now() : null;
-  saveState(); render();
+  const becomingDone = !t.done;
+  t.done = becomingDone;
+  t.doneAt = becomingDone ? Date.now() : null;
+  saveState();
+  if(becomingDone){
+    playTaskDoneSound();
+    const row = document.querySelector(`.task-item[data-id="${id}"]`);
+    if(row){
+      row.classList.add('task-removing');
+      setTimeout(() => { render(); }, 300);
+    } else {
+      render();
+    }
+  } else {
+    render();
+  }
 }
 function taskDelete(id){
   state.tasks = state.tasks.filter(x => x.id !== id);
   saveState(); render();
+}
+function pruneOldTasks(){
+  if(!Array.isArray(state.tasks)) return false;
+  const cutoff = Date.now() - 90*24*3600*1000;
+  const before = state.tasks.length;
+  state.tasks = state.tasks.filter(t => !(t.done && t.doneAt && t.doneAt < cutoff));
+  if(state.tasks.length !== before){ saveState(); return true; }
+  return false;
+}
+function taskDragStart(e, id){
+  const handle = e.currentTarget;
+  const row = handle.closest('.task-item');
+  if(!row) return;
+  e.preventDefault();
+  const startY = e.clientY;
+  let dragging = false;
+  let timer = setTimeout(() => {
+    dragging = true;
+    row.classList.add('dragging');
+  }, 250);
+  const cleanup = () => {
+    clearTimeout(timer);
+    row.classList.remove('dragging');
+    window.removeEventListener('pointermove', onMove);
+    window.removeEventListener('pointerup', onUp);
+    window.removeEventListener('pointercancel', onUp);
+  };
+  function onMove(ev){
+    if(!dragging){
+      if(Math.abs(ev.clientY - startY) > 8){ cleanup(); }
+      return;
+    }
+    ev.preventDefault();
+    const list = row.parentNode;
+    if(!list) return;
+    const rows = [...list.querySelectorAll('.task-item')];
+    const y = ev.clientY;
+    for(let i=0;i<rows.length;i++){
+      const r = rows[i];
+      if(r === row) continue;
+      const rect = r.getBoundingClientRect();
+      if(y < rect.top + rect.height/2){
+        list.insertBefore(row, r);
+        return;
+      }
+    }
+    if(rows.length) list.appendChild(row);
+  }
+  function onUp(){
+    if(dragging){
+      row.classList.remove('dragging');
+      const list = document.querySelector('.tasks-list');
+      if(list){
+        const orderIds = [...list.querySelectorAll('.task-item')].map(r => r.dataset.id);
+        const pendingSet = new Set(orderIds);
+        const pendingMap = {};
+        const doneList = [];
+        state.tasks.forEach(t => {
+          if(pendingSet.has(t.id)) pendingMap[t.id] = t;
+          else doneList.push(t);
+        });
+        state.tasks = orderIds.map(id => pendingMap[id]).filter(Boolean).concat(doneList);
+        saveState();
+      }
+    }
+    cleanup();
+  }
+  window.addEventListener('pointermove', onMove);
+  window.addEventListener('pointerup', onUp);
+  window.addEventListener('pointercancel', onUp);
 }
 
 function areaHTML(area){
@@ -6170,8 +6376,8 @@ function getCalMarks(iso){
   const m = getCalMark(iso);
   if(!m) return [];
   const out = [];
-  if(m.avaluacio && m.avaluacio.note) out.push({ type: 'avaluacio', note: m.avaluacio.note });
-  if(m.reunio && m.reunio.note) out.push({ type: 'reunio', note: m.reunio.note });
+  if(m.avaluacio && m.avaluacio.note) out.push({ type: 'avaluacio', note: m.avaluacio.note, time: m.avaluacio.time || '' });
+  if(m.reunio && m.reunio.note) out.push({ type: 'reunio', note: m.reunio.note, time: m.reunio.time || '' });
   return out;
 }
 function calDayClick(iso, btn){
@@ -6236,11 +6442,14 @@ function openCalNotePopover(iso, btn){
   calNoteISO = iso;
   const existing = getCalMark(iso);
   const existingNote = (existing && existing[calMarkMode]) ? existing[calMarkMode].note : '';
+  const existingTime = (existing && existing[calMarkMode]) ? (existing[calMarkMode].time || '') : '';
   const pop = document.createElement('div');
   pop.className = 'cal-note-pop';
   pop.id = 'cal-note-pop';
   pop.innerHTML = `
     <h4>${tr(calMarkMode === 'avaluacio' ? 'Avaluació' : 'Reunió')}</h4>
+    <label class="cal-note-time-label">${esc(tr('Hora'))}</label>
+    <input class="cal-note-time" id="cal-note-time" inputmode="numeric" placeholder="xx:xx" value="${esc(existingTime)}" maxlength="5" onkeydown="calNoteTimeKey(event)">
     <textarea id="cal-note-input" placeholder="${esc(tr('Escriu una nota…'))}">${esc(existingNote)}</textarea>
     <div class="cal-note-actions">
       <button type="button" class="btn btn-sm btn-ghost" onclick="closeCalNotePopover()">${tr('Cancel·la')}</button>
@@ -6248,8 +6457,8 @@ function openCalNotePopover(iso, btn){
     </div>`;
   document.body.appendChild(pop);
   positionCalPopover(pop, btn);
-  const ta = document.getElementById('cal-note-input');
-  if(ta) ta.focus();
+  const ti = document.getElementById('cal-note-time');
+  if(ti) ti.focus();
 }
 function openCalDayInfo(iso, btn){
   closeCalNotePopover();
@@ -6264,6 +6473,7 @@ function openCalDayInfo(iso, btn){
       <div class="cal-info-mark-head">
         <span class="cal-info-badge ${mk.type}">${mk.type === 'avaluacio' ? tr('Av') : tr('Re')}</span>
         <b>${mk.type === 'avaluacio' ? tr('Avaluació') : tr('Reunió')}</b>
+        ${mk.time ? `<span class="cal-info-time">${esc(mk.time)}</span>` : ''}
       </div>
       <p class="cal-note-text">${esc(mk.note || '')}</p>
       <div class="cal-note-actions">
@@ -6287,9 +6497,11 @@ function saveCalNote(){
   if(!state.calendarData) state.calendarData = {};
   if(!state.calendarData.marks) state.calendarData.marks = {};
   const note = ta.value.trim();
+  const timeInput = document.getElementById('cal-note-time');
+  const time = (timeInput && timeInput.value.trim()) || '';
   const day = state.calendarData.marks[calNoteISO] || (state.calendarData.marks[calNoteISO] = {});
   if(note){
-    day[calMarkMode] = { note: note };
+    day[calMarkMode] = { note: note, time: time || undefined };
   } else {
     delete day[calMarkMode];
     if(!Object.keys(day).length) delete state.calendarData.marks[calNoteISO];
@@ -6298,6 +6510,12 @@ function saveCalNote(){
   closeCalNotePopover();
   if(wasMarking) calMarkMode = null;
   saveState(); render();
+}
+function calNoteTimeKey(e){
+  if(e.key === 'Enter'){
+    e.preventDefault();
+    saveCalNote();
+  }
 }
 function deleteCalMark(iso, type){
   const marks = state.calendarData && state.calendarData.marks;
@@ -6408,7 +6626,6 @@ function renderWeekView(wrap, iso){
   const d = parseISODate(iso); if(!d) return;
   const diff = (d.getDay() + 6) % 7;
   const monday = new Date(d); monday.setDate(d.getDate() - diff);
-  const courseStart = courseStartDateGlobal();
   const days = [];
   for(let i=0;i<5;i++){
     const day = new Date(monday); day.setDate(monday.getDate()+i);
@@ -6416,7 +6633,7 @@ function renderWeekView(wrap, iso){
   }
   const locale = lang()==='es' ? 'es-ES' : 'ca-ES';
   const fmtDay = dd => dd.date.toLocaleDateString(locale, { weekday:'long', day:'numeric', month:'short' });
-  const cols = days.filter(dd => !courseStart || dd.iso >= courseStart).map(dd => {
+  const cols = days.map(dd => {
     const dow = dd.date.getDay();
     const blocks = [];
     for(const a of state.areas){
@@ -6436,7 +6653,20 @@ function renderWeekView(wrap, iso){
       }
       blocks.push(body);
     }
-    return `<div class="week-day ${dow===0||dow===6?'weekend':''}"><div class="week-day-head">${fmtDay(dd)}</div><div class="week-day-body">${blocks.join('') || '<span class="week-none">—</span>'}</div></div>`;
+    const mk = (state.calendarData && state.calendarData.marks && state.calendarData.marks[dd.iso]) ? getCalMark(dd.iso) : null;
+    if(mk){
+      const noteList = [];
+      if(mk.avaluacio && mk.avaluacio.note) noteList.push({ type:'avaluacio', time: mk.avaluacio.time || '', note: mk.avaluacio.note });
+      if(mk.reunio && mk.reunio.note) noteList.push({ type:'reunio', time: mk.reunio.time || '', note: mk.reunio.note });
+      noteList.sort((a,b) => String(a.time).localeCompare(String(b.time)));
+      noteList.forEach(n => {
+        const badge = n.type === 'avaluacio' ? tr('Av') : tr('Re');
+        const t = n.time ? `<span class="week-note-time">${esc(n.time)}</span>` : '';
+        blocks.push(`<button type="button" class="week-note ${n.type}" onclick="openCalDayInfo('${dd.iso}', this)" title="${esc(tr('Vore la nota'))}"><span class="week-note-badge ${n.type}">${badge}</span>${t}<span class="week-note-text">${esc(n.note)}</span></button>`);
+      });
+    }
+    const bodyHTML = blocks.length ? blocks.join('') : `<button type="button" class="week-empty" onclick="showMobileAreasView()" title="${esc(tr('Ves a les àrees'))}">${esc(tr('Res programat'))}</button>`;
+    return `<div class="week-day ${dow===0||dow===6?'weekend':''}"><div class="week-day-head">${fmtDay(dd)}</div><div class="week-day-body">${bodyHTML}</div></div>`;
   }).join('');
   const weekTitle = trf('Setmana del {d}', { d: monday.toLocaleDateString(locale, { day:'numeric', month:'long' }) });
   wrap.innerHTML = `
@@ -8006,6 +8236,7 @@ function initScreenSwipe(){
 document.addEventListener('DOMContentLoaded', async () => {
   loadState();
   expireDoneAreas();
+  pruneOldTasks();
   applyTheme();
   updateLoginGate();
   await handleDropboxRedirect();
@@ -8026,7 +8257,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }else{
     setSyncStatus(tr('Sense núvol configurat'));
   }
-  setInterval(() => { if(expireDoneAreas()) render(); }, 30000);
+  setInterval(() => { if(expireDoneAreas()) render(); pruneOldTasks(); }, 30000);
 });
 
 function initImportDropzone(){
