@@ -289,9 +289,11 @@ a{color:var(--pen);}
 .cal-month-nav-btn:hover{background:var(--pen-soft);border-color:var(--pen);}
 .cal-month-title{font-family:'Fraunces',serif;font-weight:600;font-size:1.05rem;color:var(--ink);}
 .cal-view-month{min-width:0;width:100%;}
-.cal-view-month .cal-grid-wrap{font-size:.82rem;border-top:none;border-left:none;}
+.cal-view-month .cal-grid-wrap{font-size:.82rem;border:none;}
 .cal-view-month .cal-grid-hd{border-bottom:none;}
 .cal-view-month .cal-grid-body .cal-cell:nth-child(7n+1){border-right:none;}
+#cal-modal .cal-grid-wrap{border:none;}
+#cal-modal .cal-grid-hd{border-bottom:none;}
 .cal-view-month .cal-cell{cursor:pointer;}
 .cal-view-month .cal-cell.cal-cell-empty{cursor:default;}
 .cal-view-month .cal-cell:not(.cal-cell-empty):not(.cal-cell-weekend):not(.cal-cell-holiday):not(.cal-cell-special):hover{background:var(--pen-soft);}
@@ -1180,14 +1182,16 @@ body.cal-full #main-content{max-width:none;}
 }
 .task-item.task-new{animation:taskNewIn .32s ease;}
 .tasks-done-toggle{
-  display:inline-flex;align-items:center;gap:8px;background:var(--paper);
-  border:1px solid var(--line);border-radius:20px;
-  color:var(--ink-soft);font-size:.82rem;font-weight:600;cursor:pointer;font-family:inherit;
-  padding:7px 14px;margin-top:10px;text-align:left;
-  transition:background .12s ease, color .12s ease, border-color .12s ease;
+  position:relative;display:flex;align-items:center;justify-content:flex-end;
+  width:100%;background:none;border:none;padding:14px 0 6px;margin-top:6px;cursor:pointer;
+  font-family:inherit;gap:0;
 }
-.tasks-done-toggle:hover{color:var(--ink);border-color:var(--pen);background:var(--pen-soft);}
-.tasks-done-toggle .tasks-done-arrow{flex:none;transition:transform .18s ease;}
+.tasks-done-toggle::before{
+  content:'';flex:1;height:1px;background:var(--line);
+}
+.tasks-done-toggle:hover::before{background:var(--pen);}
+.tasks-done-toggle .tasks-done-arrow{flex:none;width:15px;height:15px;color:var(--ink-soft);transition:transform .18s ease;}
+.tasks-done-toggle:hover .tasks-done-arrow{color:var(--pen);}
 .tasks-done-toggle.open .tasks-done-arrow{transform:rotate(180deg);}
 .tasks-done-list{display:flex;flex-direction:column;gap:8px;margin-top:4px;}
 .tasks-done-hint{font-size:.72rem;color:var(--ink-faint);margin:0;}
@@ -1279,17 +1283,17 @@ body.mode-data .duration-bar-wrap{flex:0 1 52px;min-width:44px;}
 .week-none{color:var(--ink-faint);font-size:.7rem;text-align:center;padding:8px 0;}
 .week-note{
   display:flex;align-items:center;gap:6px;width:100%;
-  border:1px solid var(--line);border-radius:7px;padding:7px 8px;
+  border:1px solid var(--line);border-radius:7px;padding:8px 9px;
   cursor:pointer;text-align:left;font-family:inherit;color:inherit;flex-wrap:wrap;
   transition:filter .12s ease;
 }
 .week-note:hover{filter:brightness(1.05);}
-.week-note.avaluacio{background:var(--gold-soft);border-color:var(--gold);}
-.week-note.reunio{background:var(--pen-soft);border-color:var(--pen);}
+.week-note.avaluacio{background:transparent;border-left:3px solid var(--gold);}
+.week-note.reunio{background:transparent;border-left:3px solid var(--pen);}
 .week-note-badge{font-size:.55rem;font-weight:700;padding:1px 5px;border-radius:4px;text-transform:uppercase;letter-spacing:.03em;flex:none;line-height:1.4;}
-.week-note-badge.avaluacio{background:var(--gold);color:var(--gold-dark);}
-.week-note-badge.reunio{background:var(--pen);color:#fff;}
-[data-theme="dark"] .week-note-badge.reunio{color:#0F141A;}
+.week-note-badge.avaluacio{background:var(--gold);color:#000;font-weight:700;}
+.week-note-badge.reunio{background:var(--pen);color:#fff;font-weight:700;}
+[data-theme="dark"] .week-note-badge.reunio{color:#000;}
 .week-note-time{font-family:'IBM Plex Mono',monospace;color:var(--ink);font-weight:600;font-size:.7rem;flex:none;margin-left:auto;}
 .week-note-text{flex:1;min-width:0;font-size:.74rem;color:var(--ink);font-weight:600;line-height:1.35;word-break:break-word;}
 .week-empty{
@@ -2596,10 +2600,26 @@ function setSyncStatus(text, ok){
    MODE DATA — Dates de sessions, SA i àrees
 --------------------------------------------------------- */
 function dataModeEnabled(){ return !!(state.settings && state.settings.mode === 'data'); }
+function defaultCourseStart(){ return currentAcadYear() + '-09-01'; }
+function defaultCourseEnd(){ return (currentAcadYear() + 1) + '-06-30'; }
 function courseStartDateGlobal(){
   if(state.settings && state.settings.courseStartDate) return state.settings.courseStartDate;
-  if(state.calendarData && state.calendarData.startDate) return state.calendarData.startDate;
-  return null;
+  const cd = state.calendarData;
+  if(cd){
+    const ay = currentAcadYear();
+    if(cd.courses && cd.courses[ay] && cd.courses[ay].start) return cd.courses[ay].start;
+    if(cd.startDate) return cd.startDate;
+  }
+  return defaultCourseStart();
+}
+function courseEndDateGlobal(){
+  const cd = state.calendarData;
+  if(cd){
+    const ay = currentAcadYear();
+    if(cd.courses && cd.courses[ay] && cd.courses[ay].end) return cd.courses[ay].end;
+    if(cd.endDate) return cd.endDate;
+  }
+  return defaultCourseEnd();
 }
 
 /* --- Utilitats de dates --- */
@@ -3798,9 +3818,8 @@ function mobileTasksHTML(){
   const empty = !pending.length ? `<p class="tasks-empty">${tr('No tens cap tasca pendent.')}</p>` : '';
   const doneSection = done.length ? `
     <div class="tasks-done-section">
-      <button class="tasks-done-toggle ${tasksDoneOpen?'open':''}" onclick="toggleTasksDone()" aria-expanded="${tasksDoneOpen?'true':'false'}">
-        ${trf('Fetes ({n})', { n: done.length })}
-        <svg class="tasks-done-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="6 9 12 15 18 9"/></svg>
+      <button class="tasks-done-toggle ${tasksDoneOpen?'open':''}" onclick="toggleTasksDone()" aria-expanded="${tasksDoneOpen?'true':'false'}" title="${esc(tr('Mostra les tasques fetes'))}">
+        <svg class="tasks-done-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="15 6 9 12 15 18"/></svg>
       </button>
       <p class="tasks-done-hint">${tr('Es mostren les tasques fetes de fa 3 mesos.')}</p>
       ${tasksDoneOpen ? `<div class="tasks-done-list">${doneItems}</div>` : ''}
@@ -5755,6 +5774,9 @@ function sessionVistaHTML(area, sa, se, idx, forceOpen){
         <div class="duration-bar${total===0?' empty':''}">${bar}</div>
       </div>`
     : '';
+  const sessDate = (dataModeEnabled() && se.date)
+    ? `<span class="agenda-date" title="${esc(tr('Data de la sessió'))}">${esc(fmtShort(se.date))}</span>`
+    : '';
   return `
   <div class="session-card ${isOpen?'open':''}" id="session-${se.id}">
     <div class="session-header" style="cursor:pointer;" onclick="openSessionView('${area.id}','${sa.id}','${se.id}')">
@@ -5763,6 +5785,7 @@ function sessionVistaHTML(area, sa, se, idx, forceOpen){
       </button>
       <span class="session-num">S${idx + 1}</span>
       <span class="session-name" title="${esc(sessionCleanName(se))}">${esc(sessionCleanName(se))}</span>
+      ${sessDate}
       ${dur}
       ${editIcon}
     </div>
@@ -6700,12 +6723,15 @@ function renderWeekView(wrap, iso){
   const fmtDay = dd => dd.date.toLocaleDateString(locale, { weekday:'long', day:'numeric', month:'short' });
   const cols = days.map(dd => {
     const dow = dd.date.getDay();
+    const cse = courseStartEndForMonth(dd.date.getFullYear(), dd.date.getMonth());
+    const cEnd = (cse && cse.end) ? cse.end : courseEndDateGlobal();
     const blocks = [];
     for(const a of state.areas){
       if(!a.active) continue;
       if(!Array.isArray(a.weekDays) || a.weekDays.indexOf(dow) === -1) continue;
       const aStart = areaStartDate(a);
       if(aStart && aStart > dd.iso) continue;
+      if(cEnd && dd.iso > cEnd) continue;
       const time = (a.sessionTimes && a.sessionTimes[dow]) || '';
       const timeLabel = time ? `<span class="week-time">${esc(time)}</span>` : '';
       const s = sessionsOnDay(dd.iso).find(x => x.area.id === a.id);
@@ -7109,10 +7135,14 @@ function deleteArea(id){ trashArea(id); }
 --------------------------------------------------------- */
 function addSA(areaId){
   const area = state.areas.find(a=>a.id===areaId); if(!area) return;
-  area.situacions.push({
+  const firstSession = { id: uid(), name: 'Sessió 1', open: true, activities: [{ id: uid(), title: '', minutes: 0, description: '', resources: '' }] };
+  const sa = {
     id: uid(), name: trf('Situació d\'aprenentatge {n}', { n: area.situacions.length + 1 }), autoName: true, open: true,
-    sessions: [{ id: uid(), name: 'Sessió 1', open: true, activities: [] }]
-  });
+    sessions: [firstSession]
+  };
+  area.situacions.push(sa);
+  autoFillIfNeeded(areaId, sa.id, firstSession.id);
+  if(dataModeEnabled()) recomputeAreaDates(area, 0);
   saveState(); render();
 }
 function renameSA(areaId, saId, value){
@@ -7137,7 +7167,16 @@ function setSessionCount(areaId, saId, rawValue){
   const current = sa.sessions.length;
   if(n > current){
     for(let i=current; i<n; i++){
-      sa.sessions.push({ id: uid(), name: trf('Sessió {n}', { n: i+1 }), open:false, activities: [] });
+      const se = { id: uid(), name: trf('Sessió {n}', { n: i+1 }), open:false, activities: [] };
+      se.activities.push({ id: uid(), title: '', minutes: 0, description: '', resources: '' });
+      sa.sessions.push(se);
+      autoFillIfNeeded(areaId, saId, se.id);
+    }
+    const area = state.areas.find(a=>a.id===areaId);
+    if(area && dataModeEnabled()){
+      const flat = flatSessions(area);
+      const idx = flat.findIndex(f => f.se.id === sa.sessions[current].id);
+      recomputeAreaDates(area, idx < 0 ? 0 : idx);
     }
   } else if(n < current){
     const toRemove = sa.sessions.slice(n);
@@ -7258,10 +7297,18 @@ function stopEditing(){
   render();
 }
 function addSession(areaId, saId){
+  const area = state.areas.find(a=>a.id===areaId); if(!area) return;
   const sa = findSA(areaId, saId); if(!sa) return;
   const newSession = { id: uid(), name: trf('Sessió {n}', { n: sa.sessions.length + 1 }), open: true, activities: [] };
+  newSession.activities.push({ id: uid(), title: '', minutes: 0, description: '', resources: '' });
   sa.sessions.push(newSession);
   sa.open = true;
+  autoFillIfNeeded(areaId, saId, newSession.id);
+  if(dataModeEnabled()){
+    const flat = flatSessions(area);
+    const idx = flat.findIndex(f => f.se.id === newSession.id);
+    recomputeAreaDates(area, idx < 0 ? 0 : idx);
+  }
   editTarget = { kind:'session', areaId, saId, sessionId: newSession.id };
   saveState(); render();
 }
