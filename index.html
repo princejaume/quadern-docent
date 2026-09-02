@@ -47,7 +47,7 @@
   --green-ink:#2E6B34;
   --white:#FFFFFF;
   --radius:12px;
-  --sidebar-w:280px;
+  --sidebar-w:230px;
   --shadow:0 1px 2px rgba(30,42,40,.06), 0 6px 20px -8px rgba(30,42,40,.12);
   --chevron:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2355625D' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
 }
@@ -131,7 +131,7 @@ a{color:var(--pen);}
   width:var(--sidebar-w);
   flex:0 0 var(--sidebar-w);
   background:var(--white);
-  border-right:1px solid var(--line);
+  border-right:none;
   display:flex;
   flex-direction:column;
   padding:20px 16px;
@@ -140,6 +140,18 @@ a{color:var(--pen);}
   top:0;
   height:100vh;
   overflow-y:auto;
+  box-shadow:inset -1px 0 0 var(--line);
+}
+#sidebar::before{
+  content:'';
+  position:absolute;
+  top:0;right:-5px;
+  width:10px;height:100%;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='28'%3E%3Ccircle cx='5' cy='14' r='4' fill='none' stroke='%23DBE1DA' stroke-width='1.5'/%3E%3C/svg%3E") repeat-y;
+  pointer-events:none;z-index:1;
+}
+[data-theme="dark"] #sidebar::before{
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='28'%3E%3Ccircle cx='5' cy='14' r='4' fill='none' stroke='%232E3743' stroke-width='1.5'/%3E%3C/svg%3E") repeat-y;
 }
 .brand{display:flex;align-items:center;gap:10px;padding:0 4px;margin-bottom:8px;}
 .brand .logo-mark{width:30px;height:30px;flex:none;}
@@ -186,6 +198,7 @@ a{color:var(--pen);}
 #sidebar-footer{display:flex;flex-direction:column;gap:6px;padding-top:12px;border-top:1px solid var(--line);}
 #sidebar-footer .foot-note{font-size:.7rem;color:var(--ink-faint);padding:0 4px;line-height:1.4;}
 #sidebar-footer .foot-note#sync-status{font-weight:600;}
+@media(min-width:861px){#sidebar-footer .foot-note#sync-status{display:none;}}
 #sidebar-footer .foot-note#sync-status.ok{color:#4a7a57;}
 
 /* Main */
@@ -206,6 +219,58 @@ a{color:var(--pen);}
 .empty-state h2{margin:0;font-size:1.5rem;}
 .empty-state p{margin:0;color:var(--ink-soft);line-height:1.55;max-width:46ch;}
 .empty-state .actions{display:flex;gap:10px;margin-top:6px;flex-wrap:wrap;}
+
+/* Empty notebook (portada tancada) */
+.empty-notebook{
+  position:relative;border:2px solid var(--line);border-radius:14px;
+  background:linear-gradient(135deg,var(--white) 0%,var(--paper-alt) 100%);
+  box-shadow:0 4px 24px rgba(30,42,40,.08),inset 0 1px 0 rgba(255,255,255,.6);
+  overflow:hidden;
+}
+.empty-notebook::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:6px;
+  background:repeating-linear-gradient(90deg,var(--pen) 0,var(--pen) 3px,transparent 3px,transparent 6px);
+  opacity:.3;
+}
+.notebook-cover{
+  display:flex;gap:8px;margin-bottom:8px;
+}
+.notebook-ring{
+  width:20px;height:20px;border:2px solid var(--line);border-radius:50%;
+  background:var(--paper-alt);box-shadow:inset 0 1px 3px rgba(0,0,0,.08);
+}
+.empty-centered{
+  align-items:center;text-align:center;
+}
+.empty-centered p{max-width:none;text-align:center;}
+.empty-centered .actions{justify-content:center;}
+
+/* Quote block */
+.quote-block{
+  margin:8px 0 4px;padding:16px 20px;
+  border-left:3px solid var(--gold);background:var(--gold-soft);
+  border-radius:0 8px 8px 0;max-width:480px;
+}
+.quote-text{
+  font-family:'Fraunces',serif;font-style:italic;font-size:1.05rem;
+  color:var(--ink);line-height:1.5;margin:0;
+}
+.quote-author{
+  font-size:.82rem;color:var(--ink-faint);margin:6px 0 0;font-weight:600;
+}
+
+/* Agenda: marks del calendari del dia */
+.agenda-marks-today{
+  display:flex;flex-direction:column;gap:8px;margin-bottom:16px;
+}
+.agenda-mark-item{
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  padding:10px 14px;border-radius:10px;
+  background:var(--white);border:1px solid var(--line);box-shadow:var(--shadow);
+}
+.agenda-mark-icon{font-size:1.1rem;flex:none;}
+.agenda-mark-note{font-size:.85rem;color:var(--ink);font-weight:500;flex:1;min-width:0;}
+.cal-info-time{font-family:'IBM Plex Mono',monospace;font-size:.72rem;color:var(--ink-soft);flex:none;}
 
 /* Area header */
 .area-header{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:22px;}
@@ -291,6 +356,8 @@ a{color:var(--pen);}
 .cal-view-month{min-width:0;width:100%;}
 .cal-view-month .cal-grid-wrap{font-size:.82rem;border:none;}
 .cal-view-month .cal-grid-hd{border-bottom:none;}
+.cal-view-month .cal-grid-hd:first-child{border-left:none;}
+.cal-view-month .cal-grid-body .cal-cell:nth-child(7n+1){border-left:none;}
 .cal-view-month .cal-grid-body .cal-cell:nth-child(7n+1){border-right:none;}
 #cal-modal .cal-grid-wrap{border:none;}
 #cal-modal .cal-grid-hd{border-bottom:none;}
@@ -1234,6 +1301,27 @@ body.cal-full #main-content{max-width:none;}
 body.mode-data .duration-bar-wrap{flex:0 1 52px;min-width:44px;}
 @media(max-width:640px){body.mode-data .session-header{flex-wrap:wrap;}}
 
+/* Mobile: SA container ple de pantalla en edició d'àrea */
+@media(max-width:640px){
+  .sa-card.open .sa-body{padding:12px 10px 14px;}
+  .sa-header{padding:12px 10px;}
+  .sa-card{border-radius:0;border-left:none;border-right:none;margin-left:-16px;margin-right:-16px;width:calc(100% + 32px);}
+}
+
+/* Mobile: session header - arrimar SX a fletxa, data xicoteta, títol amb punts suspensius */
+@media(max-width:640px){
+  body.mode-data .session-header{gap:6px;}
+  body.mode-data .session-num{margin-right:-4px;}
+  body.mode-data .date-time-input{width:52px;font-size:.62rem;padding:3px 2px;}
+  body.mode-data .session-title-input{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+}
+
+/* Botons Adjunta/Elimina en sessió: sols emoticono (sense text) */
+.session-card .res-btn{font-size:0;padding:5px 6px;}
+.session-card .res-btn svg{width:15px;height:15px;}
+.session-card .res-btn-del{font-size:0;padding:5px 6px;}
+.session-card .res-btn-del svg{width:15px;height:15px;}
+
 /* Data a la capçalera de SA */
 .sa-date-chip{display:inline-flex;align-items:center;flex:none;}
 
@@ -1259,6 +1347,7 @@ body.mode-data .duration-bar-wrap{flex:0 1 52px;min-width:44px;}
 .week-nav .btn{justify-self:center;}
 .week-title{font-family:'Fraunces',serif;font-weight:600;font-size:1.05rem;color:var(--ink);text-align:center;}
 .week-view{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;}
+@media(min-width:861px){.week-view{grid-template-columns:1fr;gap:6px;}}
 .week-day{border:1px solid var(--line);border-radius:9px;background:var(--white);overflow:hidden;display:flex;flex-direction:column;min-width:0;}
 .week-day.weekend{background:var(--gold-soft);}
 .week-day-head{font-size:.72rem;font-weight:600;color:var(--ink-soft);text-transform:capitalize;text-align:center;padding:6px 4px;background:var(--paper-alt);border-bottom:1px solid var(--line);}
@@ -3568,9 +3657,70 @@ function renderMain(){
   main.innerHTML = areaVistaHTML(area);
 }
 
+const EDUCATION_QUOTES = [
+  "L'educació és l'arma més poderosa que pots usar per canviar el món. — Nelson Mandela",
+  "L'educació no canvia el món, canvia les persones que han de canviar el món. — Paulo Freire",
+  "L'educació és la passió per saber i per transmetre-la. — Jean-Jacques Rousseau",
+  "Educar no és omplir un vas, sinó encendre una flama. — Robert Frost",
+  "L'educació és el record més preciós que es pot tenir del passat. — Plató",
+  "Un mestre afectuós pot canviar la vida d'un infant per sempre. — Jaume Cabré",
+  "L'educació és el pas del fanatisme a la raó. — Thomas Jefferson",
+  "Ensenyar és aprendre dues vegades. — Joseph Joubert",
+  "L'escola és el lloc on els nens aprèn a pensar, no què pensar. — Margaret Mead",
+  "La millor manera de predir el futur és crear-lo. — Abraham Lincoln",
+  "L'educació és el subministrament d'un art per a la vida. — John Dewey",
+  "Cada nen és un artista. El problema és com seguir sent-ho quan creixes. — Pablo Picasso",
+  "L'educació és el desenvolupament complet i harmoniós de totes les facultats. — Mahatma Gandhi",
+  "L'aprenentatge és l'única cosa de la qual la ment mai no se cansa, mai no té por i mai no es penedeix. — Leonardo da Vinci",
+  "La tallest torre comença amb un sol maó. — Proverbi xinès",
+  "L'educació és un dret, no un privilegi. — Kofi Annan",
+  "La ment que s'obri a una nova idea mai torna a la seua grandària original. — Albert Einstein",
+  "Ensenyar no és una activitat vital; és una condició de la vida. — Paulo Freire",
+  "L'educació és la clau per desfer les cadenes de la ignorància. — Barack Obama",
+  "No educques els nens perquè siguen com tu. Són diferents. Educa'ls perquè siguen millors que tu. — Proverbi africà",
+  "La creativitat és la inteligència divertint-se. — Albert Einstein",
+  "L'èxit és l'acumulació de petits esforços repetits dia rere dia. — Robert Collier",
+  "La paciència és amarga, però el seu fruit és dolç. — Jean-Jacques Rousseau",
+  "La vida és un 10% el que ens passa i un 90% com reaccionem. — Charles R. Swindoll",
+  "L'optimista veu una oportunitat en cada calamitat; el pessimista veu una calamitat en cada oportunitat. — Winston Churchill",
+  "No puc ensenyar res a ningú, només fer-los pensar. — Sòcrates",
+  "L'educació és el moviment d'una civilització cap a la llum. — Ralph Waldo Emerson",
+  "El coratge no és l'absència de por, sinó el fet de decidir que alguna cosa és més important que la por. — Ambrose Redmoon",
+  "La innocència és la puresa més bella. — Mahatma Gandhi",
+  "La saviesa no ve de l'experiència, sinó de la reflexió sobre l'experiència. — John Dewey",
+  "La imaginació és més important que el coneixement. — Albert Einstein",
+  "L'educació és el que sobreviu quan s'ha oblidat el que s'ha aprés a l'escola. — Albert Einstein",
+  "La veritable educació consisteix a saber utilitzar bé les forces interiors. — Johann Heinrich Pestalozzi",
+  "Ensenyar és fer servir les fresses d'altres per construir ponts. — Joan Maragall",
+  "L'escola hauria de ser un lloc on l'alumne aprèn a viure, no només a treure bones notes. — Paulo Freire",
+  "La formació de l'home és una obra d'art. — Friedrich Schiller",
+  "Cada error és una lliçó si saps aprendre'n. — Confuci",
+  "La bondat és la llengua que el sord pot escoltar i el cec pot veure. — Mark Twain",
+  "No hi ha camí per a la pau, la pau és el camí. — Mahatma Gandhi",
+  "La felicitat no és quelcom que es té, sinó quelcom que es fa. — Charles Blow",
+  "L'única persona que estàs destinat a ser és la persona que decides ser. — Ralph Waldo Emerson",
+  "El canvi és la llei de la vida. Aquells que miren cap al passat o el present estan segurs de perdre el futur. — John F. Kennedy",
+  "Educar és despertar una curiositat intel·lectual. — Joaquim Saura",
+  "La paraula és la porta de l'esperit. — Joan Maragall",
+  "La confiança en si mateix és el primer secret de l'èxit. — Ralph Waldo Emerson",
+  "L'educació és el pare que alimenta l'ànima. — Joan Maragall",
+  "La vida és un examen que tothom aprova si sap estimar. — Joan Maragall",
+  "La paraula és la llum de l'esperit. — Joan Maragall",
+  "L'esperit és una flama que s'alimenta de somnis. — Joan Maragall",
+  "La pensada és un somni que encara no s'ha obert. — Joan Maragall"
+];
 function emptyStateHTML(){
+  const quote = EDUCATION_QUOTES[Math.floor(Math.random() * EDUCATION_QUOTES.length)];
+  const parts = quote.split(' — ');
+  const text = parts[0];
+  const author = parts[1] ? `— ${parts[1]}` : '';
   return `
-  <div class="empty-state">
+  <div class="empty-state empty-notebook">
+    <div class="notebook-cover">
+      <div class="notebook-ring"></div>
+      <div class="notebook-ring"></div>
+      <div class="notebook-ring"></div>
+    </div>
     <h2 class="display">${tr('Comencem la programació')}</h2>
     <p>${tr('Crea una àrea (per exemple, Matemàtiques o Llengua) i dins seu afig les situacions d\'aprenentatge del curs, amb les seues sessions i activitats. També pots importar un document ja escrit i deixar que l\'aplicació en propose l\'estructura.')}</p>
     <div class="actions">
@@ -5598,25 +5748,58 @@ function agendaHTML(){
   if(!state.areas.length){
     body = emptyStateHTML();
   } else if(!active.length && activeAll.length){
+    const quote = EDUCATION_QUOTES[Math.floor(Math.random() * EDUCATION_QUOTES.length)];
+    const parts = quote.split(' — ');
+    const qText = parts[0];
+    const qAuthor = parts[1] ? `— ${parts[1]}` : '';
     body = `
-    <div class="empty-state">
-      <h2 class="display">${tr('Avui no tens cap àrea programada')}</h2>
-      <p>${tr('Les àrees amb dies de classe que no coincideixen amb el dia d\'avui no es mostren.')}</p>
+    <div class="empty-state empty-notebook empty-centered">
+      <div class="notebook-cover">
+        <div class="notebook-ring"></div>
+        <div class="notebook-ring"></div>
+        <div class="notebook-ring"></div>
+      </div>
+      <div class="quote-block">
+        <p class="quote-text">"${esc(qText)}"</p>
+        ${qAuthor ? `<p class="quote-author">${esc(qAuthor)}</p>` : ''}
+      </div>
       <div class="actions">
         <button class="btn btn-ghost" onclick="agendaShowAll = true; render()">${tr('Vore totes')}</button>
       </div>
     </div>`;
   } else if(!active.length){
+    const quote = EDUCATION_QUOTES[Math.floor(Math.random() * EDUCATION_QUOTES.length)];
+    const parts = quote.split(' — ');
+    const qText = parts[0];
+    const qAuthor = parts[1] ? `— ${parts[1]}` : '';
     body = `
-    <div class="empty-state">
-      <h2 class="display">${tr('No tens cap àrea activa')}</h2>
-      <p>${tr('Activa una àrea des de Configuració (o crea\'n una) perquè aparega ací la seua sessió actual.')}</p>
+    <div class="empty-state empty-notebook empty-centered">
+      <div class="notebook-cover">
+        <div class="notebook-ring"></div>
+        <div class="notebook-ring"></div>
+        <div class="notebook-ring"></div>
+      </div>
+      <div class="quote-block">
+        <p class="quote-text">"${esc(qText)}"</p>
+        ${qAuthor ? `<p class="quote-author">${esc(qAuthor)}</p>` : ''}
+      </div>
       <div class="actions">
         <button class="btn btn-primary" onclick="addAreaPrompt()">+ Nova àrea</button>
       </div>
     </div>`;
   } else {
-    body = `<div class="agenda-list">${active.map(a => agendaCardHTML(a)).join('')}</div>`;
+    const todayMarks = getCalMarks(today);
+    const marksHTML = todayMarks.length
+      ? `<div class="agenda-marks-today">${todayMarks.map(m => {
+          const icon = m.type === 'avaluacio' ? '📝' : '👥';
+          const badge = m.type === 'avaluacio'
+            ? `<span class="cal-info-badge avaluacio">${tr('Avaluació')}</span>`
+            : `<span class="cal-info-badge reunio">${tr('Reunió')}</span>`;
+          const time = m.time ? `<span class="cal-info-time">${esc(m.time)}</span>` : '';
+          return `<div class="agenda-mark-item"><span class="agenda-mark-icon">${icon}</span>${badge}<span class="agenda-mark-note">${esc(m.note)}</span>${time}</div>`;
+        }).join('')}</div>`
+      : '';
+    body = marksHTML + `<div class="agenda-list">${active.map(a => agendaCardHTML(a)).join('')}</div>`;
   }
   const note = inactive
     ? `<p class="agenda-note">${trf('{n} àrees actives · {m} en pausa.', { n: activeAll.length, m: inactive })}</p>`
