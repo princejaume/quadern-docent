@@ -47,7 +47,7 @@
   --green-ink:#2E6B34;
   --white:#FFFFFF;
   --radius:12px;
-  --sidebar-w:230px;
+  --sidebar-w:200px;
   --shadow:0 1px 2px rgba(30,42,40,.06), 0 6px 20px -8px rgba(30,42,40,.12);
   --chevron:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2355625D' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
 }
@@ -134,7 +134,7 @@ a{color:var(--pen);}
   border-right:none;
   display:flex;
   flex-direction:column;
-  padding:20px 16px;
+  padding:20px 14px;
   gap:8px;
   position:sticky;
   top:0;
@@ -145,13 +145,27 @@ a{color:var(--pen);}
 #sidebar::before{
   content:'';
   position:absolute;
-  top:0;right:-5px;
-  width:10px;height:100%;
-  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='28'%3E%3Ccircle cx='5' cy='14' r='4' fill='none' stroke='%23DBE1DA' stroke-width='1.5'/%3E%3C/svg%3E") repeat-y;
+  top:0;right:-6px;
+  width:14px;height:100%;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='28'%3E%3Ccircle cx='7' cy='14' r='4.5' fill='none' stroke='%23DBE1DA' stroke-width='1.5'/%3E%3C/svg%3E") repeat-y center;
+  pointer-events:none;z-index:2;
+}
+#sidebar::after{
+  content:'';
+  position:absolute;
+  top:0;right:0;
+  width:3px;height:100%;
+  background:repeating-linear-gradient(180deg, var(--danger) 0, var(--danger) 1px, transparent 1px, transparent 3px);
+  opacity:.2;
   pointer-events:none;z-index:1;
 }
 [data-theme="dark"] #sidebar::before{
-  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='28'%3E%3Ccircle cx='5' cy='14' r='4' fill='none' stroke='%232E3743' stroke-width='1.5'/%3E%3C/svg%3E") repeat-y;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='28'%3E%3Ccircle cx='7' cy='14' r='4.5' fill='none' stroke='%232E3743' stroke-width='1.5'/%3E%3C/svg%3E") repeat-y center;
+}
+[data-theme="dark"] #sidebar::after{
+  opacity:.15;
 }
 .brand{display:flex;align-items:center;gap:10px;padding:0 4px;margin-bottom:8px;}
 .brand .logo-mark{width:30px;height:30px;flex:none;}
@@ -223,21 +237,33 @@ a{color:var(--pen);}
 /* Empty notebook (portada tancada) */
 .empty-notebook{
   position:relative;border:2px solid var(--line);border-radius:14px;
-  background:linear-gradient(135deg,var(--white) 0%,var(--paper-alt) 100%);
+  background:linear-gradient(160deg,var(--white) 0%,var(--pen-soft) 40%,var(--paper-alt) 100%);
   box-shadow:0 4px 24px rgba(30,42,40,.08),inset 0 1px 0 rgba(255,255,255,.6);
-  overflow:hidden;
+  overflow:hidden;padding:40px 36px;
 }
 .empty-notebook::before{
   content:'';position:absolute;top:0;left:0;right:0;height:6px;
   background:repeating-linear-gradient(90deg,var(--pen) 0,var(--pen) 3px,transparent 3px,transparent 6px);
   opacity:.3;
 }
+.empty-notebook::after{
+  content:'';position:absolute;top:0;left:0;bottom:0;width:4px;
+  background:linear-gradient(180deg,var(--pen),var(--gold),var(--pen));
+  opacity:.25;border-radius:14px 0 0 14px;
+}
 .notebook-cover{
-  display:flex;gap:8px;margin-bottom:8px;
+  display:flex;gap:10px;margin-bottom:12px;justify-content:center;
 }
 .notebook-ring{
-  width:20px;height:20px;border:2px solid var(--line);border-radius:50%;
-  background:var(--paper-alt);box-shadow:inset 0 1px 3px rgba(0,0,0,.08);
+  width:22px;height:22px;border:2.5px solid var(--line);border-radius:50%;
+  background:var(--paper-alt);box-shadow:inset 0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);
+}
+.notebook-title{
+  font-family:'Fraunces',serif;font-size:1.3rem;font-weight:600;
+  color:var(--pen);text-align:center;margin-bottom:4px;letter-spacing:.01em;
+}
+.notebook-subtitle{
+  font-size:.82rem;color:var(--ink-faint);text-align:center;margin-bottom:12px;
 }
 .empty-centered{
   align-items:center;text-align:center;
@@ -354,7 +380,7 @@ a{color:var(--pen);}
 .cal-month-nav-btn:hover{background:var(--pen-soft);border-color:var(--pen);}
 .cal-month-title{font-family:'Fraunces',serif;font-weight:600;font-size:1.05rem;color:var(--ink);}
 .cal-view-month{min-width:0;width:100%;}
-.cal-view-month .cal-grid-wrap{font-size:.82rem;border:none;}
+.cal-view-month .cal-grid-wrap{font-size:.82rem;border:none;box-shadow:none;background:transparent;}
 .cal-view-month .cal-grid-hd{border-bottom:none;}
 .cal-view-month .cal-grid-hd:first-child{border-left:none;}
 .cal-view-month .cal-grid-body .cal-cell:nth-child(7n+1){border-left:none;}
@@ -434,12 +460,22 @@ a{color:var(--pen);}
 .cal-note-pop textarea{width:100%;border:1px solid var(--line);border-radius:7px;padding:8px;font-size:.82rem;background:var(--paper);color:var(--ink);resize:vertical;min-height:56px;font-family:inherit;}
 .cal-note-pop textarea:focus{outline:none;border-color:var(--pen);}
 .cal-note-time-label{display:block;font-size:.74rem;color:var(--ink-soft);margin:2px 0 4px;font-weight:600;}
+.cal-note-time-wrap{position:relative;display:flex;align-items:center;margin-bottom:8px;}
 .cal-note-time{
-  width:100%;border:1px solid var(--line);border-radius:7px;padding:7px 9px;
+  width:100%;border:1px solid var(--line);border-radius:7px;padding:7px 34px 7px 9px;
   font-size:.85rem;background:var(--paper);color:var(--ink);font-family:'IBM Plex Mono',monospace;
-  margin-bottom:8px;box-sizing:border-box;
+  box-sizing:border-box;
 }
 .cal-note-time:focus{outline:none;border-color:var(--pen);}
+.cal-note-time-btn{
+  position:absolute;right:4px;top:50%;transform:translateY(-50%);
+  width:26px;height:26px;border:none;border-radius:6px;
+  background:var(--paper-alt);color:var(--ink-soft);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .12s ease, color .12s ease;
+}
+.cal-note-time-btn:hover{background:var(--pen-soft);color:var(--pen);}
+.cal-note-time-btn svg{width:14px;height:14px;}
 .cal-info-time{font-family:'IBM Plex Mono',monospace;font-size:.7rem;color:var(--ink-soft);margin-left:auto;}
 .cal-note-actions{display:flex;gap:6px;justify-content:flex-end;margin-top:8px;}
 .cal-note-text{font-size:.84rem;color:var(--ink);line-height:1.45;margin:4px 0 2px;white-space:pre-wrap;word-break:break-word;}
@@ -1091,6 +1127,14 @@ body.cal-full #main-content{max-width:none;}
   border-radius:6px;padding:2px 8px;font-size:.72rem;font-weight:600;
   color:var(--gold-dark);text-transform:uppercase;letter-spacing:.03em;
 }
+.mobile-area-card-settings{
+  flex:none;width:32px;height:32px;border:none;border-radius:8px;
+  background:transparent;color:var(--ink-faint);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .12s ease, color .12s ease;
+}
+.mobile-area-card-settings:hover{background:var(--paper-alt);color:var(--ink);}
+.mobile-area-card-settings svg{width:16px;height:16px;}
 .mobile-area-card-arrow{
   color:var(--ink-faint);flex:none;
 }
@@ -1346,8 +1390,8 @@ body.mode-data .duration-bar-wrap{flex:0 1 52px;min-width:44px;}
 .week-nav{display:grid;grid-template-columns:40px 1fr 40px;align-items:center;gap:8px;margin-bottom:12px;}
 .week-nav .btn{justify-self:center;}
 .week-title{font-family:'Fraunces',serif;font-weight:600;font-size:1.05rem;color:var(--ink);text-align:center;}
-.week-view{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;}
-@media(min-width:861px){.week-view{grid-template-columns:1fr;gap:6px;}}
+.week-view{display:grid;grid-template-columns:1fr;gap:8px;}
+@media(min-width:861px){.week-view{grid-template-columns:repeat(5,1fr);gap:8px;}}
 .week-day{border:1px solid var(--line);border-radius:9px;background:var(--white);overflow:hidden;display:flex;flex-direction:column;min-width:0;}
 .week-day.weekend{background:var(--gold-soft);}
 .week-day-head{font-size:.72rem;font-weight:600;color:var(--ink-soft);text-transform:capitalize;text-align:center;padding:6px 4px;background:var(--paper-alt);border-bottom:1px solid var(--line);}
@@ -2414,7 +2458,13 @@ const I18N_ES = {
   'Afegeix l\'aplicació a la pantalla d\'inici per accedir-hi més ràpidament.': 'Añade la aplicación a la pantalla de inicio para acceder más rápido.',
   'Instal·la': 'Instalar',
   'L\'app ja està instal·lada': 'La app ya está instalada',
-  'El Quadern ja està instal·lat al teu dispositiu.': 'El Cuaderno ya está instalado en tu dispositivo.'
+  'El Quadern ja està instal·lat al teu dispositiu.': 'El Cuaderno ya está instalado en tu dispositivo.',
+  'Avui descanses': 'Hoy descansas',
+  'Cap àrea programada per a hui': 'Ningún área programada para hoy',
+  'Encara no tens cap àrea activa': 'Aún no tienes ningún área activa',
+  'Introdueix l\'hora d\'inici per a cada dia de classe.': 'Introduce la hora de inicio para cada día de clase.',
+  'Configuració': 'Configuración',
+  'Selecciona l\'hora': 'Selecciona la hora'
 };
 
 /* Supabase: sincronització entre dispositius + autenticació.
@@ -3709,20 +3759,29 @@ const EDUCATION_QUOTES = [
   "L'esperit és una flama que s'alimenta de somnis. — Joan Maragall",
   "La pensada és un somni que encara no s'ha obert. — Joan Maragall"
 ];
+function todayQuote(){
+  const now = new Date();
+  const seed = now.getFullYear() * 10000 + (now.getMonth() + 1) * 100 + now.getDate();
+  return EDUCATION_QUOTES[seed % EDUCATION_QUOTES.length];
+}
 function emptyStateHTML(){
-  const quote = EDUCATION_QUOTES[Math.floor(Math.random() * EDUCATION_QUOTES.length)];
+  const quote = todayQuote();
   const parts = quote.split(' — ');
   const text = parts[0];
   const author = parts[1] ? `— ${parts[1]}` : '';
   return `
-  <div class="empty-state empty-notebook">
+  <div class="empty-state empty-notebook empty-centered">
     <div class="notebook-cover">
       <div class="notebook-ring"></div>
       <div class="notebook-ring"></div>
       <div class="notebook-ring"></div>
     </div>
-    <h2 class="display">${tr('Comencem la programació')}</h2>
-    <p>${tr('Crea una àrea (per exemple, Matemàtiques o Llengua) i dins seu afig les situacions d\'aprenentatge del curs, amb les seues sessions i activitats. També pots importar un document ja escrit i deixar que l\'aplicació en propose l\'estructura.')}</p>
+    <div class="notebook-title">${tr('Quadern')}</div>
+    <div class="notebook-subtitle">${tr('Comencem la programació')}</div>
+    <div class="quote-block">
+      <p class="quote-text">"${esc(text)}"</p>
+      ${author ? `<p class="quote-author">${esc(author)}</p>` : ''}
+    </div>
     <div class="actions">
       <button class="btn btn-primary" onclick="addAreaPrompt()">+ Nova àrea</button>
       <button class="btn btn-ghost" onclick="openImportModal()">${tr('Importa un document')}</button>
@@ -3749,6 +3808,9 @@ function mobileAreasHTML(){
           <span>${sessionsText}</span>
         </div>
       </div>
+      <button type="button" class="mobile-area-card-settings" onclick="event.stopPropagation();openAreaConfigModal('${a.id}')" title="${esc(tr('Configuració'))}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </button>
       <div class="mobile-area-card-arrow">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="9 6 15 12 9 18"/></svg>
       </div>
@@ -5740,15 +5802,20 @@ function agendaHTML(){
     if(changed) saveState();
   }
   const activeAll = state.areas.filter(a => a.active).sort((x, y) => (x.doneOn ? 1 : 0) - (y.doneOn ? 1 : 0));
-  const active = dataModeEnabled()
-    ? (agendaShowAll ? activeAll : activeAll.filter(a => flatSessions(a).some(f => f.se.date === today)))
-    : (dayFilter ? activeAll.filter(areaClassesToday) : activeAll);
+  const active = (dataModeEnabled()
+    ? (agendaShowAll ? activeAll : activeAll.filter(a => areaClassesToday(a) && flatSessions(a).some(f => f.se.date === today)))
+    : (dayFilter ? activeAll.filter(areaClassesToday) : activeAll))
+    .sort((a, b) => {
+      const ta = sessionTimeFor(a, today) || 'zz:zz';
+      const tb = sessionTimeFor(b, today) || 'zz:zz';
+      return ta.localeCompare(tb);
+    });
   const inactive = state.areas.length - activeAll.length;
   let body;
   if(!state.areas.length){
     body = emptyStateHTML();
   } else if(!active.length && activeAll.length){
-    const quote = EDUCATION_QUOTES[Math.floor(Math.random() * EDUCATION_QUOTES.length)];
+    const quote = todayQuote();
     const parts = quote.split(' — ');
     const qText = parts[0];
     const qAuthor = parts[1] ? `— ${parts[1]}` : '';
@@ -5759,6 +5826,8 @@ function agendaHTML(){
         <div class="notebook-ring"></div>
         <div class="notebook-ring"></div>
       </div>
+      <div class="notebook-title">${tr('Avui descanses')}</div>
+      <div class="notebook-subtitle">${tr('Cap àrea programada per a hui')}</div>
       <div class="quote-block">
         <p class="quote-text">"${esc(qText)}"</p>
         ${qAuthor ? `<p class="quote-author">${esc(qAuthor)}</p>` : ''}
@@ -5768,7 +5837,7 @@ function agendaHTML(){
       </div>
     </div>`;
   } else if(!active.length){
-    const quote = EDUCATION_QUOTES[Math.floor(Math.random() * EDUCATION_QUOTES.length)];
+    const quote = todayQuote();
     const parts = quote.split(' — ');
     const qText = parts[0];
     const qAuthor = parts[1] ? `— ${parts[1]}` : '';
@@ -5779,6 +5848,8 @@ function agendaHTML(){
         <div class="notebook-ring"></div>
         <div class="notebook-ring"></div>
       </div>
+      <div class="notebook-title">${tr('Quadern')}</div>
+      <div class="notebook-subtitle">${tr('Encara no tens cap àrea activa')}</div>
       <div class="quote-block">
         <p class="quote-text">"${esc(qText)}"</p>
         ${qAuthor ? `<p class="quote-author">${esc(qAuthor)}</p>` : ''}
@@ -5788,7 +5859,7 @@ function agendaHTML(){
       </div>
     </div>`;
   } else {
-    const todayMarks = getCalMarks(today);
+    const todayMarks = getCalMarks(today).sort((a, b) => (a.time || 'zz:zz').localeCompare(b.time || 'zz:zz'));
     const marksHTML = todayMarks.length
       ? `<div class="agenda-marks-today">${todayMarks.map(m => {
           const icon = m.type === 'avaluacio' ? '📝' : '👥';
@@ -6249,7 +6320,22 @@ function confirmAreaConfig(){
       showAreaConfigMsg(tr('Marca almenys un dia de classe per continuar.'));
       return;
     }
+    if(dataModeEnabled()){
+      const times = area.sessionTimes || {};
+      const missing = (area.weekDays || []).filter(d => !times[d]);
+      if(missing.length){
+        showAreaConfigMsg(tr('Introdueix l\'hora d\'inici per a cada dia de classe.'));
+        return;
+      }
+    }
     areaConfigCreating = false;
+  } else if(dataModeEnabled()){
+    const times = area.sessionTimes || {};
+    const missing = (area.weekDays || []).filter(d => !times[d]);
+    if(missing.length){
+      showAreaConfigMsg(tr('Introdueix l\'hora d\'inici per a cada dia de classe.'));
+      return;
+    }
   }
   closeAreaConfigModal();
 }
@@ -6710,7 +6796,12 @@ function openCalNotePopover(iso, btn){
   pop.innerHTML = `
     <h4>${tr(calMarkMode === 'avaluacio' ? 'Avaluació' : 'Reunió')}</h4>
     <label class="cal-note-time-label">${esc(tr('Hora'))}</label>
-    <input class="cal-note-time" id="cal-note-time" inputmode="numeric" placeholder="xx:xx" value="${esc(existingTime)}" maxlength="5" onkeydown="calNoteTimeKey(event)">
+    <div class="cal-note-time-wrap">
+      <input class="cal-note-time" id="cal-note-time" inputmode="numeric" placeholder="HH:MM" value="${esc(existingTime)}" maxlength="5" onkeydown="calNoteTimeKey(event)" onblur="validateTimeInput(this)">
+      <button type="button" class="cal-note-time-btn" onclick="openTimePicker(this)" title="${esc(tr('Selecciona l\'hora'))}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </button>
+    </div>
     <textarea id="cal-note-input" placeholder="${esc(tr('Escriu una nota…'))}">${esc(existingNote)}</textarea>
     <div class="cal-note-actions">
       <button type="button" class="btn btn-sm btn-ghost" onclick="closeCalNotePopover()">${tr('Cancel·la')}</button>
@@ -6776,6 +6867,58 @@ function calNoteTimeKey(e){
   if(e.key === 'Enter'){
     e.preventDefault();
     saveCalNote();
+    return;
+  }
+  const inp = e.target;
+  const val = inp.value;
+  if(e.key === 'Backspace' || e.key === 'Delete' || e.key === 'Tab' || e.key === 'ArrowLeft' || e.key === 'ArrowRight' || e.key === 'Home' || e.key === 'End') return;
+  if(e.ctrlKey || e.metaKey || e.altKey) return;
+  if(!/^\d$/.test(e.key)){ e.preventDefault(); return; }
+  const digits = val.replace(/\D/g,'');
+  if(digits.length >= 4){ e.preventDefault(); return; }
+  e.preventDefault();
+  const newDigits = digits + e.key;
+  if(newDigits.length === 4){
+    inp.value = newDigits.slice(0,2) + ':' + newDigits.slice(2);
+  } else {
+    inp.value = newDigits;
+  }
+}
+function validateTimeInput(inp){
+  if(!inp) return;
+  const val = inp.value.trim();
+  if(!val) return;
+  const match = val.match(/^(\d{1,2})(?:[:\s]|$)(\d{0,2})$/);
+  if(match){
+    const h = parseInt(match[1],10);
+    const m = match[2] ? parseInt(match[2],10) : 0;
+    if(h >= 0 && h <= 23 && m >= 0 && m <= 59){
+      inp.value = String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0');
+    }
+  }
+}
+function openTimePicker(btn){
+  const pop = btn.closest('.cal-note-pop');
+  if(!pop) return;
+  const textInp = pop.querySelector('.cal-note-time');
+  if(!textInp) return;
+  let hidden = pop.querySelector('.cal-note-time-hidden');
+  if(!hidden){
+    hidden = document.createElement('input');
+    hidden.type = 'time';
+    hidden.className = 'cal-note-time-hidden';
+    hidden.style.cssText = 'position:absolute;opacity:0;width:0;height:0;pointer-events:none;';
+    pop.appendChild(hidden);
+  }
+  hidden.value = textInp.value || '';
+  hidden.onchange = function(){
+    if(hidden.value){
+      textInp.value = hidden.value;
+    }
+  };
+  hidden.click();
+  if(typeof hidden.showPicker === 'function'){
+    try{ hidden.showPicker(); }catch(e){}
   }
 }
 function deleteCalMark(iso, type){
@@ -7247,6 +7390,12 @@ function purgeExpiredTrashFiles(){
 }
 function clearSelectionAfterMove(id){
   if(state.selectedAreaId === id){
+    if(isMobile()){
+      state.selectedAreaId = null;
+      showMobileAreas = true;
+      showAgenda = false;
+      return;
+    }
     state.selectedAreaId = state.areas[0]?.id || null;
     if(!state.selectedAreaId) showAgenda = true;
   }
