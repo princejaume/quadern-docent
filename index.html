@@ -233,6 +233,9 @@ a{color:var(--pen);}
 .empty-state h2{margin:0;font-size:1.5rem;}
 .empty-state p{margin:0;color:var(--ink-soft);line-height:1.55;max-width:46ch;}
 .empty-state .actions{display:flex;gap:10px;margin-top:6px;flex-wrap:wrap;}
+@media(min-width:861px){
+  .empty-state{margin:40px auto;}
+}
 
 /* Empty notebook (portada tancada) */
 .empty-notebook{
@@ -251,6 +254,26 @@ a{color:var(--pen);}
   background:linear-gradient(180deg,var(--pen),var(--gold),var(--pen));
   opacity:.25;border-radius:14px 0 0 14px;
 }
+@media(min-width:861px){
+  .empty-notebook{
+    max-width:520px;margin:40px auto;
+    background:linear-gradient(170deg,var(--white) 0%,var(--pen-soft) 30%,var(--paper-alt) 100%);
+    box-shadow:0 6px 32px rgba(30,42,40,.1),inset 0 1px 0 rgba(255,255,255,.7),4px 0 0 var(--line);
+    padding:48px 44px;
+  }
+  .empty-notebook::before{
+    height:8px;
+    background:repeating-linear-gradient(90deg,var(--pen) 0,var(--pen) 4px,transparent 4px,transparent 8px);
+    opacity:.25;
+  }
+  .empty-notebook::after{
+    width:5px;
+    background:linear-gradient(180deg,var(--pen),var(--gold),var(--pen));
+    opacity:.3;border-radius:14px 0 0 14px;
+  }
+  .notebook-title{font-size:1.5rem;}
+  .notebook-subtitle{font-size:.88rem;}
+}
 .notebook-cover{
   display:flex;gap:10px;margin-bottom:12px;justify-content:center;
 }
@@ -265,6 +288,9 @@ a{color:var(--pen);}
 .notebook-subtitle{
   font-size:.82rem;color:var(--ink-faint);text-align:center;margin-bottom:12px;
 }
+.notebook-icon{
+  font-size:2rem;margin-bottom:4px;opacity:.6;
+}
 .empty-centered{
   align-items:center;text-align:center;
 }
@@ -276,6 +302,13 @@ a{color:var(--pen);}
   margin:8px 0 4px;padding:16px 20px;
   border-left:3px solid var(--gold);background:var(--gold-soft);
   border-radius:0 8px 8px 0;max-width:480px;
+}
+@media(min-width:861px){
+  .quote-block{
+    max-width:400px;margin:12px auto 8px;
+    background:transparent;border-left:none;border-top:1px solid var(--gold);
+    border-bottom:1px solid var(--gold);border-radius:0;padding:20px 24px;
+  }
 }
 .quote-text{
   font-family:'Fraunces',serif;font-style:italic;font-size:1.05rem;
@@ -331,8 +364,14 @@ a{color:var(--pen);}
 .color-modal-custom input[type=color]::-webkit-color-swatch{border:none;border-radius:5px;}
 #cal-modal .modal{max-width:640px;}
 #area-config-modal .modal{max-width:660px;}
-.area-config-danger{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;padding-top:14px;border-top:1px solid var(--line);}
-.area-config-danger .btn{flex:1;min-width:140px;}
+.area-config-danger{display:flex;gap:8px;align-items:center;margin-top:8px;padding-top:14px;border-top:1px solid var(--line);}
+.btn-icon-sm{width:34px;height:34px;border-radius:8px;border:1px solid var(--line);background:var(--white);color:var(--pen);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .12s ease, filter .12s ease;}
+.btn-icon-sm svg{width:16px;height:16px;}
+.btn-icon-sm:hover{background:var(--paper-alt);filter:brightness(1.05);}
+.btn-icon-sm.btn-danger-icon{color:var(--danger);border-color:var(--danger-soft);}
+.btn-icon-sm.btn-danger-icon:hover{background:var(--danger-soft);}
+.btn-icon-sm.btn-save-icon{background:var(--pen);color:var(--white);border-color:var(--pen);}
+.btn-icon-sm.btn-save-icon:hover{background:var(--pen-dark);}
 .cal-tabs{display:flex;gap:6px;margin-bottom:14px;border-bottom:1px solid var(--line);}
 .cal-tab{background:none;border:none;padding:8px 14px;font-size:.88rem;font-weight:600;color:var(--ink-soft);border-bottom:2px solid transparent;cursor:pointer;}
 .cal-tab.active{color:var(--pen);border-bottom-color:var(--pen);}
@@ -878,6 +917,8 @@ body.gate-open #mobile-bottombar{visibility:hidden;}
 .done-banner{display:flex;align-items:center;gap:8px;background:var(--pen-soft);color:var(--pen-dark);font-weight:600;font-size:.9rem;padding:16px 18px;}
 .done-banner .check{width:24px;height:24px;border-radius:50%;background:var(--pen);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:.8rem;flex:none;}
 .agenda-card.collapsed .agenda-head{border-bottom:none;opacity:.8;}
+.agenda-time-badge{font-family:'IBM Plex Mono',monospace;font-size:.78rem;font-weight:700;color:var(--pen-dark);background:var(--pen-soft);padding:3px 10px;border-radius:20px;white-space:nowrap;flex:none;}
+.agenda-foot .btn-sm{min-height:32px;}
 .switch{position:relative;display:inline-block;width:38px;height:22px;flex:none;}
 .switch input{opacity:0;width:0;height:0;}
 .switch .slider{position:absolute;cursor:pointer;inset:0;background:var(--line);border-radius:22px;transition:background .15s;}
@@ -3701,7 +3742,7 @@ function renderMain(){
   if(showResources){ main.innerHTML = recursosHTML(); return; }
   if(showReminder){ main.innerHTML = recordatoriHTML(); return; }
   if(showCalendar){ main.innerHTML = calendariHTML(); initCalMonthSwipe(); return; }
-  if(showAgenda){ main.innerHTML = agendaHTML(); return; }
+  if(showAgenda){ main.innerHTML = agendaHTML(); setTimeout(scrollToCurrentSession, 50); return; }
   const area = state.areas.find(a=>a.id===state.selectedAreaId);
   if(!area){ showAgenda = true; renderSidebar(); main.innerHTML = agendaHTML(); return; }
   main.innerHTML = areaVistaHTML(area);
@@ -3776,6 +3817,7 @@ function emptyStateHTML(){
       <div class="notebook-ring"></div>
       <div class="notebook-ring"></div>
     </div>
+    <div class="notebook-icon">✏️</div>
     <div class="notebook-title">${tr('Quadern')}</div>
     <div class="notebook-subtitle">${tr('Comencem la programació')}</div>
     <div class="quote-block">
@@ -5826,6 +5868,7 @@ function agendaHTML(){
         <div class="notebook-ring"></div>
         <div class="notebook-ring"></div>
       </div>
+      <div class="notebook-icon">✏️</div>
       <div class="notebook-title">${tr('Avui descanses')}</div>
       <div class="notebook-subtitle">${tr('Cap àrea programada per a hui')}</div>
       <div class="quote-block">
@@ -5848,6 +5891,7 @@ function agendaHTML(){
         <div class="notebook-ring"></div>
         <div class="notebook-ring"></div>
       </div>
+      <div class="notebook-icon">📓</div>
       <div class="notebook-title">${tr('Quadern')}</div>
       <div class="notebook-subtitle">${tr('Encara no tens cap àrea activa')}</div>
       <div class="quote-block">
@@ -5893,6 +5937,7 @@ function agendaHTML(){
 function agendaCardHTML(a){
   const done = !!a.doneOn;
   const info = agendaInfo(a);
+  const today = toISODate(new Date());
   const saIdx = info.complete ? 0 : a.situacions.indexOf(info.sa) + 1;
   const saLabel = (!done && !info.complete && info.sa)
     ? `<span class="agenda-sa-label" style="color:${a.color};background:${hexToRgba(a.color,0.12)}" title="${esc(info.sa.name)}"><span class="sa-num">SA${saIdx}</span>${esc(info.sa.name)}</span>`
@@ -5901,6 +5946,8 @@ function agendaCardHTML(a){
   const resumeBtn = done
     ? `<button class="btn btn-gold btn-sm" onclick="resumeArea('${a.id}')">${tr('Reprendre')}</button>`
     : '';
+  const timeStr = sessionTimeFor(a, today);
+  const timeBadge = timeStr ? `<span class="agenda-time-badge">${esc(timeStr)}</span>` : '';
   const head = `
   <div class="agenda-head" style="--area-color:${a.color};background:${hexToRgba(a.color,0.10)};border-left:4px solid ${a.color}">
     <div class="agenda-color-badge color-badge-clickable" style="--area-color:${a.color}" onclick="openColorModal('${a.id}')" title="${tr('Canvia el color de l\'àrea')}">${areaIconHTML(a.name)}</div>
@@ -5909,11 +5956,19 @@ function agendaCardHTML(a){
       ${saLabel}
     </div>
     <div class="agenda-head-actions">
+      ${timeBadge}
       ${courseLine}
       ${resumeBtn}
     </div>
   </div>`;
   if(done) return `<div class="agenda-card collapsed">${head}</div>`;
+  const isCurrentTime = timeStr && (() => {
+    const now = new Date();
+    const [h, m] = timeStr.split(':').map(Number);
+    const diff = (now.getHours() * 60 + now.getMinutes()) - (h * 60 + m);
+    return diff >= 0 && diff < 60;
+  })();
+  const startCollapsed = !isCurrentTime;
   let body;
   if(info.complete){
     body = `<div class="done-banner"><span class="check">✓</span>${tr('Totes les sessions completades')}</div>
@@ -5954,7 +6009,17 @@ function agendaCardHTML(a){
       </button>
     </div>`;
   }
-  return `<div class="agenda-card">${head}${body}</div>`;
+  const collapsedClass = startCollapsed ? ' collapsed' : '';
+  const scrollAttr = isCurrentTime ? ' id="agenda-current-session"' : '';
+  return `<div class="agenda-card${collapsedClass}"${scrollAttr}>${head}${body}</div>`;
+}
+
+function scrollToCurrentSession(){
+  const el = document.getElementById('agenda-current-session');
+  if(el){
+    el.classList.remove('collapsed');
+    setTimeout(() => el.scrollIntoView({ behavior:'smooth', block:'center' }), 100);
+  }
 }
 
 /* Vista (sols lectura) */
@@ -6261,8 +6326,15 @@ function openAreaConfigModal(id){
   const body = document.getElementById('area-config-body');
   const danger = creating ? '' : `
     <div class="area-config-danger">
-      <button class="btn btn-ghost" onclick="archiveAreaFromConfig()">${tr('Arxiva l\'àrea')}</button>
-      <button class="btn btn-danger" onclick="trashAreaFromConfig()">${tr('Elimina l\'àrea')}</button>
+      <button class="btn-icon-sm" onclick="archiveAreaFromConfig()" title="${tr('Arxiva l\'àrea')}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 8v13H3V8"/><path d="M1 3h22v5H1z"/><path d="M10 12h4"/></svg>
+      </button>
+      <button class="btn-icon-sm btn-danger-icon" onclick="trashAreaFromConfig()" title="${tr('Elimina l\'àrea')}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+      </button>
+      <button class="btn-icon-sm btn-save-icon" onclick="confirmAreaConfig()" title="${tr('Desa')}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+      </button>
     </div>`;
   if(body) body.innerHTML = `
     <div class="settings-row">
@@ -6294,7 +6366,7 @@ function openAreaConfigModal(id){
   const contBtn = document.getElementById('area-config-continue-btn');
   if(contBtn) contBtn.style.display = creating ? 'inline-flex' : 'none';
   const saveBtn = document.getElementById('area-config-save-btn');
-  if(saveBtn) saveBtn.style.display = creating ? 'none' : 'inline-flex';
+  if(saveBtn) saveBtn.style.display = creating ? 'inline-flex' : 'none';
   const m = document.getElementById('area-config-modal');
   const wasOpen = m && m.classList.contains('open');
   if(m) m.classList.add('open');
@@ -7396,8 +7468,8 @@ function clearSelectionAfterMove(id){
       showAgenda = false;
       return;
     }
-    state.selectedAreaId = state.areas[0]?.id || null;
-    if(!state.selectedAreaId) showAgenda = true;
+    state.selectedAreaId = null;
+    showAgenda = true;
   }
 }
 function archiveArea(id){
