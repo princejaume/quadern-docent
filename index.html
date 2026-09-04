@@ -291,6 +291,11 @@ a{color:var(--pen);}
 .notebook-icon{
   font-size:2rem;margin-bottom:4px;opacity:.6;
 }
+.notebook-lines{
+  width:100%;max-width:320px;margin:8px auto 4px;height:60px;
+  background:repeating-linear-gradient(0deg,transparent,transparent 11px,var(--line) 11px,var(--line) 12px);
+  opacity:.4;border-radius:4px;
+}
 .empty-centered{
   align-items:center;text-align:center;
 }
@@ -352,6 +357,20 @@ a{color:var(--pen);}
 .swatch.active{border-color:var(--ink);}
 .color-badge-clickable{cursor:pointer;transition:filter .12s ease;}
 .color-badge-clickable:hover{filter:brightness(1.08);}
+
+/* Notebook mode for area view on desktop */
+@media(min-width:861px){
+  body:not(.cal-full) #main-content{position:relative;padding-left:28px;}
+  body:not(.cal-full) #main-content::before{
+    content:'';position:absolute;top:0;left:0;bottom:0;width:4px;
+    background:linear-gradient(180deg,var(--pen),var(--gold),var(--pen));
+    opacity:.2;border-radius:14px 0 0 14px;
+  }
+  body:not(.cal-full) #main-content::after{
+    content:'';position:absolute;top:0;left:4px;bottom:0;width:1px;
+    background:var(--danger);opacity:.15;
+  }
+}
 #color-modal .modal{max-width:400px;}
 #color-modal-body{padding:6px 0 4px;}
 .color-modal-swatches{display:flex;flex-wrap:wrap;gap:10px;}
@@ -365,8 +384,8 @@ a{color:var(--pen);}
 #cal-modal .modal{max-width:640px;}
 #area-config-modal .modal{max-width:660px;}
 .area-config-danger{display:flex;gap:8px;align-items:center;margin-top:8px;padding-top:14px;border-top:1px solid var(--line);}
-.btn-icon-sm{width:34px;height:34px;border-radius:8px;border:1px solid var(--line);background:var(--white);color:var(--pen);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .12s ease, filter .12s ease;}
-.btn-icon-sm svg{width:16px;height:16px;}
+.btn-icon-sm{width:30px;height:30px;border-radius:8px;border:1px solid var(--line);background:var(--white);color:var(--pen);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .12s ease, filter .12s ease;}
+.btn-icon-sm svg{width:14px;height:14px;}
 .btn-icon-sm:hover{background:var(--paper-alt);filter:brightness(1.05);}
 .btn-icon-sm.btn-danger-icon{color:var(--danger);border-color:var(--danger-soft);}
 .btn-icon-sm.btn-danger-icon:hover{background:var(--danger-soft);}
@@ -553,8 +572,9 @@ body.cal-full #main-content > .settings-card.cal-card #week-view-wrap .week-day{
   body.cal-full #main-content > .settings-card.cal-card .cal-view-month .cal-cell,
   body.cal-full #main-content > .settings-card.cal-card .cal-view-month .cal-cell.cal-cell-empty{height:auto;min-height:0;}
   body.cal-full #main-content > .settings-card.cal-card #week-view-wrap{flex:1;min-height:0;display:flex;flex-direction:column;width:100%;max-width:none;}
-  body.cal-full #main-content > .settings-card.cal-card #week-view-wrap .week-view{flex:1;min-height:0;display:flex;flex-direction:column;}
-  body.cal-full #main-content > .settings-card.cal-card #week-view-wrap .week-day{flex:1;min-height:0;}
+  body.cal-full #main-content > .settings-card.cal-card #week-view-wrap .week-view{flex:1;min-height:0;display:grid;grid-template-columns:repeat(5,1fr);gap:0;}
+  body.cal-full #main-content > .settings-card.cal-card #week-view-wrap .week-day{flex:1;min-height:0;display:flex;flex-direction:column;}
+  body.cal-full #main-content > .settings-card.cal-card #week-view-wrap .week-day-body{flex:1;overflow-y:auto;}
 }
 @media(max-width:860px){
   body.cal-full #main-wrap{display:flex;flex-direction:column;}
@@ -917,8 +937,16 @@ body.gate-open #mobile-bottombar{visibility:hidden;}
 .done-banner{display:flex;align-items:center;gap:8px;background:var(--pen-soft);color:var(--pen-dark);font-weight:600;font-size:.9rem;padding:16px 18px;}
 .done-banner .check{width:24px;height:24px;border-radius:50%;background:var(--pen);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:.8rem;flex:none;}
 .agenda-card.collapsed .agenda-head{border-bottom:none;opacity:.8;}
-.agenda-time-badge{font-family:'IBM Plex Mono',monospace;font-size:.78rem;font-weight:700;color:var(--pen-dark);background:var(--pen-soft);padding:3px 10px;border-radius:20px;white-space:nowrap;flex:none;}
+.agenda-card.collapsed .agenda-body-wrap{display:none;}
+.agenda-card .agenda-head{cursor:pointer;transition:opacity .15s ease;}
+.agenda-card .agenda-head:hover{opacity:.9;}
+.agenda-toggle{width:20px;height:20px;flex:none;display:flex;align-items:center;justify-content:center;color:var(--ink-faint);transition:transform .2s ease;}
+.agenda-toggle svg{width:14px;height:14px;}
+.agenda-card.collapsed .agenda-toggle svg{transform:rotate(-90deg);}
+.agenda-body-wrap{overflow:hidden;}
+.agenda-time-badge{font-family:'IBM Plex Mono',monospace;font-size:.82rem;font-weight:700;color:var(--pen-dark);background:var(--pen-soft);padding:4px 12px;border-radius:20px;white-space:nowrap;flex:none;border:1px solid var(--pen);}
 .agenda-foot .btn-sm{min-height:32px;}
+.agenda-foot .btn-ghost.btn-sm{min-height:32px;padding:6px 10px;}
 .switch{position:relative;display:inline-block;width:38px;height:22px;flex:none;}
 .switch input{opacity:0;width:0;height:0;}
 .switch .slider{position:absolute;cursor:pointer;inset:0;background:var(--line);border-radius:22px;transition:background .15s;}
@@ -1432,11 +1460,14 @@ body.mode-data .duration-bar-wrap{flex:0 1 52px;min-width:44px;}
 .week-nav .btn{justify-self:center;}
 .week-title{font-family:'Fraunces',serif;font-weight:600;font-size:1.05rem;color:var(--ink);text-align:center;}
 .week-view{display:grid;grid-template-columns:1fr;gap:8px;}
-@media(min-width:861px){.week-view{grid-template-columns:repeat(5,1fr);gap:8px;}}
+@media(min-width:861px){.week-view{grid-template-columns:repeat(5,1fr);gap:0;}}
 .week-day{border:1px solid var(--line);border-radius:9px;background:var(--white);overflow:hidden;display:flex;flex-direction:column;min-width:0;}
+@media(min-width:861px){.week-day{border-radius:0;border-left:none;}.week-day:first-child{border-radius:9px 0 0 9px;border-left:1px solid var(--line);}.week-day:last-child{border-radius:0 9px 9px 0;}}
 .week-day.weekend{background:var(--gold-soft);}
-.week-day-head{font-size:.72rem;font-weight:600;color:var(--ink-soft);text-transform:capitalize;text-align:center;padding:6px 4px;background:var(--paper-alt);border-bottom:1px solid var(--line);}
+.week-day-head{font-size:.78rem;font-weight:700;color:var(--ink-soft);text-transform:capitalize;text-align:center;padding:10px 6px;background:var(--paper-alt);border-bottom:2px solid var(--line);letter-spacing:.01em;}
+@media(min-width:861px){.week-day-head{padding:12px 6px;font-size:.82rem;}}
 .week-day-body{display:flex;flex-direction:column;gap:6px;padding:6px;}
+@media(min-width:861px){.week-day-body{min-height:200px;}}
 .week-area{
   display:flex;flex-direction:column;align-items:stretch;gap:5px;width:100%;
   border:1px solid var(--line);border-radius:7px;padding:8px 9px;
@@ -1767,7 +1798,7 @@ body.mode-data .duration-bar-wrap{flex:0 1 52px;min-width:44px;}
   <div class="modal">
     <h2 data-i18n="Configuració de l'àrea">Configuració de l'àrea</h2>
     <div id="area-config-body"></div>
-    <div class="modal-actions">
+    <div class="modal-actions" id="area-config-modal-actions">
       <button class="btn btn-primary" id="area-config-save-btn" onclick="confirmAreaConfig()" data-i18n="Desa">Desa</button>
       <button class="btn btn-ghost" id="area-config-continue-btn" onclick="confirmAreaConfig()" data-i18n="Fet" style="display:none">Fet</button>
     </div>
@@ -3820,6 +3851,7 @@ function emptyStateHTML(){
     <div class="notebook-icon">✏️</div>
     <div class="notebook-title">${tr('Quadern')}</div>
     <div class="notebook-subtitle">${tr('Comencem la programació')}</div>
+    <div class="notebook-lines"></div>
     <div class="quote-block">
       <p class="quote-text">"${esc(text)}"</p>
       ${author ? `<p class="quote-author">${esc(author)}</p>` : ''}
@@ -5871,6 +5903,7 @@ function agendaHTML(){
       <div class="notebook-icon">✏️</div>
       <div class="notebook-title">${tr('Avui descanses')}</div>
       <div class="notebook-subtitle">${tr('Cap àrea programada per a hui')}</div>
+      <div class="notebook-lines"></div>
       <div class="quote-block">
         <p class="quote-text">"${esc(qText)}"</p>
         ${qAuthor ? `<p class="quote-author">${esc(qAuthor)}</p>` : ''}
@@ -5894,6 +5927,7 @@ function agendaHTML(){
       <div class="notebook-icon">📓</div>
       <div class="notebook-title">${tr('Quadern')}</div>
       <div class="notebook-subtitle">${tr('Encara no tens cap àrea activa')}</div>
+      <div class="notebook-lines"></div>
       <div class="quote-block">
         <p class="quote-text">"${esc(qText)}"</p>
         ${qAuthor ? `<p class="quote-author">${esc(qAuthor)}</p>` : ''}
@@ -5948,9 +5982,11 @@ function agendaCardHTML(a){
     : '';
   const timeStr = sessionTimeFor(a, today);
   const timeBadge = timeStr ? `<span class="agenda-time-badge">${esc(timeStr)}</span>` : '';
+  const toggleSVG = `<span class="agenda-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="6 9 12 15 18 9"/></svg></span>`;
   const head = `
-  <div class="agenda-head" style="--area-color:${a.color};background:${hexToRgba(a.color,0.10)};border-left:4px solid ${a.color}">
-    <div class="agenda-color-badge color-badge-clickable" style="--area-color:${a.color}" onclick="openColorModal('${a.id}')" title="${tr('Canvia el color de l\'àrea')}">${areaIconHTML(a.name)}</div>
+  <div class="agenda-head" style="--area-color:${a.color};background:${hexToRgba(a.color,0.10)};border-left:4px solid ${a.color}" onclick="toggleAgendaCard('${a.id}')">
+    ${toggleSVG}
+    <div class="agenda-color-badge color-badge-clickable" style="--area-color:${a.color}" onclick="event.stopPropagation();openColorModal('${a.id}')" title="${tr('Canvia el color de l\'àrea')}">${areaIconHTML(a.name)}</div>
     <div class="agenda-area">
       <b class="agenda-area-name">${esc(a.name)}</b>
       ${saLabel}
@@ -5978,9 +6014,6 @@ function agendaCardHTML(a){
     const actGrid = acts ? `<div class="vista-act-grid">${acts}</div>` : `<p class="empty-hint">${tr('Sense activitats.')}</p>`;
     const sessNumInSA = info.sa.sessions.indexOf(info.session) + 1;
     const saTotal = info.sa.sessions.length;
-    const sessDate = (dataModeEnabled() && info.session.date)
-      ? `<span class="agenda-date">${esc(fmtShort(info.session.date))}</span>`
-      : '';
     const retardBtn = dataModeEnabled()
       ? `<button class="btn btn-ghost btn-sm" onclick="delayAreaSessions('${a.id}')" title="${esc(tr('Mou aquesta sessió i les següents al proper dia de classe.'))}">${tr('Retardar')}</button>`
       : '';
@@ -5989,7 +6022,6 @@ function agendaCardHTML(a){
       <div class="session-header">
         <span class="session-num">S${sessNumInSA}</span>
         <span class="session-name" title="${esc(sessionCleanName(info.session))}">${esc(sessionCleanName(info.session))}</span>
-        ${sessDate}
       </div>
       <div class="session-body">
         ${actGrid}
@@ -6011,15 +6043,22 @@ function agendaCardHTML(a){
   }
   const collapsedClass = startCollapsed ? ' collapsed' : '';
   const scrollAttr = isCurrentTime ? ' id="agenda-current-session"' : '';
-  return `<div class="agenda-card${collapsedClass}"${scrollAttr}>${head}${body}</div>`;
+  return `<div class="agenda-card${collapsedClass}"${scrollAttr} data-area-id="${a.id}">${head}<div class="agenda-body-wrap">${body}</div></div>`;
 }
 
 function scrollToCurrentSession(){
   const el = document.getElementById('agenda-current-session');
   if(el){
     el.classList.remove('collapsed');
+    const bodyWrap = el.querySelector('.agenda-body-wrap');
+    if(bodyWrap) bodyWrap.style.display = '';
     setTimeout(() => el.scrollIntoView({ behavior:'smooth', block:'center' }), 100);
   }
+}
+
+function toggleAgendaCard(areaId){
+  const card = document.querySelector(`.agenda-card[data-area-id="${areaId}"]`);
+  if(card) card.classList.toggle('collapsed');
 }
 
 /* Vista (sols lectura) */
@@ -6324,14 +6363,16 @@ function openAreaConfigModal(id){
   }
   const creating = areaConfigCreating;
   const body = document.getElementById('area-config-body');
-  const danger = creating ? '' : `
+  const danger = `
     <div class="area-config-danger">
+      ${creating ? '' : `
       <button class="btn-icon-sm" onclick="archiveAreaFromConfig()" title="${tr('Arxiva l\'àrea')}">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 8v13H3V8"/><path d="M1 3h22v5H1z"/><path d="M10 12h4"/></svg>
       </button>
       <button class="btn-icon-sm btn-danger-icon" onclick="trashAreaFromConfig()" title="${tr('Elimina l\'àrea')}">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
       </button>
+      `}
       <button class="btn-icon-sm btn-save-icon" onclick="confirmAreaConfig()" title="${tr('Desa')}">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
       </button>
@@ -6367,6 +6408,8 @@ function openAreaConfigModal(id){
   if(contBtn) contBtn.style.display = creating ? 'inline-flex' : 'none';
   const saveBtn = document.getElementById('area-config-save-btn');
   if(saveBtn) saveBtn.style.display = creating ? 'inline-flex' : 'none';
+  const modalActions = document.getElementById('area-config-modal-actions');
+  if(modalActions) modalActions.style.display = creating ? 'flex' : 'none';
   const m = document.getElementById('area-config-modal');
   const wasOpen = m && m.classList.contains('open');
   if(m) m.classList.add('open');
@@ -7462,14 +7505,9 @@ function purgeExpiredTrashFiles(){
 }
 function clearSelectionAfterMove(id){
   if(state.selectedAreaId === id){
-    if(isMobile()){
-      state.selectedAreaId = null;
-      showMobileAreas = true;
-      showAgenda = false;
-      return;
-    }
     state.selectedAreaId = null;
-    showAgenda = true;
+    showMobileAreas = true;
+    showAgenda = false;
   }
 }
 function archiveArea(id){
