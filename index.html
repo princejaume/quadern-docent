@@ -291,8 +291,13 @@ a{color:var(--pen);}
   font-family:'Fraunces',serif;
 }
 .empty-postit.fullscreen{
-  position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;
-  min-height:100vh;border-radius:0;padding:48px 28px;
+  border-radius:0;
+}
+@media(min-width:861px){
+  .empty-postit.fullscreen{min-height:calc(100vh - 172px);}
+}
+@media(max-width:860px){
+  .empty-postit.fullscreen{min-height:calc(100vh - 92px);}
 }
 [data-theme="dark"] .empty-postit{
   background:linear-gradient(160deg,#3A2E14 0%,#2A2210 30%,#13171D 70%,#23344C 100%);
