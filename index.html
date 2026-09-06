@@ -290,6 +290,10 @@ a{color:var(--pen);}
   padding:48px 28px;
   font-family:'Fraunces',serif;
 }
+.empty-postit.fullscreen{
+  position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;
+  min-height:100vh;border-radius:0;padding:48px 28px;
+}
 [data-theme="dark"] .empty-postit{
   background:linear-gradient(160deg,#3A2E14 0%,#2A2210 30%,#13171D 70%,#23344C 100%);
 }
@@ -360,16 +364,7 @@ a{color:var(--pen);}
 
 /* Notebook mode for area view on desktop */
 @media(min-width:861px){
-  body:not(.cal-full) #main-content{position:relative;padding-left:28px;}
-  body:not(.cal-full) #main-content::before{
-    content:'';position:absolute;top:0;left:0;bottom:0;width:4px;
-    background:linear-gradient(180deg,var(--pen),var(--gold),var(--pen));
-    opacity:.2;border-radius:14px 0 0 14px;
-  }
-  body:not(.cal-full) #main-content::after{
-    content:'';position:absolute;top:0;left:4px;bottom:0;width:1px;
-    background:var(--danger);opacity:.15;
-  }
+  body:not(.cal-full) #main-content{position:relative;}
 }
 #color-modal .modal{max-width:400px;}
 #color-modal-body{padding:6px 0 4px;}
@@ -1315,45 +1310,45 @@ body.cal-full #main-content{max-width:none;}
 }
 .tasks-input{
   flex:1;min-width:0;border:1px solid var(--line);border-radius:10px;
-  background:var(--paper);color:var(--ink);font-family:inherit;font-size:.95rem;
-  padding:11px 13px;
+  background:var(--paper);color:var(--ink);font-family:inherit;font-size:.9rem;
+  padding:9px 12px;
 }
 .tasks-input:focus{outline:none;border-color:var(--pen);box-shadow:0 0 0 3px var(--pen-soft);}
 .tasks-add-btn{
   flex:none;background:var(--pen);border:none;color:#fff;cursor:pointer;
-  width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+  width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;
   transition:filter .12s ease, transform .1s ease;
 }
 [data-theme="dark"] .tasks-add-btn{color:#0F141A;}
 .tasks-add-btn:active{transform:scale(.94);filter:brightness(.94);}
 .tasks-add-btn svg{width:20px;height:20px;}
-.tasks-count{font-size:.78rem;color:var(--ink-faint);margin:2px 0 12px;}
-.tasks-list{display:flex;flex-direction:column;gap:8px;}
+.tasks-count{font-size:.78rem;color:var(--ink-faint);margin:2px 0 8px;}
+.tasks-list{display:flex;flex-direction:column;gap:6px;}
 .task-item{
-  display:flex;align-items:center;gap:12px;background:var(--white);
-  border:1px solid var(--line);border-radius:12px;padding:13px 14px;box-shadow:var(--shadow);
+  display:flex;align-items:center;gap:8px;background:var(--white);
+  border:1px solid var(--line);border-radius:10px;padding:8px 12px;box-shadow:var(--shadow);
 }
 .task-check{
-  flex:none;width:22px;height:22px;border-radius:50%;border:2px solid var(--line);
+  flex:none;width:20px;height:20px;border-radius:50%;border:2px solid var(--line);
   background:var(--paper);cursor:pointer;display:flex;align-items:center;justify-content:center;
   color:transparent;transition:background .15s ease, border-color .15s ease, transform .1s ease;
   padding:0;
 }
 .task-check:hover{border-color:var(--pen);}
 .task-check:active{transform:scale(.9);}
-.task-check svg{width:13px;height:13px;}
+.task-check svg{width:12px;height:12px;}
 .task-check.on{background:var(--pen);border-color:var(--pen);color:#fff;}
 [data-theme="dark"] .task-check.on{color:#0F141A;}
-.task-text{flex:1;min-width:0;font-size:.95rem;color:var(--ink);word-break:break-word;line-height:1.4;}
+.task-text{flex:1;min-width:0;font-size:.88rem;color:var(--ink);word-break:break-word;line-height:1.35;}
 .task-item.done{opacity:.62;}
 .task-item.done .task-text{text-decoration:line-through;color:var(--ink-soft);}
 .task-handle{
   flex:none;background:none;border:none;color:var(--ink-faint);cursor:grab;
-  width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+  width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;
   touch-action:none;
 }
 @media(max-width:860px){
-  .task-handle{width:44px;height:44px;}
+  .task-handle{width:40px;height:40px;}
 }
 .task-handle:active{cursor:grabbing;}
 .task-handle:hover{background:var(--pen-soft);color:var(--ink);}
@@ -1363,13 +1358,13 @@ body.cal-full #main-content{max-width:none;}
   content:'';position:absolute;left:14px;right:14px;top:-5px;height:3px;border-radius:2px;background:var(--pen);
 }
 @keyframes taskRemoving{
-  0%{opacity:1;transform:translateX(0) scale(1);max-height:80px;}
+  0%{opacity:1;transform:translateX(0) scale(1);max-height:60px;}
   100%{opacity:0;transform:translateX(60px) scale(.9);max-height:0;margin-bottom:0;padding-top:0;padding-bottom:0;border-width:0;}
 }
 .task-item.task-removing{animation:taskRemoving .3s ease forwards;overflow:hidden;pointer-events:none;}
 @keyframes taskNewIn{
   0%{opacity:0;transform:translateY(-18px);max-height:0;margin-bottom:0;}
-  100%{opacity:1;transform:translateY(0);max-height:90px;}
+  100%{opacity:1;transform:translateY(0);max-height:70px;}
 }
 .task-item.task-new{animation:taskNewIn .32s ease;}
 .tasks-done-toggle{
@@ -1384,7 +1379,7 @@ body.cal-full #main-content{max-width:none;}
 .tasks-done-toggle .tasks-done-arrow{flex:none;width:15px;height:15px;color:var(--ink-soft);transition:transform .18s ease;}
 .tasks-done-toggle:hover .tasks-done-arrow{color:var(--pen);}
 .tasks-done-toggle.open .tasks-done-arrow{transform:rotate(180deg);}
-.tasks-done-list{display:flex;flex-direction:column;gap:8px;margin-top:4px;}
+.tasks-done-list{display:flex;flex-direction:column;gap:6px;margin-top:4px;}
 .tasks-done-hint{font-size:.72rem;color:var(--ink-faint);margin:0;}
 .tasks-empty{text-align:center;color:var(--ink-faint);font-size:.85rem;padding:26px 0;}
 
@@ -1990,6 +1985,7 @@ let showCalendar = false;
 let showMobileAreas = false;
 let showMobileResources = false;
 let showMobileTasks = false;
+let resLastSubView = null;
 let resEditMode = false;
 let resourcesAreaId = null;
 let attachTarget = null;
@@ -3883,14 +3879,12 @@ function emptyStateHTML(){
   const text = parts[0];
   const author = parts[1] ? `— ${parts[1]}` : '';
   return `
-  <div class="empty-postit">
     <p class="postit-quote">"${esc(text)}"</p>
     ${author ? `<p class="postit-author">${esc(author)}</p>` : ''}
-  </div>
-  <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;">
-    <button class="btn btn-primary" onclick="addAreaPrompt()">+ Nova àrea</button>
-    <button class="btn btn-ghost" onclick="openImportModal()">${tr('Importa un document')}</button>
-  </div>`;
+    <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="btn btn-primary" onclick="addAreaPrompt()">+ Nova àrea</button>
+      <button class="btn btn-ghost" onclick="openImportModal()">${tr('Importa un document')}</button>
+    </div>`;
 }
 
 function mobileAreasHTML(){
@@ -4080,6 +4074,7 @@ function mobileResourcesHTML(){
 }
 
 function showMobileTasksView(){
+  resLastSubView = 'tasques';
   resEditMode = false;
   showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; showMobileTasks = true;
   editTarget = null;
@@ -5801,16 +5796,27 @@ function trashCardHTML(a){
 /* ---------------------------------------------------------
    AGENDA I MODE
 -------------------------------------------------------- */
-function showAgendaView(){ showAgenda = true; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; showMobileTasks = false; agendaShowAll = false; editTarget = null; render(); closeDrawerIfMobile(); }
-function showCalendarView(){ showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = true; showMobileAreas = false; showMobileResources = false; showMobileTasks = false; editTarget = null; render(); if(dataModeEnabled() && calSavedViewMode() === 'week') enterWeekView(toISODate(new Date()), false); closeDrawerIfMobile(); }
-function showSettingsView(){ settingsProgramOpen = false; showAgenda = false; showSettings = true; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; showMobileTasks = false; render(); closeDrawerIfMobile(); }
-function showFilesView(){ if(showMobileResources) pushViewState('resources'); showAgenda = false; showSettings = false; showFiles = true; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; showMobileTasks = false; render(); closeDrawerIfMobile(); pruneMissingDropboxFiles(); enrichLinkTitles(); }
-function showArchivedView(){ if(showMobileResources) pushViewState('resources'); showAgenda = false; showSettings = false; showFiles = false; showArchived = true; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; showMobileTasks = false; render(); closeDrawerIfMobile(); }
-function showTrashView(){ if(showMobileResources) pushViewState('resources'); showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = true; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; showMobileTasks = false; render(); closeDrawerIfMobile(); enrichLinkTitles(); }
-function showResourcesView(){ if(showMobileResources) pushViewState('resources'); showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = true; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; showMobileTasks = false; recursosUrgents = true; recursosChecked = false; render(); pruneMissingDropboxFiles(); closeDrawerIfMobile(); }
+function showAgendaView(){ resLastSubView = null; showAgenda = true; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; showMobileTasks = false; agendaShowAll = false; editTarget = null; render(); closeDrawerIfMobile(); }
+function showCalendarView(){ resLastSubView = null; showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = true; showMobileAreas = false; showMobileResources = false; showMobileTasks = false; editTarget = null; render(); if(dataModeEnabled() && calSavedViewMode() === 'week') enterWeekView(toISODate(new Date()), false); closeDrawerIfMobile(); }
+function showSettingsView(){ resLastSubView = null; settingsProgramOpen = false; showAgenda = false; showSettings = true; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; showMobileTasks = false; render(); closeDrawerIfMobile(); }
+function showFilesView(){ if(showMobileResources){ pushViewState('resources'); resLastSubView = 'recursos'; } showAgenda = false; showSettings = false; showFiles = true; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; showMobileTasks = false; render(); closeDrawerIfMobile(); pruneMissingDropboxFiles(); enrichLinkTitles(); }
+function showArchivedView(){ if(showMobileResources){ pushViewState('resources'); resLastSubView = 'arxivats'; } showAgenda = false; showSettings = false; showFiles = false; showArchived = true; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; showMobileTasks = false; render(); closeDrawerIfMobile(); }
+function showTrashView(){ if(showMobileResources){ pushViewState('resources'); resLastSubView = 'paperera'; } showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = true; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; showMobileTasks = false; render(); closeDrawerIfMobile(); enrichLinkTitles(); }
+function showResourcesView(){ if(showMobileResources){ pushViewState('resources'); resLastSubView = 'pendents'; } showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = true; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; showMobileTasks = false; recursosUrgents = true; recursosChecked = false; render(); pruneMissingDropboxFiles(); closeDrawerIfMobile(); }
 function showTasksView(){ showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; showMobileTasks = true; resEditMode = false; editTarget = null; render(); closeDrawerIfMobile(); }
-function showMobileAreasView(){ showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = true; showMobileResources = false; showMobileTasks = false; editTarget = null; markViewState('area'); render(); closeDrawerIfMobile(); }
-function showMobileResourcesView(){ showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = true; showMobileTasks = false; resEditMode = false; editTarget = null; markViewState('resources'); render(); closeDrawerIfMobile(); }
+function showMobileAreasView(){ resLastSubView = null; showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = true; showMobileResources = false; showMobileTasks = false; editTarget = null; markViewState('area'); render(); closeDrawerIfMobile(); }
+function showMobileResourcesView(fromBack){
+  if(!fromBack && resLastSubView && !showMobileResources){
+    const meta = mobileResCardMeta(resLastSubView);
+    if(meta && typeof window[meta.open] === 'function'){
+      resLastSubView = null;
+      window[meta.open]();
+      return;
+    }
+  }
+  resLastSubView = null;
+  showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = true; showMobileTasks = false; resEditMode = false; editTarget = null; markViewState('resources'); render(); closeDrawerIfMobile();
+}
 function openArea(id){
   pushViewState('area');
   const area = state.areas.find(a=>a.id===id); if(area) prepareAreaView(area);
@@ -5917,14 +5923,15 @@ function agendaHTML(){
   const inactive = state.areas.length - activeAll.length;
   let body;
   if(!state.areas.length){
-    body = emptyStateHTML();
+    return `<div class="empty-postit fullscreen">
+      ${emptyStateHTML()}
+    </div>`;
   } else if(!active.length && activeAll.length){
     const quote = todayQuote();
     const parts = quote.split(' — ');
     const qText = parts[0];
     const qAuthor = parts[1] ? `— ${parts[1]}` : '';
-    body = `
-    <div class="empty-postit">
+    return `<div class="empty-postit fullscreen">
       <p class="postit-quote">"${esc(qText)}"</p>
       ${qAuthor ? `<p class="postit-author">${esc(qAuthor)}</p>` : ''}
     </div>`;
@@ -5933,13 +5940,12 @@ function agendaHTML(){
     const parts = quote.split(' — ');
     const qText = parts[0];
     const qAuthor = parts[1] ? `— ${parts[1]}` : '';
-    body = `
-    <div class="empty-postit">
+    return `<div class="empty-postit fullscreen">
       <p class="postit-quote">"${esc(qText)}"</p>
       ${qAuthor ? `<p class="postit-author">${esc(qAuthor)}</p>` : ''}
-    </div>
-    <div style="margin-top:16px">
-      <button class="btn btn-primary" onclick="addAreaPrompt()">+ Nova àrea</button>
+      <div style="margin-top:16px">
+        <button class="btn btn-primary" onclick="addAreaPrompt()">+ Nova àrea</button>
+      </div>
     </div>`;
   } else {
     const todayMarks = getCalMarks(today).sort((a, b) => (a.time || 'zz:zz').localeCompare(b.time || 'zz:zz'));
@@ -6700,13 +6706,20 @@ function initCalMonthSwipe(){
 function initWeekViewSwipe(){
   const wrap = document.getElementById('week-view-wrap');
   if(!wrap) return;
-  let sx = 0, sy = 0, axis = null, swiping = false;
+  let sx = 0, sy = 0, axis = null, swiping = false, moved = false;
+  const onEnd = (cx) => {
+    const dx = cx - sx;
+    if(Math.abs(dx) >= 40) weekShift(dx < 0 ? 7 : -7);
+    if(moved){ wrap.style.transform = ''; wrap.style.transition = ''; }
+    setTimeout(() => { swiping = false; }, 80);
+  };
   wrap.addEventListener('touchstart', (e) => {
     if(e.touches.length !== 1) return;
     sx = e.touches[0].clientX;
     sy = e.touches[0].clientY;
     axis = null;
     swiping = false;
+    moved = false;
   }, { passive: true });
   wrap.addEventListener('touchmove', (e) => {
     if(e.touches.length !== 1) return;
@@ -6715,14 +6728,16 @@ function initWeekViewSwipe(){
     if(axis === null && (Math.abs(dx) > 10 || Math.abs(dy) > 10)) axis = Math.abs(dx) > Math.abs(dy) ? 'h' : 'v';
     if(axis === 'h'){
       swiping = true;
+      moved = true;
       if(e.cancelable) e.preventDefault();
+      const pct = Math.max(-30, Math.min(30, dx * 0.15));
+      wrap.style.transition = 'none';
+      wrap.style.transform = `translateX(${pct}%)`;
     }
   }, { passive: false });
   wrap.addEventListener('touchend', (e) => {
     if(axis !== 'h') return;
-    const dx = e.changedTouches[0].clientX - sx;
-    if(Math.abs(dx) >= 60) weekShift(dx < 0 ? 7 : -7);
-    setTimeout(() => { swiping = false; }, 80);
+    onEnd(e.changedTouches[0].clientX);
   });
   wrap.addEventListener('click', (e) => {
     if(swiping){
@@ -8764,9 +8779,9 @@ window.addEventListener('popstate', function(e){
   if(v === 'area'){
     showMobileAreasView();
   }else if(v === 'resources'){
-    showMobileResourcesView();
+    showMobileResourcesView(true);
   }else if(v === 'tasks'){
-    showMobileResourcesView();
+    showMobileResourcesView(true);
   }
 });
 
