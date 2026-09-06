@@ -299,6 +299,27 @@ a{color:var(--pen);}
 @media(max-width:860px){
   .empty-postit.fullscreen{min-height:calc(100vh - 92px);}
 }
+
+/* Fullscreen empty postit: remove #main-content padding and flex-fill */
+#main-content.fullscreen-postit{
+  padding:0 !important;
+  display:flex;flex-direction:column;max-width:none;
+}
+#main-content.fullscreen-postit .empty-postit.fullscreen{
+  flex:1;min-height:0;
+}
+#main-wrap.fullscreen-postit{display:flex;flex-direction:column;}
+#main-wrap.fullscreen-postit #main-content.fullscreen-postit{flex:1;min-height:0;}
+@media(max-width:860px){
+  #main-wrap.fullscreen-postit #main-content.fullscreen-postit{
+    min-height:calc(100vh - 54px);
+  }
+}
+@media(min-width:861px){
+  #main-wrap.fullscreen-postit #main-content.fullscreen-postit{
+    min-height:100vh;
+  }
+}
 [data-theme="dark"] .empty-postit{
   background:linear-gradient(160deg,#3A2E14 0%,#2A2210 30%,#13171D 70%,#23344C 100%);
 }
@@ -3804,6 +3825,8 @@ function renderSidebar(){
 
 function renderMain(){
   const main = document.getElementById('main-content');
+  main.classList.remove('fullscreen-postit');
+  document.getElementById('main-wrap').classList.remove('fullscreen-postit');
   document.body.classList.toggle('cal-full', showCalendar);
   if(showMobileAreas){ main.innerHTML = mobileAreasHTML(); return; }
   if(showMobileResources){ main.innerHTML = mobileResourcesHTML(); return; }
@@ -3815,9 +3838,16 @@ function renderMain(){
   if(showResources){ main.innerHTML = recursosHTML(); return; }
   if(showReminder){ main.innerHTML = recordatoriHTML(); return; }
   if(showCalendar){ main.innerHTML = calendariHTML(); initCalMonthSwipe(); return; }
-  if(showAgenda){ main.innerHTML = agendaHTML(); setTimeout(scrollToCurrentSession, 50); return; }
+  if(showAgenda){
+    main.innerHTML = agendaHTML();
+    const hasFullscreenPostit = main.querySelector('.empty-postit.fullscreen') !== null;
+    main.classList.toggle('fullscreen-postit', hasFullscreenPostit);
+    document.getElementById('main-wrap').classList.toggle('fullscreen-postit', hasFullscreenPostit);
+    setTimeout(scrollToCurrentSession, 50);
+    return;
+  }
   const area = state.areas.find(a=>a.id===state.selectedAreaId);
-  if(!area){ showAgenda = true; renderSidebar(); main.innerHTML = agendaHTML(); return; }
+  if(!area){ showAgenda = true; renderSidebar(); main.innerHTML = agendaHTML(); const fp = main.querySelector('.empty-postit.fullscreen') !== null; main.classList.toggle('fullscreen-postit', fp); document.getElementById('main-wrap').classList.toggle('fullscreen-postit', fp); return; }
   main.innerHTML = areaVistaHTML(area);
 }
 
@@ -5801,15 +5831,15 @@ function trashCardHTML(a){
 /* ---------------------------------------------------------
    AGENDA I MODE
 -------------------------------------------------------- */
-function showAgendaView(){ resLastSubView = null; showAgenda = true; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; showMobileTasks = false; agendaShowAll = false; editTarget = null; render(); closeDrawerIfMobile(); }
-function showCalendarView(){ resLastSubView = null; showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = true; showMobileAreas = false; showMobileResources = false; showMobileTasks = false; editTarget = null; render(); if(dataModeEnabled() && calSavedViewMode() === 'week') enterWeekView(toISODate(new Date()), false); closeDrawerIfMobile(); }
-function showSettingsView(){ resLastSubView = null; settingsProgramOpen = false; showAgenda = false; showSettings = true; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; showMobileTasks = false; render(); closeDrawerIfMobile(); }
+function showAgendaView(){ showAgenda = true; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; showMobileTasks = false; agendaShowAll = false; editTarget = null; render(); closeDrawerIfMobile(); }
+function showCalendarView(){ showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = true; showMobileAreas = false; showMobileResources = false; showMobileTasks = false; editTarget = null; render(); if(dataModeEnabled() && calSavedViewMode() === 'week') enterWeekView(toISODate(new Date()), false); closeDrawerIfMobile(); }
+function showSettingsView(){ settingsProgramOpen = false; showAgenda = false; showSettings = true; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; showMobileTasks = false; render(); closeDrawerIfMobile(); }
 function showFilesView(){ if(showMobileResources){ pushViewState('resources'); resLastSubView = 'recursos'; } showAgenda = false; showSettings = false; showFiles = true; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; showMobileTasks = false; render(); closeDrawerIfMobile(); pruneMissingDropboxFiles(); enrichLinkTitles(); }
 function showArchivedView(){ if(showMobileResources){ pushViewState('resources'); resLastSubView = 'arxivats'; } showAgenda = false; showSettings = false; showFiles = false; showArchived = true; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; showMobileTasks = false; render(); closeDrawerIfMobile(); }
 function showTrashView(){ if(showMobileResources){ pushViewState('resources'); resLastSubView = 'paperera'; } showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = true; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; showMobileTasks = false; render(); closeDrawerIfMobile(); enrichLinkTitles(); }
 function showResourcesView(){ if(showMobileResources){ pushViewState('resources'); resLastSubView = 'pendents'; } showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = true; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; showMobileTasks = false; recursosUrgents = true; recursosChecked = false; render(); pruneMissingDropboxFiles(); closeDrawerIfMobile(); }
 function showTasksView(){ showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; showMobileTasks = true; resEditMode = false; editTarget = null; render(); closeDrawerIfMobile(); }
-function showMobileAreasView(){ resLastSubView = null; showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = true; showMobileResources = false; showMobileTasks = false; editTarget = null; markViewState('area'); render(); closeDrawerIfMobile(); }
+function showMobileAreasView(){ showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = true; showMobileResources = false; showMobileTasks = false; editTarget = null; markViewState('area'); render(); closeDrawerIfMobile(); }
 function showMobileResourcesView(fromBack){
   if(!fromBack && resLastSubView && !showMobileResources){
     const meta = mobileResCardMeta(resLastSubView);
@@ -6714,7 +6744,16 @@ function initWeekViewSwipe(){
   let sx = 0, sy = 0, axis = null, swiping = false, moved = false;
   const onEnd = (cx) => {
     const dx = cx - sx;
-    if(Math.abs(dx) >= 40) weekShift(dx < 0 ? 7 : -7);
+    if(Math.abs(dx) >= 40){
+      if(isMobile()){
+        const cur = currentMobileScreen();
+        const dir = dx < 0 ? 1 : -1;
+        const next = cur ? adjacentMobileScreen(cur, dir) : null;
+        if(next) goToMobileScreen(next, dir);
+      } else {
+        weekShift(dx < 0 ? 7 : -7);
+      }
+    }
     if(moved){ wrap.style.transform = ''; wrap.style.transition = ''; }
     setTimeout(() => { swiping = false; }, 80);
   };
@@ -8841,9 +8880,14 @@ function initScreenSwipe(){
     const slider = document.getElementById('cal-month-slider');
     return slider && el && slider.contains(el);
   };
+  const inWeekViewWrap = (el) => {
+    const wrap = document.getElementById('week-view-wrap');
+    return wrap && el && wrap.contains(el);
+  };
   main.addEventListener('touchstart', (e) => {
     if(!isMobile() || e.touches.length !== 1) return;
     if(inMonthSlider(e.target)) return;
+    if(inWeekViewWrap(e.target)) return;
     screenSwipe.startX = e.touches[0].clientX;
     screenSwipe.startY = e.touches[0].clientY;
     screenSwipe.axis = null;
