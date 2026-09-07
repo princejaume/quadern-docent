@@ -944,12 +944,12 @@ body.gate-open #mobile-bottombar{visibility:hidden;}
 .urgent-banner svg{width:12px;height:12px;flex:none;}
 .urgent-banner:hover{filter:brightness(1.05);}
 .agenda-card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;}
-.agenda-head{display:flex;align-items:center;gap:12px;padding:9px 18px;border-bottom:1px solid var(--line);}
+.agenda-head{display:flex;align-items:center;gap:12px;padding:9px 18px;border-bottom:1px solid var(--line);position:relative;}
 .agenda-color-badge{width:36px;height:36px;border-radius:9px;background:var(--area-color);flex:none;display:flex;align-items:center;justify-content:center;color:#fff;}
 .agenda-color-badge svg{width:18px;height:18px;}
 .agenda-area{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:3px;}
 .agenda-area-name{color:var(--area-color);font-size:1.02rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;display:inline;}
-.agenda-head-actions .agenda-time-badge{margin-left:auto;margin-right:4px;}
+.agenda-head-actions .agenda-time-badge{position:absolute;top:9px;right:18px;margin:0;}
 .agenda-area small{color:var(--ink-faint);font-size:.78rem;}
 .agenda-sa-label{display:inline-flex;align-items:center;gap:6px;font-size:.78rem;font-weight:600;padding:3px 10px;border-radius:20px;white-space:nowrap;max-width:300px;overflow:hidden;text-overflow:ellipsis;}
 .agenda-sa-label .sa-num{font-family:'IBM Plex Mono',monospace;font-weight:600;opacity:.8;}
@@ -974,7 +974,7 @@ body.gate-open #mobile-bottombar{visibility:hidden;}
 .agenda-toggle svg{width:14px;height:14px;}
 .agenda-card.collapsed .agenda-toggle svg{transform:rotate(-90deg);}
 .agenda-body-wrap{overflow:hidden;}
-.agenda-time-badge{font-family:'IBM Plex Mono',monospace;font-size:.82rem;font-weight:700;color:var(--gold-dark);white-space:nowrap;flex:none;margin-left:6px;}
+.agenda-time-badge{font-family:'IBM Plex Mono',monospace;font-size:.82rem;font-weight:700;color:var(--gold-dark);white-space:nowrap;flex:none;margin-left:6px;position:absolute;top:9px;right:18px;}
 .agenda-foot .btn-sm{min-height:32px;}
 .agenda-foot .btn-ghost.btn-sm{min-height:32px;padding:6px 10px;}
 .switch{position:relative;display:inline-block;width:38px;height:22px;flex:none;}
@@ -2617,6 +2617,7 @@ const SUPABASE_TABLE = 'app_data';
 
    -- Taula + RLS: només el propietari pot llegir/escriure
    alter table app_data add column if not exists owner_uid uuid;
+   alter table app_data add constraint app_data_owner_uid_unique unique (owner_uid);
    alter table app_data enable row level security;
 
    drop policy if exists "app_data_select" on app_data;
@@ -3428,10 +3429,11 @@ async function loadRemoteState(){
   if(!remoteEnabled()){ setSyncStatus(tr('Sense núvol')); return; }
   if(!loggedIn()){ updateAuthUI(); return; }
   try{
+    const uid = currentUserId();
     const { data, error } = await supabaseClient
       .from(SUPABASE_TABLE)
       .select('data')
-      .eq('id', 1)
+      .eq('owner_uid', uid)
       .maybeSingle();
     if(error) throw error;
     if(data && data.data){
@@ -3463,10 +3465,25 @@ function queueRemoteSave(){
 async function pushRemoteState(){
   if(!remoteEnabled() || !loggedIn()) return;
   try{
-    const { error } = await supabaseClient
+    const uid = currentUserId();
+    const { data: existing } = await supabaseClient
       .from(SUPABASE_TABLE)
-      .upsert({ id: 1, data: state, owner_uid: currentUserId(), updated_at: new Date().toISOString() }, { onConflict: 'id' });
-    if(error) throw error;
+      .select('id')
+      .eq('owner_uid', uid)
+      .maybeSingle();
+    const row = { data: state, owner_uid: uid, updated_at: new Date().toISOString() };
+    if(existing){
+      const { error } = await supabaseClient
+        .from(SUPABASE_TABLE)
+        .update(row)
+        .eq('id', existing.id);
+      if(error) throw error;
+    } else {
+      const { error } = await supabaseClient
+        .from(SUPABASE_TABLE)
+        .insert(row);
+      if(error) throw error;
+    }
     setSyncStatus(tr('Núvol sincronitzat'), true);
   }catch(e){
     console.warn("No s'ha pogut desar al núvol", e);
