@@ -306,7 +306,7 @@ a{color:var(--pen);}
 }
 #main-content.fullscreen-postit{
   padding:0 !important;
-  display:flex;flex-direction:column;max-width:none;
+  display:flex;flex-direction:column;height:100%;max-width:none;
   background:transparent;
 }
 #main-content.fullscreen-postit .empty-postit.fullscreen{
@@ -949,7 +949,7 @@ body.gate-open #mobile-bottombar{visibility:hidden;}
 .agenda-color-badge svg{width:18px;height:18px;}
 .agenda-area{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:3px;}
 .agenda-area-name{color:var(--area-color);font-size:1.02rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;display:inline;}
-.agenda-area-name + .agenda-time-badge{vertical-align:middle;}
+.agenda-head-actions .agenda-time-badge{margin-left:auto;margin-right:4px;}
 .agenda-area small{color:var(--ink-faint);font-size:.78rem;}
 .agenda-sa-label{display:inline-flex;align-items:center;gap:6px;font-size:.78rem;font-weight:600;padding:3px 10px;border-radius:20px;white-space:nowrap;max-width:300px;overflow:hidden;text-overflow:ellipsis;}
 .agenda-sa-label .sa-num{font-family:'IBM Plex Mono',monospace;font-weight:600;opacity:.8;}
@@ -5842,15 +5842,7 @@ function showTrashView(){ if(showMobileResources){ pushViewState('resources'); r
 function showResourcesView(){ if(showMobileResources){ pushViewState('resources'); resLastSubView = 'pendents'; } showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = true; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; showMobileTasks = false; recursosUrgents = true; recursosChecked = false; render(); pruneMissingDropboxFiles(); closeDrawerIfMobile(); }
 function showTasksView(){ showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; showMobileTasks = true; resEditMode = false; editTarget = null; render(); closeDrawerIfMobile(); }
 function showMobileAreasView(){ showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = true; showMobileResources = false; showMobileTasks = false; editTarget = null; markViewState('area'); render(); closeDrawerIfMobile(); }
-function showMobileResourcesView(fromBack){
-  if(!fromBack && resLastSubView && !showMobileResources){
-    const meta = mobileResCardMeta(resLastSubView);
-    if(meta && typeof window[meta.open] === 'function'){
-      resLastSubView = null;
-      window[meta.open]();
-      return;
-    }
-  }
+function showMobileResourcesView(){
   resLastSubView = null;
   showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = true; showMobileTasks = false; resEditMode = false; editTarget = null; markViewState('resources'); render(); closeDrawerIfMobile();
 }
@@ -6034,10 +6026,11 @@ function agendaCardHTML(a){
   <div class="agenda-head" style="--area-color:${a.color};background:${hexToRgba(a.color,0.10)};border-left:4px solid ${a.color}" onclick="toggleAgendaCard('${a.id}')">
     <div class="agenda-color-badge color-badge-clickable" style="--area-color:${a.color}" onclick="event.stopPropagation();openColorModal('${a.id}')" title="${tr('Canvia el color de l\'àrea')}">${areaIconHTML(a.name)}</div>
     <div class="agenda-area">
-      <b class="agenda-area-name">${esc(a.name)}</b>${timeBadge}
+      <b class="agenda-area-name">${esc(a.name)}</b>
       ${saLabel}
     </div>
     <div class="agenda-head-actions">
+      ${timeBadge}
       ${courseLine}
       ${resumeBtn}
     </div>
@@ -6747,14 +6740,7 @@ function initWeekViewSwipe(){
   const onEnd = (cx) => {
     const dx = cx - sx;
     if(Math.abs(dx) >= 40){
-      if(isMobile()){
-        const cur = currentMobileScreen();
-        const dir = dx < 0 ? 1 : -1;
-        const next = cur ? adjacentMobileScreen(cur, dir) : null;
-        if(next) goToMobileScreen(next, dir);
-      } else {
-        weekShift(dx < 0 ? 7 : -7);
-      }
+      weekShift(dx < 0 ? 7 : -7);
     }
     if(moved){ wrap.style.transform = ''; wrap.style.transition = ''; }
     setTimeout(() => { swiping = false; }, 80);
