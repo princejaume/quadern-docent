@@ -933,6 +933,16 @@ body.gate-open #mobile-bottombar{visibility:hidden;}
 .calendar-nav.active{background:var(--pen);color:#fff;border-left-color:var(--pen-dark);}
 .calendar-nav svg{width:14px;height:14px;flex:none;color:var(--pen-dark);}
 .calendar-nav.active svg{color:#fff;}
+/* Horari nav */
+.horari-nav{
+  display:flex;align-items:center;gap:10px;background:var(--pen-soft);border:none;border-radius:9px;
+  padding:9px 10px;text-align:left;width:100%;font-size:.92rem;color:var(--pen-dark);font-weight:600;
+  border-left:3px solid var(--pen);transition:background .12s ease;
+}
+.horari-nav:hover{filter:brightness(1.06);}
+.horari-nav.active{background:var(--pen);color:#fff;border-left-color:var(--pen-dark);}
+.horari-nav svg{width:14px;height:14px;flex:none;color:var(--pen-dark);}
+.horari-nav.active svg{color:#fff;}
 .add-area-options{display:flex;flex-direction:column;gap:10px;margin:6px 0 4px;}
 .add-area-options .btn{width:100%;justify-content:center;}
 .agenda-note{color:var(--ink-faint);font-size:.85rem;margin:4px 0 16px;}
@@ -1001,6 +1011,38 @@ body.gate-open #mobile-bottombar{visibility:hidden;}
 .vista-activity-title{font-weight:600;flex:1;min-width:0;}
 .vista-activity-title:empty::before{content:'Activitat';color:var(--ink-faint);}
 .vista-activity-desc{color:var(--ink-soft);font-size:.82rem;margin-top:6px;line-height:1.45;}
+
+/* ---------- Horari ---------- */
+.horari-tabs{display:flex;gap:0;margin:16px 0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;}
+.horari-tab{flex:1;padding:10px 16px;border:none;background:var(--paper-alt);color:var(--ink-soft);font-weight:600;font-size:.88rem;cursor:pointer;transition:background .15s ease;}
+.horari-tab:hover{background:var(--line-soft);}
+.horari-tab.active{background:var(--pen);color:#fff;}
+.horari-summer-config{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;margin-bottom:16px;}
+.horari-summer-toggle{display:flex;align-items:center;gap:12px;}
+.horari-summer-months{margin-top:14px;}
+.horari-summer-hint{font-size:.82rem;color:var(--ink-soft);margin:0 0 10px;}
+.horari-months-grid{display:flex;flex-wrap:wrap;gap:8px;}
+.horari-month-chip{display:inline-flex;align-items:center;padding:6px 14px;border:1px solid var(--line);border-radius:20px;font-size:.82rem;font-weight:500;color:var(--ink-soft);cursor:pointer;transition:all .15s ease;user-select:none;}
+.horari-month-chip:hover{border-color:var(--pen);color:var(--pen-dark);}
+.horari-month-chip.active{background:var(--pen);color:#fff;border-color:var(--pen);}
+.horari-summer-disabled{background:var(--paper-alt);border:1px solid var(--line);border-radius:var(--radius);padding:20px;text-align:center;color:var(--ink-soft);margin-bottom:16px;}
+.horari-entries{display:flex;flex-direction:column;gap:12px;margin-bottom:16px;}
+.horari-entry{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;}
+.horari-entry-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.horari-entry-num{font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:.82rem;color:var(--pen);background:var(--pen-soft);width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.horari-entry-fields{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+@media(max-width:860px){.horari-entry-fields{grid-template-columns:1fr 1fr;}}
+.horari-field{display:flex;flex-direction:column;gap:4px;}
+.horari-field label{font-size:.72rem;font-weight:600;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.03em;}
+.horari-field select,.horari-field input[type="time"],.horari-field input[type="text"]{padding:7px 10px;border:1px solid var(--line);border-radius:8px;font-size:.85rem;background:var(--paper);color:var(--ink);width:100%;box-sizing:border-box;}
+.horari-field select:focus,.horari-field input:focus{border-color:var(--pen);outline:none;}
+.horari-field-area{grid-column:1 / -1;}
+.horari-area-select{display:flex;gap:8px;align-items:center;}
+.horari-area-select select{flex:1;}
+.horari-area-select input[type="text"]{flex:1;}
+.horari-info{background:var(--gold-soft);border:1px solid var(--gold);border-radius:var(--radius);padding:12px 16px;margin-top:8px;}
+.horari-info p{margin:0;font-size:.82rem;color:var(--gold-dark);line-height:1.45;}
+.res-horari{color:var(--pen);}
 
 /* ---------- Ajustos ---------- */
 .settings-nav,.files-nav{display:flex;align-items:center;gap:10px;background:none;border:none;border-radius:9px;padding:9px 10px;text-align:left;width:100%;font-size:.92rem;color:var(--ink-soft);font-weight:500;border-left:3px solid transparent;transition:background .12s ease;}
@@ -1648,6 +1690,13 @@ body.mode-data .duration-bar-wrap{flex:0 1 52px;min-width:44px;}
     </div>
 
     <div class="sidebar-section">
+      <button class="horari-nav" id="horariNav" onclick="showHorariView()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span data-i18n="Horari">Horari</span>
+      </button>
+    </div>
+
+    <div class="sidebar-section">
       <div class="sidebar-label" data-i18n="Programació">Programació</div>
       <div id="area-list"></div>
       <button class="btn btn-ghost btn-block btn-sm" id="addAreaBtn" onclick="addAreaPrompt()" data-i18n="+ Nova àrea">+ Nova àrea</button>
@@ -2013,6 +2062,8 @@ let showCalendar = false;
 let showMobileAreas = false;
 let showMobileResources = false;
 let showMobileTasks = false;
+let showHorari = false;
+let horariTab = 'normal';
 let resLastSubView = null;
 let resEditMode = false;
 let resourcesAreaId = null;
@@ -2599,7 +2650,29 @@ const I18N_ES = {
   'Encara no tens cap àrea activa': 'Aún no tienes ningún área activa',
   'Introdueix l\'hora d\'inici per a cada dia de classe.': 'Introduce la hora de inicio para cada día de clase.',
   'Configuració': 'Configuración',
-  'Selecciona l\'hora': 'Selecciona la hora'
+  'Selecciona l\'hora': 'Selecciona la hora',
+  'Horari': 'Horario',
+  'Horari normal': 'Horario normal',
+  'Horari d\'estiu': 'Horario de verano',
+  'Configura el teu horari setmanal.': 'Configura tu horario semanal.',
+  'Configura el teu horari setmanal. Pots afegir les hores d\'inici i fi de cada sessió, el grup i l\'àrea.': 'Configura tu horario semanal. Puedes añadir las horas de inicio y fin de cada sesión, el grupo y el área.',
+  'Dia': 'Día',
+  'Inici': 'Inicio',
+  'Fi': 'Fin',
+  'Grup': 'Grupo',
+  'Àrea': 'Área',
+  'Selecciona': 'Selecciona',
+  'Altra (escriu)': 'Otra (escribe)',
+  'Nom de l\'àrea': 'Nombre del área',
+  'Cap sessió afegida a l\'horari.': 'Ninguna sesión añadida al horario.',
+  '+ Afegir sessió': '+ Añadir sesión',
+  'Elimina': 'Eliminar',
+  'Activa horari d\'estiu': 'Activa horario de verano',
+  'Selecciona els mesos en què funciona l\'horari d\'estiu. La resta usarà l\'horari normal.': 'Selecciona los meses en los que funciona el horario de verano. El resto usará el horario normal.',
+  'L\'horari d\'estiu està desactivat. Activa\'l per configurar-lo.': 'El horario de verano está desactivado. Actívalo para configurarlo.',
+  'Si tens àrees creades a la programació i vincules una àrea a l\'horari, la informació es guardarà a l\'àrea, establint quins dies de la setmana i a quina hora tens les classes.': 'Si tienes áreas creadas en la programación y vinculas un área al horario, la información se guardará en el área, estableciendo qué días de la semana y a qué hora tienes las clases.',
+  'Configura el teu horari setmanal': 'Configura tu horario semanal',
+  'Ex: 1r A': 'Ej: 1ro A'
 };
 
 /* Supabase: sincronització entre dispositius + autenticació.
@@ -2841,7 +2914,7 @@ function normalizeState(){
   if(!state.settings.mode) state.settings.mode = 'seqüencial';
   if(!Array.isArray(state.tasks)) state.tasks = [];
   if(!Array.isArray(state.settings.resCardOrder) || !state.settings.resCardOrder.length){
-    state.settings.resCardOrder = ['pendents','recursos','arxivats','paperera','tasques'];
+    state.settings.resCardOrder = ['pendents','recursos','arxivats','paperera','tasques','horari'];
   }
   if(!state.settings.resCardHidden || typeof state.settings.resCardHidden !== 'object'){
     state.settings.resCardHidden = {};
@@ -3769,6 +3842,7 @@ function resetMobileStates(){
   showMobileAreas = false;
   showMobileResources = false;
   showMobileTasks = false;
+  showHorari = false;
 }
 
 function updateBottomBar(){
@@ -3838,6 +3912,8 @@ function renderSidebar(){
   if(rNav) rNav.classList.toggle('active', showResources);
   const tkNav = document.getElementById('tasksNav');
   if(tkNav) tkNav.classList.toggle('active', showMobileTasks);
+  const hNav = document.getElementById('horariNav');
+  if(hNav) hNav.classList.toggle('active', showHorari);
   const addBtn = document.getElementById('addAreaBtn');
   if(addBtn) addBtn.style.display = '';
 }
@@ -3855,6 +3931,7 @@ function renderMain(){
   if(showTrash){ main.innerHTML = trashHTML(); return; }
   if(showFiles){ main.innerHTML = filesHTML(); return; }
   if(showResources){ main.innerHTML = recursosHTML(); return; }
+  if(showHorari){ main.innerHTML = horariHTML(); return; }
   if(showReminder){ main.innerHTML = recordatoriHTML(); return; }
   if(showCalendar){ main.innerHTML = calendariHTML(); initCalMonthSwipe(); return; }
   if(showAgenda){
@@ -4006,13 +4083,18 @@ function mobileResCardMeta(key){
       icon:'res-tasques',
       svg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01"/><path d="M3 12h.01"/><path d="M3 18h.01"/></svg>',
       label:tr('Tasques'), desc:tr('Les teues tasques pendents'), open:'showMobileTasksView'
+    },
+    horari: {
+      icon:'res-horari',
+      svg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+      label:tr('Horari'), desc:tr('Configura el teu horari setmanal'), open:'showHorariView'
     }
   };
   return cards[key] || null;
 }
 function resCardOrder(){
   const o = (state.settings && Array.isArray(state.settings.resCardOrder)) ? state.settings.resCardOrder : [];
-  const all = ['pendents','recursos','arxivats','paperera','tasques'];
+  const all = ['pendents','recursos','arxivats','paperera','tasques','horari'];
   const ordered = o.filter(k => all.indexOf(k) !== -1);
   return ordered.concat(all.filter(k => ordered.indexOf(k) === -1));
 }
@@ -5850,23 +5932,234 @@ function trashCardHTML(a){
 /* ---------------------------------------------------------
    AGENDA I MODE
 -------------------------------------------------------- */
-function showAgendaView(){ showAgenda = true; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; showMobileTasks = false; agendaShowAll = false; editTarget = null; render(); closeDrawerIfMobile(); }
-function showCalendarView(){ showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = true; showMobileAreas = false; showMobileResources = false; showMobileTasks = false; editTarget = null; render(); if(dataModeEnabled() && calSavedViewMode() === 'week') enterWeekView(toISODate(new Date()), false); closeDrawerIfMobile(); }
-function showSettingsView(){ settingsProgramOpen = false; showAgenda = false; showSettings = true; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; showMobileTasks = false; render(); closeDrawerIfMobile(); }
-function showFilesView(){ if(showMobileResources){ pushViewState('resources'); resLastSubView = 'recursos'; } showAgenda = false; showSettings = false; showFiles = true; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; showMobileTasks = false; render(); closeDrawerIfMobile(); pruneMissingDropboxFiles(); enrichLinkTitles(); }
-function showArchivedView(){ if(showMobileResources){ pushViewState('resources'); resLastSubView = 'arxivats'; } showAgenda = false; showSettings = false; showFiles = false; showArchived = true; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; showMobileTasks = false; render(); closeDrawerIfMobile(); }
-function showTrashView(){ if(showMobileResources){ pushViewState('resources'); resLastSubView = 'paperera'; } showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = true; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; showMobileTasks = false; render(); closeDrawerIfMobile(); enrichLinkTitles(); }
-function showResourcesView(){ if(showMobileResources){ pushViewState('resources'); resLastSubView = 'pendents'; } showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = true; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; showMobileTasks = false; recursosUrgents = true; recursosChecked = false; render(); pruneMissingDropboxFiles(); closeDrawerIfMobile(); }
-function showTasksView(){ showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; showMobileTasks = true; resEditMode = false; editTarget = null; render(); closeDrawerIfMobile(); }
-function showMobileAreasView(){ showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = true; showMobileResources = false; showMobileTasks = false; editTarget = null; markViewState('area'); render(); closeDrawerIfMobile(); }
+function showAgendaView(){ showAgenda = true; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; showMobileTasks = false; showHorari = false; agendaShowAll = false; editTarget = null; render(); closeDrawerIfMobile(); }
+function showCalendarView(){ showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = true; showMobileAreas = false; showMobileResources = false; showMobileTasks = false; showHorari = false; editTarget = null; render(); if(dataModeEnabled() && calSavedViewMode() === 'week') enterWeekView(toISODate(new Date()), false); closeDrawerIfMobile(); }
+function showSettingsView(){ settingsProgramOpen = false; showAgenda = false; showSettings = true; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; showMobileTasks = false; showHorari = false; render(); closeDrawerIfMobile(); }
+function showFilesView(){ if(showMobileResources){ pushViewState('resources'); resLastSubView = 'recursos'; } showAgenda = false; showSettings = false; showFiles = true; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; showMobileTasks = false; showHorari = false; render(); closeDrawerIfMobile(); pruneMissingDropboxFiles(); enrichLinkTitles(); }
+function showArchivedView(){ if(showMobileResources){ pushViewState('resources'); resLastSubView = 'arxivats'; } showAgenda = false; showSettings = false; showFiles = false; showArchived = true; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; showMobileTasks = false; showHorari = false; render(); closeDrawerIfMobile(); }
+function showTrashView(){ if(showMobileResources){ pushViewState('resources'); resLastSubView = 'paperera'; } showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = true; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; showMobileTasks = false; showHorari = false; render(); closeDrawerIfMobile(); enrichLinkTitles(); }
+function showResourcesView(){ if(showMobileResources){ pushViewState('resources'); resLastSubView = 'pendents'; } showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = true; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; showMobileTasks = false; showHorari = false; recursosUrgents = true; recursosChecked = false; render(); pruneMissingDropboxFiles(); closeDrawerIfMobile(); }
+function showTasksView(){ showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; showMobileTasks = true; showHorari = false; resEditMode = false; editTarget = null; render(); closeDrawerIfMobile(); }
+function showMobileAreasView(){ showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = true; showMobileResources = false; showMobileTasks = false; showHorari = false; editTarget = null; markViewState('area'); render(); closeDrawerIfMobile(); }
 function showMobileResourcesView(){
   resLastSubView = null;
-  showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = true; showMobileTasks = false; resEditMode = false; editTarget = null; markViewState('resources'); render(); closeDrawerIfMobile();
+  showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = true; showMobileTasks = false; showHorari = false; resEditMode = false; editTarget = null; markViewState('resources'); render(); closeDrawerIfMobile();
 }
 function openArea(id){
   pushViewState('area');
   const area = state.areas.find(a=>a.id===id); if(area) prepareAreaView(area);
-  state.selectedAreaId = id; showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; showMobileTasks = false; editTarget = null; saveState(); render(); closeDrawerIfMobile();
+  state.selectedAreaId = id; showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; showMobileTasks = false; showHorari = false; editTarget = null; saveState(); render(); closeDrawerIfMobile();
+}
+function showHorariView(){
+  if(showMobileResources){ pushViewState('resources'); resLastSubView = 'horari'; }
+  showAgenda = false; showSettings = false; showFiles = false; showArchived = false; showTrash = false; showResources = false; showReminder = false; showCalendar = false; showMobileAreas = false; showMobileResources = false; showMobileTasks = false; showHorari = true; editTarget = null;
+  if(!state.horari) initHorariData();
+  render(); closeDrawerIfMobile();
+}
+
+/* ---------------------------------------------------------
+   HORARI — Dades i renderitzat
+-------------------------------------------------------- */
+const HORARI_DAYS = [1,2,3,4,5];
+const HORARI_DAY_NAMES = ['Dilluns','Dimarts','Dimecres','Dijous','Divendres'];
+const HORARI_SUMMER_MONTHS = [9,10,11,12,1,2,3,4,5,6];
+const HORARI_SUMMER_MONTH_NAMES = {9:'Setembre',10:'Octubre',11:'Novembre',12:'Desembre',1:'Gener',2:'Febrer',3:'Març',4:'Abril',5:'Maig',6:'Juny'};
+
+function initHorariData(){
+  state.horari = {
+    entries: [],
+    summer: { active: true, months: [9,10,11,12,1,2,3,4,5,6] },
+    summerEntries: []
+  };
+  saveState();
+}
+
+function horariEntryHTML(entry, idx, isSummer){
+  const areasOpts = state.areas.map(a => `<option value="${a.id}" ${entry.areaId===a.id?'selected':''}>${esc(a.name)}</option>`).join('');
+  const delFn = isSummer ? `horariRemoveSummerEntry(${idx})` : `horariRemoveEntry(${idx})`;
+  return `
+  <div class="horari-entry" data-idx="${idx}">
+    <div class="horari-entry-header">
+      <span class="horari-entry-num">${idx+1}</span>
+      <button class="btn btn-ghost btn-sm" onclick="${delFn}" title="${tr('Elimina')}" aria-label="${tr('Elimina')}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="horari-entry-fields">
+      <div class="horari-field">
+        <label>${tr('Dia')}</label>
+        <select onchange="horariUpdateEntry(${idx},'day',this.value,'${isSummer?'summer':'normal'}')">
+          ${HORARI_DAYS.map(d => `<option value="${d}" ${entry.day==d?'selected':''}>${tr(HORARI_DAY_NAMES[d-1])}</option>`).join('')}
+        </select>
+      </div>
+      <div class="horari-field">
+        <label>${tr('Inici')}</label>
+        <input type="time" value="${entry.start||''}" onchange="horariUpdateEntry(${idx},'start',this.value,'${isSummer?'summer':'normal'}')">
+      </div>
+      <div class="horari-field">
+        <label>${tr('Fi')}</label>
+        <input type="time" value="${entry.end||''}" onchange="horariUpdateEntry(${idx},'end',this.value,'${isSummer?'summer':'normal'}')">
+      </div>
+      <div class="horari-field">
+        <label>${tr('Grup')}</label>
+        <input type="text" value="${esc(entry.group||'')}" placeholder="${tr('Ex: 1r A')}" onchange="horariUpdateEntry(${idx},'group',this.value,'${isSummer?'summer':'normal'}')">
+      </div>
+      <div class="horari-field horari-field-area">
+        <label>${tr('Àrea')}</label>
+        <div class="horari-area-select">
+          <select onchange="horariUpdateEntry(${idx},'areaId',this.value,'${isSummer?'summer':'normal'}')">
+            <option value="">— ${tr('Selecciona')} —</option>
+            ${areasOpts}
+            <option value="__custom__" ${entry.areaId && !state.areas.find(a=>a.id===entry.areaId)?'selected':''}>${tr('Altra (escriu)')}</option>
+          </select>
+          ${entry.areaId && !state.areas.find(a=>a.id===entry.areaId) ? `<input type="text" value="${esc(entry.areaCustom||'')}" placeholder="${tr('Nom de l\'àrea')}" onchange="horariUpdateEntry(${idx},'areaCustom',this.value,'${isSummer?'summer':'normal'}')">` : ''}
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function horariHTML(){
+  const h = state.horari || { entries:[], summer:{active:true,months:[9,10,11,12,1,2,3,4,5,6]}, summerEntries:[] };
+  const isNormal = horariTab === 'normal';
+  const isSummer = horariTab === 'estiu';
+  const entries = isSummer ? (h.summerEntries||[]) : (h.entries||[]);
+  const entriesHTML = entries.map((e,i) => horariEntryHTML(e, i, isSummer)).join('');
+  const addFn = isSummer ? 'horariAddSummerEntry()' : 'horariAddEntry()';
+  const summerMonthsHTML = HORARI_SUMMER_MONTHS.map(m => {
+    const checked = (h.summer && h.summer.months || []).indexOf(m) !== -1;
+    return `<label class="horari-month-chip ${checked?'active':''}" onclick="horariToggleMonth(${m})">
+      <input type="checkbox" ${checked?'checked':''} hidden>${tr(HORARI_SUMMER_MONTH_NAMES[m])}
+    </label>`;
+  }).join('');
+
+  return `
+  <div class="settings-header">
+    <h1 class="display">${tr('Horari')}</h1>
+    <p class="agenda-note">${tr('Configura el teu horari setmanal. Pots afegir les hores d\'inici i fi de cada sessió, el grup i l\'àrea.')}</p>
+  </div>
+
+  <div class="horari-tabs">
+    <button class="horari-tab ${isNormal?'active':''}" onclick="horariSetTab('normal')">${tr('Horari normal')}</button>
+    <button class="horari-tab ${isSummer?'active':''}" onclick="horariSetTab('estiu')">${tr('Horari d\'estiu')}</button>
+  </div>
+
+  ${isSummer ? `
+  <div class="horari-summer-config">
+    <div class="horari-summer-toggle">
+      <label class="switch-wrap">
+        <span class="switch-label">${tr('Activa horari d\'estiu')}</span>
+        <label class="switch">
+          <input type="checkbox" ${h.summer && h.summer.active ? 'checked' : ''} onchange="horariToggleSummerActive(this.checked)">
+          <span class="slider"></span>
+        </label>
+      </label>
+    </div>
+    ${h.summer && h.summer.active ? `
+    <div class="horari-summer-months">
+      <p class="horari-summer-hint">${tr('Selecciona els mesos en què funciona l\'horari d\'estiu. La resta usarà l\'horari normal.')}</p>
+      <div class="horari-months-grid">${summerMonthsHTML}</div>
+    </div>` : ''}
+  </div>` : ''}
+
+  ${isSummer && !(h.summer && h.summer.active) ? `
+  <div class="horari-summer-disabled">
+    <p>${tr('L\'horari d\'estiu està desactivat. Activa\'l per configurar-lo.')}</p>
+  </div>` : ''}
+
+  <div class="horari-entries">
+    ${entries.length ? entriesHTML : `<p class="empty-hint">${tr('Cap sessió afegida a l\'horari.')}</p>`}
+  </div>
+
+  ${!(isSummer && !(h.summer && h.summer.active)) ? `
+  <button class="btn btn-ghost" onclick="${addFn}">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    ${tr('+ Afegir sessió')}
+  </button>` : ''}
+
+  <div class="horari-info">
+    <p>${tr('Si tens àrees creades a la programació i vincules una àrea a l\'horari, la informació es guardarà a l\'àrea, establint quins dies de la setmana i a quina hora tens les classes.')}</p>
+  </div>`;
+}
+
+function horariSetTab(tab){
+  horariTab = tab;
+  render();
+}
+
+function horariAddEntry(){
+  if(!state.horari) initHorariData();
+  state.horari.entries.push({ day:1, start:'09:00', end:'10:00', group:'', areaId:'', areaCustom:'' });
+  saveState(); render();
+}
+
+function horariAddSummerEntry(){
+  if(!state.horari) initHorariData();
+  if(!state.horari.summerEntries) state.horari.summerEntries = [];
+  state.horari.summerEntries.push({ day:1, start:'09:00', end:'10:00', group:'', areaId:'', areaCustom:'' });
+  saveState(); render();
+}
+
+function horariRemoveEntry(idx){
+  if(!state.horari) return;
+  state.horari.entries.splice(idx, 1);
+  syncHorariToAreas(state.horari.entries);
+  saveState(); render();
+}
+
+function horariRemoveSummerEntry(idx){
+  if(!state.horari || !state.horari.summerEntries) return;
+  state.horari.summerEntries.splice(idx, 1);
+  saveState(); render();
+}
+
+function horariUpdateEntry(idx, field, value, mode){
+  if(!state.horari) initHorariData();
+  const arr = mode === 'summer' ? state.horari.summerEntries : state.horari.entries;
+  if(!arr[idx]) return;
+  arr[idx][field] = value;
+  if(field === 'areaId' && value === '__custom__'){
+    arr[idx].areaCustom = arr[idx].areaCustom || '';
+  }
+  if(mode === 'normal') syncHorariToAreas(arr);
+  saveState();
+}
+
+function horariToggleSummerActive(checked){
+  if(!state.horari) initHorariData();
+  state.horari.summer.active = checked;
+  saveState(); render();
+}
+
+function horariToggleMonth(month){
+  if(!state.horari) initHorariData();
+  if(!state.horari.summer) state.horari.summer = { active:true, months:[] };
+  const months = state.horari.summer.months || [];
+  const i = months.indexOf(month);
+  if(i === -1) months.push(month);
+  else months.splice(i, 1);
+  months.sort((a,b) => {
+    const order = m => m >= 9 ? m - 8 : m + 4;
+    return order(a) - order(b);
+  });
+  state.horari.summer.months = months;
+  saveState(); render();
+}
+
+function syncHorariToAreas(entries){
+  if(!state.areas) return;
+  for(const a of state.areas){
+    a.weekDays = [];
+    a.sessionTimes = {};
+  }
+  for(const e of entries){
+    if(!e.areaId || e.areaId === '__custom__') continue;
+    const area = state.areas.find(a => a.id === e.areaId);
+    if(!area) continue;
+    if(area.weekDays.indexOf(e.day) === -1) area.weekDays.push(e.day);
+    area.weekDays.sort();
+    if(e.start) area.sessionTimes[e.day] = e.start;
+  }
 }
 
 function nextSession(id){
