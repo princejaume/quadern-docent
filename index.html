@@ -1026,23 +1026,48 @@ body.gate-open #mobile-bottombar{visibility:hidden;}
 .horari-month-chip:hover{border-color:var(--pen);color:var(--pen-dark);}
 .horari-month-chip.active{background:var(--pen);color:#fff;border-color:var(--pen);}
 .horari-summer-disabled{background:var(--paper-alt);border:1px solid var(--line);border-radius:var(--radius);padding:20px;text-align:center;color:var(--ink-soft);margin-bottom:16px;}
-.horari-entries{display:flex;flex-direction:column;gap:12px;margin-bottom:16px;}
-.horari-entry{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;}
-.horari-entry-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
-.horari-entry-num{font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:.82rem;color:var(--pen);background:var(--pen-soft);width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
-.horari-entry-fields{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
-@media(max-width:860px){.horari-entry-fields{grid-template-columns:1fr 1fr;}}
-.horari-field{display:flex;flex-direction:column;gap:4px;}
-.horari-field label{font-size:.72rem;font-weight:600;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.03em;}
-.horari-field select,.horari-field input[type="time"],.horari-field input[type="text"]{padding:7px 10px;border:1px solid var(--line);border-radius:8px;font-size:.85rem;background:var(--paper);color:var(--ink);width:100%;box-sizing:border-box;}
-.horari-field select:focus,.horari-field input:focus{border-color:var(--pen);outline:none;}
-.horari-field-area{grid-column:1 / -1;}
-.horari-area-select{display:flex;gap:8px;align-items:center;}
-.horari-area-select select{flex:1;}
-.horari-area-select input[type="text"]{flex:1;}
+/* Graella */
+.horari-grid-wrap{overflow-x:auto;margin-bottom:16px;-webkit-overflow-scrolling:touch;}
+.horari-grid{border-collapse:separate;border-spacing:0;width:100%;min-width:max-content;}
+.horari-grid th,.horari-grid td{border:1px solid var(--line);padding:0;vertical-align:top;}
+.horari-grid thead th{background:var(--paper-alt);font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);text-align:center;position:sticky;top:0;z-index:2;}
+.horari-grid .th-day{min-width:100px;width:100px;padding:10px 12px;text-align:left;font-size:.82rem;font-weight:700;color:var(--ink);text-transform:none;letter-spacing:0;background:var(--paper-alt);}
+.horari-grid .th-session{min-width:160px;width:160px;padding:8px 6px;}
+.horari-grid .th-session-inner{display:flex;flex-direction:column;align-items:center;gap:4px;}
+.horari-grid .th-session-num{font-family:'IBM Plex Mono',monospace;font-size:.92rem;font-weight:700;color:var(--pen);}
+.horari-grid .th-session-time{font-size:.7rem;font-weight:500;color:var(--ink-faint);}
+.horari-grid .th-session-del{background:none;border:none;color:var(--ink-faint);cursor:pointer;padding:2px;border-radius:4px;line-height:0;}
+.horari-grid .th-session-del:hover{color:var(--danger);background:var(--danger-soft);}
+.horari-grid .th-session-del svg{width:14px;height:14px;}
+.horari-grid .th-add{background:var(--paper);cursor:pointer;min-width:48px;width:48px;text-align:center;vertical-align:middle;}
+.horari-grid .th-add:hover{background:var(--green-tint);}
+.horari-grid .th-add svg{width:18px;height:18px;color:var(--green-ink);}
+.horari-grid tbody td{height:100%;}
+.horari-grid .td-day{background:var(--paper-alt);padding:10px 12px;font-size:.82rem;font-weight:700;color:var(--ink);white-space:nowrap;}
+.horari-grid .td-cell{padding:6px;min-width:160px;width:160px;cursor:pointer;transition:background .12s ease;}
+.horari-grid .td-cell:hover{background:var(--pen-soft);}
+.horari-grid .td-cell.has-data{background:var(--green-tint);}
+.horari-cell-content{display:flex;flex-direction:column;gap:2px;}
+.horari-cell-group{font-size:.78rem;font-weight:700;color:var(--pen-dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.horari-cell-area{font-size:.72rem;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.horari-cell-time{font-size:.68rem;color:var(--ink-faint);font-family:'IBM Plex Mono',monospace;margin-top:2px;}
+.horari-cell-empty{color:var(--ink-faint);font-size:.72rem;font-style:italic;}
+/* Modal edició cel·la */
+.horari-cell-modal .modal{max-width:400px;}
+.horari-cell-fields{display:flex;flex-direction:column;gap:12px;}
+.horari-cell-field{display:flex;flex-direction:column;gap:4px;}
+.horari-cell-field label{font-size:.72rem;font-weight:600;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.03em;}
+.horari-cell-field select,.horari-cell-field input{padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:.85rem;background:var(--paper);color:var(--ink);width:100%;box-sizing:border-box;}
+.horari-cell-field select:focus,.horari-cell-field input:focus{border-color:var(--pen);outline:none;}
+.horari-cell-time-row{display:flex;gap:8px;}
+.horari-cell-time-row .horari-cell-field{flex:1;}
+.horari-cell-area-row{display:flex;gap:8px;}
+.horari-cell-area-row select{flex:1;}
+.horari-cell-area-row input[type="text"]{flex:1;}
 .horari-info{background:var(--gold-soft);border:1px solid var(--gold);border-radius:var(--radius);padding:12px 16px;margin-top:8px;}
 .horari-info p{margin:0;font-size:.82rem;color:var(--gold-dark);line-height:1.45;}
 .res-horari{color:var(--pen);}
+@media(max-width:860px){.horari-grid .th-day{min-width:70px;width:70px;padding:8px 6px;font-size:.75rem;}.horari-grid .th-session{min-width:130px;width:130px;}.horari-grid .td-cell{min-width:130px;width:130px;}}
 
 /* ---------- Ajustos ---------- */
 .settings-nav,.files-nav{display:flex;align-items:center;gap:10px;background:none;border:none;border-radius:9px;padding:9px 10px;text-align:left;width:100%;font-size:.92rem;color:var(--ink-soft);font-weight:500;border-left:3px solid transparent;transition:background .12s ease;}
@@ -2656,17 +2681,24 @@ const I18N_ES = {
   'Horari d\'estiu': 'Horario de verano',
   'Configura el teu horari setmanal.': 'Configura tu horario semanal.',
   'Configura el teu horari setmanal. Pots afegir les hores d\'inici i fi de cada sessió, el grup i l\'àrea.': 'Configura tu horario semanal. Puedes añadir las horas de inicio y fin de cada sesión, el grupo y el área.',
+  'Configura el teu horari setmanal. Afegeix o lleva columnes per afegir o llevar sessions.': 'Configura tu horario semanal. Añade o quita columnas para añadir o quitar sesiones.',
   'Dia': 'Día',
   'Inici': 'Inicio',
   'Fi': 'Fin',
   'Grup': 'Grupo',
   'Àrea': 'Área',
+  'Cap': 'Ninguna',
   'Selecciona': 'Selecciona',
   'Altra (escriu)': 'Otra (escribe)',
   'Nom de l\'àrea': 'Nombre del área',
   'Cap sessió afegida a l\'horari.': 'Ninguna sesión añadida al horario.',
   '+ Afegir sessió': '+ Añadir sesión',
   'Elimina': 'Eliminar',
+  'Elimina columna': 'Eliminar columna',
+  'Afegeix columna': 'Añadir columna',
+  'Neteja': 'Limpiar',
+  'Cancel·la': 'Cancelar',
+  'Desa': 'Guardar',
   'Activa horari d\'estiu': 'Activa horario de verano',
   'Selecciona els mesos en què funciona l\'horari d\'estiu. La resta usarà l\'horari normal.': 'Selecciona los meses en los que funciona el horario de verano. El resto usará el horario normal.',
   'L\'horari d\'estiu està desactivat. Activa\'l per configurar-lo.': 'El horario de verano está desactivado. Actívalo para configurarlo.',
@@ -2930,7 +2962,45 @@ function normalizeState(){
       }
     }
   }
+  if(!state.horari) state.horari = { columns:[], summer:{active:true,months:[9,10,11,12,1,2,3,4,5,6]}, summerEntries:[] };
+  if(state.horari.entries && !state.horari.columns){
+    state.horari.columns = migrateHorariEntries(state.horari.entries);
+    delete state.horari.entries;
+  }
+  if(state.horari.summerEntries && !state.horari.summerColumns){
+    state.horari.summerColumns = migrateHorariEntries(state.horari.summerEntries);
+    delete state.horari.summerEntries;
+  }
+  if(!state.horari.columns) state.horari.columns = [];
+  if(!state.horari.summerColumns) state.horari.summerColumns = [];
+  if(!state.horari.summer) state.horari.summer = { active:true, months:[9,10,11,12,1,2,3,4,5,6] };
   purgeExpiredTrash();
+}
+function migrateHorariEntries(entries){
+  if(!entries || !entries.length) return [];
+  const byDay = {};
+  for(const e of entries){
+    const d = parseInt(e.day)||1;
+    if(!byDay[d]) byDay[d] = [];
+    byDay[d].push(e);
+  }
+  const maxSessions = Math.max(1, ...Object.values(byDay).map(a=>a.length));
+  const cols = [];
+  for(let c=0;c<maxSessions;c++){
+    const col = { start:'', end:'', cells:{} };
+    for(const d of HORARI_DAYS){
+      const e = (byDay[d]||[])[c];
+      if(e){
+        if(!col.start || e.start < col.start) col.start = e.start;
+        if(!col.end || e.end > col.end) col.end = e.end;
+        col.cells[d] = { group:e.group||'', areaId:e.areaId||'', areaCustom:e.areaCustom||'' };
+      } else {
+        col.cells[d] = { group:'', areaId:'', areaCustom:'' };
+      }
+    }
+    cols.push(col);
+  }
+  return cols;
 }
 function saveState(){
   try{ localStorage.setItem(LS_STATE, JSON.stringify(state)); }
@@ -5958,7 +6028,7 @@ function showHorariView(){
 }
 
 /* ---------------------------------------------------------
-   HORARI — Dades i renderitzat
+   HORARI — Dades i renderitzat (graella)
 -------------------------------------------------------- */
 const HORARI_DAYS = [1,2,3,4,5];
 const HORARI_DAY_NAMES = ['Dilluns','Dimarts','Dimecres','Dijous','Divendres'];
@@ -5967,65 +6037,72 @@ const HORARI_SUMMER_MONTH_NAMES = {9:'Setembre',10:'Octubre',11:'Novembre',12:'D
 
 function initHorariData(){
   state.horari = {
-    entries: [],
+    columns: [{ start:'09:00', end:'10:00', cells:{} }],
     summer: { active: true, months: [9,10,11,12,1,2,3,4,5,6] },
-    summerEntries: []
+    summerColumns: []
   };
   saveState();
 }
 
-function horariEntryHTML(entry, idx, isSummer){
-  const areasOpts = state.areas.map(a => `<option value="${a.id}" ${entry.areaId===a.id?'selected':''}>${esc(a.name)}</option>`).join('');
-  const delFn = isSummer ? `horariRemoveSummerEntry(${idx})` : `horariRemoveEntry(${idx})`;
-  return `
-  <div class="horari-entry" data-idx="${idx}">
-    <div class="horari-entry-header">
-      <span class="horari-entry-num">${idx+1}</span>
-      <button class="btn btn-ghost btn-sm" onclick="${delFn}" title="${tr('Elimina')}" aria-label="${tr('Elimina')}">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+function horariEnsureCells(col){
+  if(!col.cells) col.cells = {};
+  for(const d of HORARI_DAYS){
+    if(!col.cells[d]) col.cells[d] = { group:'', areaId:'', areaCustom:'' };
+  }
+}
+
+function horariGridHTML(columns, mode){
+  if(!columns || !columns.length){
+    columns = [{ start:'09:00', end:'10:00', cells:{} }];
+  }
+  columns.forEach(c => horariEnsureCells(c));
+  const areasOpts = state.areas.map(a => `<option value="${a.id}">${esc(a.name)}</option>`).join('');
+  const addFn = mode==='summer' ? 'horariAddSummerColumn()' : 'horariAddColumn()';
+
+  let thead = '<tr><th class="th-day"></th>';
+  columns.forEach((col, ci) => {
+    thead += `<th class="th-session"><div class="th-session-inner">
+      <span class="th-session-num">S${ci+1}</span>
+      <span class="th-session-time">${esc(col.start||'')} – ${esc(col.end||'')}</span>
+      <button class="th-session-del" onclick="horariRemoveColumn(${ci},'${mode}')" title="${tr('Elimina columna')}" aria-label="${tr('Elimina columna')}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
-    </div>
-    <div class="horari-entry-fields">
-      <div class="horari-field">
-        <label>${tr('Dia')}</label>
-        <select onchange="horariUpdateEntry(${idx},'day',this.value,'${isSummer?'summer':'normal'}')">
-          ${HORARI_DAYS.map(d => `<option value="${d}" ${entry.day==d?'selected':''}>${tr(HORARI_DAY_NAMES[d-1])}</option>`).join('')}
-        </select>
-      </div>
-      <div class="horari-field">
-        <label>${tr('Inici')}</label>
-        <input type="time" value="${entry.start||''}" onchange="horariUpdateEntry(${idx},'start',this.value,'${isSummer?'summer':'normal'}')">
-      </div>
-      <div class="horari-field">
-        <label>${tr('Fi')}</label>
-        <input type="time" value="${entry.end||''}" onchange="horariUpdateEntry(${idx},'end',this.value,'${isSummer?'summer':'normal'}')">
-      </div>
-      <div class="horari-field">
-        <label>${tr('Grup')}</label>
-        <input type="text" value="${esc(entry.group||'')}" placeholder="${tr('Ex: 1r A')}" onchange="horariUpdateEntry(${idx},'group',this.value,'${isSummer?'summer':'normal'}')">
-      </div>
-      <div class="horari-field horari-field-area">
-        <label>${tr('Àrea')}</label>
-        <div class="horari-area-select">
-          <select onchange="horariUpdateEntry(${idx},'areaId',this.value,'${isSummer?'summer':'normal'}')">
-            <option value="">— ${tr('Selecciona')} —</option>
-            ${areasOpts}
-            <option value="__custom__" ${entry.areaId && !state.areas.find(a=>a.id===entry.areaId)?'selected':''}>${tr('Altra (escriu)')}</option>
-          </select>
-          ${entry.areaId && !state.areas.find(a=>a.id===entry.areaId) ? `<input type="text" value="${esc(entry.areaCustom||'')}" placeholder="${tr('Nom de l\'àrea')}" onchange="horariUpdateEntry(${idx},'areaCustom',this.value,'${isSummer?'summer':'normal'}')">` : ''}
-        </div>
-      </div>
-    </div>
-  </div>`;
+    </div></th>`;
+  });
+  thead += `<th class="th-add" onclick="${addFn}" title="${tr('Afegeix columna')}" aria-label="${tr('Afegeix columna')}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></th></tr>`;
+
+  let tbody = '';
+  for(const d of HORARI_DAYS){
+    tbody += `<tr><td class="td-day">${tr(HORARI_DAY_NAMES[d-1])}</td>`;
+    columns.forEach((col, ci) => {
+      const cell = col.cells[d] || { group:'', areaId:'', areaCustom:'' };
+      const hasData = cell.group || cell.areaId || cell.areaCustom;
+      const areaObj = cell.areaId ? state.areas.find(a=>a.id===cell.areaId) : null;
+      const areaName = areaObj ? areaObj.name : (cell.areaCustom || '');
+      tbody += `<td class="td-cell ${hasData?'has-data':''}" onclick="horariOpenCellModal(${ci},${d},'${mode}')">`;
+      if(hasData){
+        tbody += '<div class="horari-cell-content">';
+        if(cell.group) tbody += `<span class="horari-cell-group">${esc(cell.group)}</span>`;
+        if(areaName) tbody += `<span class="horari-cell-area">${esc(areaName)}</span>`;
+        if(col.start) tbody += `<span class="horari-cell-time">${esc(col.start)} – ${esc(col.end)}</span>`;
+        tbody += '</div>';
+      } else {
+        tbody += '<span class="horari-cell-empty">—</span>';
+      }
+      tbody += '</td>';
+    });
+    tbody += '<td style="border:1px solid var(--line);background:var(--paper);"></td></tr>';
+  }
+
+  return `<div class="horari-grid-wrap"><table class="horari-grid"><thead>${thead}</thead><tbody>${tbody}</tbody></table></div>`;
 }
 
 function horariHTML(){
-  const h = state.horari || { entries:[], summer:{active:true,months:[9,10,11,12,1,2,3,4,5,6]}, summerEntries:[] };
+  const h = state.horari || { columns:[], summer:{active:true,months:[9,10,11,12,1,2,3,4,5,6]}, summerColumns:[] };
   const isNormal = horariTab === 'normal';
   const isSummer = horariTab === 'estiu';
-  const entries = isSummer ? (h.summerEntries||[]) : (h.entries||[]);
-  const entriesHTML = entries.map((e,i) => horariEntryHTML(e, i, isSummer)).join('');
-  const addFn = isSummer ? 'horariAddSummerEntry()' : 'horariAddEntry()';
+  const columns = isSummer ? (h.summerColumns||[]) : (h.columns||[]);
+  const gridHTML = horariGridHTML(columns, isSummer?'summer':'normal');
   const summerMonthsHTML = HORARI_SUMMER_MONTHS.map(m => {
     const checked = (h.summer && h.summer.months || []).indexOf(m) !== -1;
     return `<label class="horari-month-chip ${checked?'active':''}" onclick="horariToggleMonth(${m})">
@@ -6036,7 +6113,7 @@ function horariHTML(){
   return `
   <div class="settings-header">
     <h1 class="display">${tr('Horari')}</h1>
-    <p class="agenda-note">${tr('Configura el teu horari setmanal. Pots afegir les hores d\'inici i fi de cada sessió, el grup i l\'àrea.')}</p>
+    <p class="agenda-note">${tr('Configura el teu horari setmanal. Afegeix o lleva columnes per afegir o llevar sessions.')}</p>
   </div>
 
   <div class="horari-tabs">
@@ -6067,15 +6144,7 @@ function horariHTML(){
     <p>${tr('L\'horari d\'estiu està desactivat. Activa\'l per configurar-lo.')}</p>
   </div>` : ''}
 
-  <div class="horari-entries">
-    ${entries.length ? entriesHTML : `<p class="empty-hint">${tr('Cap sessió afegida a l\'horari.')}</p>`}
-  </div>
-
-  ${!(isSummer && !(h.summer && h.summer.active)) ? `
-  <button class="btn btn-ghost" onclick="${addFn}">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-    ${tr('+ Afegir sessió')}
-  </button>` : ''}
+  ${!(isSummer && !(h.summer && h.summer.active)) ? gridHTML : ''}
 
   <div class="horari-info">
     <p>${tr('Si tens àrees creades a la programació i vincules una àrea a l\'horari, la informació es guardarà a l\'àrea, establint quins dies de la setmana i a quina hora tens les classes.')}</p>
@@ -6087,42 +6156,140 @@ function horariSetTab(tab){
   render();
 }
 
-function horariAddEntry(){
+function horariGetCols(mode){
   if(!state.horari) initHorariData();
-  state.horari.entries.push({ day:1, start:'09:00', end:'10:00', group:'', areaId:'', areaCustom:'' });
-  saveState(); render();
+  return mode === 'summer' ? state.horari.summerColumns : state.horari.columns;
 }
 
-function horariAddSummerEntry(){
+function horariAddColumn(){
   if(!state.horari) initHorariData();
-  if(!state.horari.summerEntries) state.horari.summerEntries = [];
-  state.horari.summerEntries.push({ day:1, start:'09:00', end:'10:00', group:'', areaId:'', areaCustom:'' });
+  state.horari.columns.push({ start:'09:00', end:'10:00', cells:{} });
   saveState(); render();
 }
 
-function horariRemoveEntry(idx){
-  if(!state.horari) return;
-  state.horari.entries.splice(idx, 1);
-  syncHorariToAreas(state.horari.entries);
-  saveState(); render();
-}
-
-function horariRemoveSummerEntry(idx){
-  if(!state.horari || !state.horari.summerEntries) return;
-  state.horari.summerEntries.splice(idx, 1);
-  saveState(); render();
-}
-
-function horariUpdateEntry(idx, field, value, mode){
+function horariAddSummerColumn(){
   if(!state.horari) initHorariData();
-  const arr = mode === 'summer' ? state.horari.summerEntries : state.horari.entries;
-  if(!arr[idx]) return;
-  arr[idx][field] = value;
+  if(!state.horari.summerColumns) state.horari.summerColumns = [];
+  state.horari.summerColumns.push({ start:'09:00', end:'10:00', cells:{} });
+  saveState(); render();
+}
+
+function horariRemoveColumn(ci, mode){
+  const cols = horariGetCols(mode);
+  if(!cols || cols.length <= 1) return;
+  cols.splice(ci, 1);
+  if(mode === 'normal') syncHorariToAreas(cols);
+  saveState(); render();
+}
+
+function horariUpdateCell(ci, day, field, value, mode){
+  if(!state.horari) initHorariData();
+  const cols = horariGetCols(mode);
+  if(!cols[ci]) return;
+  horariEnsureCells(cols[ci]);
+  if(!cols[ci].cells[day]) cols[ci].cells[day] = { group:'', areaId:'', areaCustom:'' };
+  cols[ci].cells[day][field] = value;
   if(field === 'areaId' && value === '__custom__'){
-    arr[idx].areaCustom = arr[idx].areaCustom || '';
+    cols[ci].cells[day].areaCustom = cols[ci].cells[day].areaCustom || '';
   }
-  if(mode === 'normal') syncHorariToAreas(arr);
+  if(mode === 'normal') syncHorariToAreas(cols);
   saveState();
+}
+
+function horariUpdateColumnTime(ci, field, value, mode){
+  if(!state.horari) initHorariData();
+  const cols = horariGetCols(mode);
+  if(!cols[ci]) return;
+  cols[ci][field] = value;
+  if(mode === 'normal') syncHorariToAreas(cols);
+  saveState();
+}
+
+function horariClearCell(ci, day, mode){
+  if(!state.horari) initHorariData();
+  const cols = horariGetCols(mode);
+  if(!cols[ci]) return;
+  horariEnsureCells(cols[ci]);
+  cols[ci].cells[day] = { group:'', areaId:'', areaCustom:'' };
+  if(mode === 'normal') syncHorariToAreas(cols);
+  saveState(); render();
+}
+
+function horariOpenCellModal(ci, day, mode){
+  const cols = horariGetCols(mode);
+  if(!cols[ci]) return;
+  horariEnsureCells(cols[ci]);
+  const cell = cols[ci].cells[day] || { group:'', areaId:'', areaCustom:'' };
+  const col = cols[ci];
+  const areasOpts = state.areas.map(a => `<option value="${a.id}" ${cell.areaId===a.id?'selected':''}>${esc(a.name)}</option>`).join('');
+  const isCustom = cell.areaId && !state.areas.find(a=>a.id===cell.areaId);
+  const dayName = tr(HORARI_DAY_NAMES[day-1]);
+  const sessNum = ci + 1;
+
+  const html = `
+  <div class="horari-cell-modal modal-backdrop open" onclick="if(event.target===this)closeHorariCellModal()">
+    <div class="modal">
+      <h2>${dayName} — S${sessNum}</h2>
+      <div class="horari-cell-fields">
+        <div class="horari-cell-time-row">
+          <div class="horari-cell-field">
+            <label>${tr('Inici')}</label>
+            <input type="time" id="hcm-start" value="${esc(col.start||'')}">
+          </div>
+          <div class="horari-cell-field">
+            <label>${tr('Fi')}</label>
+            <input type="time" id="hcm-end" value="${esc(col.end||'')}">
+          </div>
+        </div>
+        <div class="horari-cell-field">
+          <label>${tr('Grup')}</label>
+          <input type="text" id="hcm-group" value="${esc(cell.group||'')}" placeholder="${tr('Ex: 1r A')}">
+        </div>
+        <div class="horari-cell-field">
+          <label>${tr('Àrea')}</label>
+          <div class="horari-cell-area-row">
+            <select id="hcm-area">
+              <option value="">— ${tr('Cap')} —</option>
+              ${areasOpts}
+              <option value="__custom__" ${isCustom?'selected':''}>${tr('Altra (escriu)')}</option>
+            </select>
+            <input type="text" id="hcm-area-custom" value="${esc(cell.areaCustom||'')}" placeholder="${tr('Nom de l\'àrea')}" style="display:${isCustom?'block':'none'}">
+          </div>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" onclick="horariClearCell(${ci},${day},'${mode}');closeHorariCellModal()">${tr('Neteja')}</button>
+        <button class="btn btn-ghost" onclick="closeHorariCellModal()">${tr('Cancel·la')}</button>
+        <button class="btn btn-primary" onclick="horariSaveCell(${ci},${day},'${mode}')">${tr('Desa')}</button>
+      </div>
+    </div>
+  </div>`;
+  document.body.insertAdjacentHTML('beforeend', html);
+  const areaSel = document.getElementById('hcm-area');
+  const customInp = document.getElementById('hcm-area-custom');
+  if(areaSel) areaSel.addEventListener('change', function(){
+    customInp.style.display = this.value === '__custom__' ? 'block' : 'none';
+  });
+}
+
+function closeHorariCellModal(){
+  const m = document.querySelector('.horari-cell-modal');
+  if(m) m.remove();
+}
+
+function horariSaveCell(ci, day, mode){
+  const start = document.getElementById('hcm-start');
+  const end = document.getElementById('hcm-end');
+  const group = document.getElementById('hcm-group');
+  const area = document.getElementById('hcm-area');
+  const areaCustom = document.getElementById('hcm-area-custom');
+  if(start) horariUpdateColumnTime(ci, 'start', start.value, mode);
+  if(end) horariUpdateColumnTime(ci, 'end', end.value, mode);
+  if(group) horariUpdateCell(ci, day, 'group', group.value, mode);
+  if(area) horariUpdateCell(ci, day, 'areaId', area.value, mode);
+  if(areaCustom) horariUpdateCell(ci, day, 'areaCustom', areaCustom.value, mode);
+  closeHorariCellModal();
+  render();
 }
 
 function horariToggleSummerActive(checked){
@@ -6146,19 +6313,24 @@ function horariToggleMonth(month){
   saveState(); render();
 }
 
-function syncHorariToAreas(entries){
+function syncHorariToAreas(columns){
   if(!state.areas) return;
   for(const a of state.areas){
     a.weekDays = [];
     a.sessionTimes = {};
   }
-  for(const e of entries){
-    if(!e.areaId || e.areaId === '__custom__') continue;
-    const area = state.areas.find(a => a.id === e.areaId);
-    if(!area) continue;
-    if(area.weekDays.indexOf(e.day) === -1) area.weekDays.push(e.day);
-    area.weekDays.sort();
-    if(e.start) area.sessionTimes[e.day] = e.start;
+  if(!columns) return;
+  for(const col of columns){
+    if(!col.cells) continue;
+    for(const d of HORARI_DAYS){
+      const cell = col.cells[d];
+      if(!cell || !cell.areaId || cell.areaId === '__custom__') continue;
+      const area = state.areas.find(a => a.id === cell.areaId);
+      if(!area) continue;
+      if(area.weekDays.indexOf(d) === -1) area.weekDays.push(d);
+      area.weekDays.sort();
+      if(col.start) area.sessionTimes[d] = col.start;
+    }
   }
 }
 
