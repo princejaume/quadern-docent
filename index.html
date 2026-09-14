@@ -1047,15 +1047,14 @@ body.gate-open #mobile-bottombar{visibility:hidden;}
 .horari-grid .td-cell{padding:4px;transition:background .12s ease;position:relative;text-align:center;}
 .horari-grid .td-cell:hover{background:var(--pen-soft);}
 .horari-grid .td-cell.has-data{background:var(--green-tint);}
-.horari-cell-topbar{display:flex;align-items:center;justify-content:center;gap:2px;margin-bottom:2px;}
-.horari-cell-select{width:100%;padding:3px 2px;border:1px solid var(--line);border-radius:4px;font-size:.7rem;font-weight:600;color:var(--ink);background:var(--white);cursor:pointer;font-family:inherit;text-align:center;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;}
-.horari-cell-select:hover{border-color:var(--pen);}
-.horari-cell-select:focus{border-color:var(--pen);outline:none;}
+.horari-cell-select{position:absolute;opacity:0;width:0;height:0;pointer-events:none;}
+.horari-cell-content{display:flex;flex-direction:column;gap:1px;text-align:center;align-items:center;justify-content:center;min-height:28px;}
+.horari-cell-area{font-size:.72rem;font-weight:700;color:var(--pen-dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;}
+.horari-cell-group{font-size:.65rem;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.horari-cell-empty{color:var(--ink-faint);font-size:.72rem;font-style:italic;}
 .horari-cell-clean{background:none;border:none;color:var(--ink-faint);cursor:pointer;padding:1px;border-radius:4px;line-height:0;flex-shrink:0;position:absolute;top:2px;right:2px;}
 .horari-cell-clean:hover{color:var(--danger);background:var(--danger-soft);}
 .horari-cell-clean svg{width:10px;height:10px;}
-.horari-cell-content{display:flex;flex-direction:column;gap:1px;text-align:center;}
-.horari-cell-group{font-size:.65rem;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .horari-grid .td-session-add{background:var(--paper);text-align:center;padding:8px;border-top:none;}
 .horari-add-row-btn{display:inline-flex;align-items:center;gap:6px;font-size:.82rem;}
 .horari-add-row-btn svg{width:14px;height:14px;}
@@ -6161,17 +6160,17 @@ function horariGridHTML(rows, mode){
       const cell = row.cells[d] || { group:'', areaId:'', areaCustom:'' };
       const hasData = cell.group || cell.areaId || cell.areaCustom;
       const areaObj = cell.areaId === HORARI_PATI_ID ? {name:'Pati'} : (cell.areaId ? state.areas.find(a=>a.id===cell.areaId) : null);
-      const areaName = areaObj ? areaObj.name : (cell.areaCustom || '');
+      const areaName = areaObj ? horariShortName(areaObj.name) : (cell.areaCustom ? horariShortName(cell.areaCustom) : '');
       const areaOpts = horariAreaOptsHTML(cell.areaId);
       tbody += `<td class="td-cell ${hasData?'has-data':''}" onclick="var s=this.querySelector('.horari-cell-select');if(s){if(s.showPicker)s.showPicker();else s.focus();}">`;
-      tbody += '<div class="horari-cell-topbar">';
       tbody += `<select class="horari-cell-select" onchange="horariCellSelectArea(${ri},${d},'${mode}',this.value)" onclick="event.stopPropagation()">${areaOpts}</select>`;
+      tbody += '<div class="horari-cell-content">';
+      if(areaName) tbody += `<span class="horari-cell-area">${esc(areaName)}</span>`;
+      if(cell.group) tbody += `<span class="horari-cell-group">${esc(cell.group)}</span>`;
+      if(!areaName && !cell.group) tbody += '<span class="horari-cell-empty">—</span>';
+      tbody += '</div>';
       if(hasData){
         tbody += `<button class="horari-cell-clean" onclick="event.stopPropagation();horariClearCell(${ri},${d},'${mode}')" title="${tr('Neteja')}" aria-label="${tr('Neteja')}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>`;
-      }
-      tbody += '</div>';
-      if(cell.group){
-        tbody += `<div class="horari-cell-content"><span class="horari-cell-group">${esc(cell.group)}</span></div>`;
       }
       tbody += '</td>';
     }
