@@ -1028,13 +1028,12 @@ body.gate-open #mobile-bottombar{visibility:hidden;}
 .horari-summer-disabled{background:var(--paper-alt);border:1px solid var(--line);border-radius:var(--radius);padding:20px;text-align:center;color:var(--ink-soft);margin-bottom:16px;}
 /* Graella */
 .horari-grid-wrap{margin-bottom:16px;}
-.horari-grid{border-collapse:separate;border-spacing:0;width:100%;}
-.horari-grid th,.horari-grid td{border:1px solid var(--line);padding:0;vertical-align:top;}
+.horari-grid{border-collapse:separate;border-spacing:0;width:100%;table-layout:fixed;}
+.horari-grid th,.horari-grid td{border:1px solid var(--line);padding:0;}
 .horari-grid thead th{background:var(--paper-alt);font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);text-align:center;position:sticky;top:0;z-index:2;}
 .horari-grid .th-session-header{width:70px;padding:8px 4px;}
 .horari-grid .th-day{padding:8px 4px;font-size:.82rem;font-weight:700;color:var(--ink);text-transform:none;letter-spacing:0;}
-.horari-grid tbody td{height:100%;}
-.horari-grid .td-session{background:var(--paper-alt);width:70px;vertical-align:middle;}
+.horari-grid .td-session{background:var(--paper-alt);width:70px;}
 .horari-grid .td-session-inner{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 4px;position:relative;}
 .horari-grid .td-session-del{position:absolute;top:4px;right:4px;background:none;border:none;color:var(--danger);cursor:pointer;padding:2px;border-radius:4px;line-height:0;}
 .horari-grid .td-session-del:hover{background:var(--danger-soft);}
@@ -1044,11 +1043,11 @@ body.gate-open #mobile-bottombar{visibility:hidden;}
 .horari-grid .td-session-time-input::-moz-focus-outer{border:none;}
 .horari-grid .td-session-time-input:hover{border-color:var(--pen);}
 .horari-grid .td-session-time-input:focus{border-color:var(--pen);outline:none;}
-.horari-grid .td-cell{padding:4px;transition:background .12s ease;position:relative;text-align:center;}
+.horari-grid .td-cell{padding:6px 4px;height:56px;transition:background .12s ease;position:relative;text-align:center;vertical-align:middle;}
 .horari-grid .td-cell:hover{background:var(--pen-soft);}
 .horari-grid .td-cell.has-data{background:var(--green-tint);}
 .horari-cell-select{position:absolute;opacity:0;width:0;height:0;pointer-events:none;}
-.horari-cell-content{display:flex;flex-direction:column;gap:1px;text-align:center;align-items:center;justify-content:center;min-height:28px;}
+.horari-cell-content{display:flex;flex-direction:column;gap:1px;text-align:center;align-items:center;justify-content:center;width:100%;height:100%;}
 .horari-cell-area{font-size:.72rem;font-weight:700;color:var(--pen-dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;}
 .horari-cell-group{font-size:.65rem;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .horari-cell-empty{color:var(--ink-faint);font-size:.72rem;font-style:italic;}
