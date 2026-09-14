@@ -1033,25 +1033,35 @@ body.gate-open #mobile-bottombar{visibility:hidden;}
 .horari-grid thead th{background:var(--paper-alt);font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);text-align:center;position:sticky;top:0;z-index:2;}
 .horari-grid .th-session-header{min-width:120px;width:120px;padding:10px 12px;}
 .horari-grid .th-day{min-width:140px;width:140px;padding:10px 8px;font-size:.82rem;font-weight:700;color:var(--ink);text-transform:none;letter-spacing:0;}
-.horari-grid .th-add{background:var(--paper);cursor:pointer;min-width:48px;width:48px;text-align:center;vertical-align:middle;}
-.horari-grid .th-add:hover{background:var(--green-tint);}
-.horari-grid .th-add svg{width:18px;height:18px;color:var(--green-ink);}
 .horari-grid tbody td{height:100%;}
 .horari-grid .td-session{background:var(--paper-alt);min-width:120px;width:120px;vertical-align:middle;}
-.horari-grid .td-session-inner{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 6px;}
-.horari-grid .td-session-num{font-family:'IBM Plex Mono',monospace;font-size:.92rem;font-weight:700;color:var(--pen);}
-.horari-grid .td-session-time{font-size:.7rem;font-weight:500;color:var(--ink-faint);text-align:center;}
-.horari-grid .td-session-del{background:none;border:none;color:var(--ink-faint);cursor:pointer;padding:2px;border-radius:4px;line-height:0;}
-.horari-grid .td-session-del:hover{color:var(--danger);background:var(--danger-soft);}
+.horari-grid .td-session-inner{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 6px;position:relative;}
+.horari-grid .td-session-del{position:absolute;top:4px;right:4px;background:none;border:none;color:var(--danger);cursor:pointer;padding:2px;border-radius:4px;line-height:0;}
+.horari-grid .td-session-del:hover{background:var(--danger-soft);}
 .horari-grid .td-session-del svg{width:14px;height:14px;}
-.horari-grid .td-cell{padding:6px;min-width:140px;width:140px;cursor:pointer;transition:background .12s ease;}
+.horari-grid .td-session-time-input{width:60px;padding:2px 4px;border:1px solid transparent;border-radius:4px;font-size:.72rem;font-weight:500;color:var(--ink-faint);text-align:center;background:transparent;cursor:pointer;font-family:inherit;}
+.horari-grid .td-session-time-input:hover{border-color:var(--line);background:var(--white);}
+.horari-grid .td-session-time-input:focus{border-color:var(--pen);outline:none;background:var(--white);}
+.horari-grid .td-session-sep{font-size:.7rem;color:var(--ink-faint);}
+.horari-grid .td-cell{padding:6px;min-width:140px;width:140px;transition:background .12s ease;position:relative;}
 .horari-grid .td-cell:hover{background:var(--pen-soft);}
 .horari-grid .td-cell.has-data{background:var(--green-tint);}
+.horari-cell-topbar{display:flex;align-items:center;gap:4px;margin-bottom:4px;}
+.horari-cell-select{flex:1;padding:3px 4px;border:1px solid transparent;border-radius:4px;font-size:.72rem;color:var(--ink-soft);background:transparent;cursor:pointer;font-family:inherit;min-width:0;}
+.horari-cell-select:hover{border-color:var(--line);background:var(--white);}
+.horari-cell-select:focus{border-color:var(--pen);outline:none;background:var(--white);}
+.horari-cell-clean{background:none;border:none;color:var(--ink-faint);cursor:pointer;padding:2px;border-radius:4px;line-height:0;flex-shrink:0;}
+.horari-cell-clean:hover{color:var(--danger);background:var(--danger-soft);}
+.horari-cell-clean svg{width:12px;height:12px;}
 .horari-cell-content{display:flex;flex-direction:column;gap:2px;}
 .horari-cell-area{font-size:.78rem;font-weight:700;color:var(--pen-dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .horari-cell-pati{color:var(--green-ink);font-style:italic;}
 .horari-cell-group{font-size:.72rem;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .horari-cell-empty{color:var(--ink-faint);font-size:.72rem;font-style:italic;}
+.horari-grid .td-session-add{background:var(--paper);text-align:center;padding:8px;border-top:none;}
+.horari-add-row-btn{display:inline-flex;align-items:center;gap:6px;font-size:.82rem;}
+.horari-add-row-btn svg{width:14px;height:14px;}
+.horari-copy-normal-btn{margin-top:12px;font-size:.82rem;}
 /* Modal edició cel·la */
 .horari-cell-modal .modal{max-width:400px;}
 .horari-cell-fields{display:flex;flex-direction:column;gap:12px;}
@@ -1064,10 +1074,8 @@ body.gate-open #mobile-bottombar{visibility:hidden;}
 .horari-cell-area-row{display:flex;gap:8px;}
 .horari-cell-area-row select{flex:1;}
 .horari-cell-area-row input[type="text"]{flex:1;}
-.horari-info{background:var(--gold-soft);border:1px solid var(--gold);border-radius:var(--radius);padding:12px 16px;margin-top:8px;}
-.horari-info p{margin:0;font-size:.82rem;color:var(--gold-dark);line-height:1.45;}
 .res-horari{color:var(--pen);}
-@media(max-width:860px){.horari-grid .th-day{min-width:100px;width:100px;padding:8px 6px;font-size:.75rem;}.horari-grid .td-cell{min-width:100px;width:100px;}.horari-grid .td-session{min-width:90px;width:90px;}}
+@media(max-width:860px){.horari-grid .th-day{min-width:100px;width:100px;padding:8px 6px;font-size:.75rem;}.horari-grid .td-cell{min-width:100px;width:100px;}.horari-grid .td-session{min-width:90px;width:90px;}.horari-grid .td-session-time-input{width:50px;font-size:.65rem;}}
 
 /* ---------- Ajustos ---------- */
 .settings-nav,.files-nav{display:flex;align-items:center;gap:10px;background:none;border:none;border-radius:9px;padding:9px 10px;text-align:left;width:100%;font-size:.92rem;color:var(--ink-soft);font-weight:500;border-left:3px solid transparent;transition:background .12s ease;}
@@ -2699,10 +2707,12 @@ const I18N_ES = {
   'Elimina fila': 'Eliminar fila',
   'Afegeix columna': 'Añadir columna',
   'Afegeix fila': 'Añadir fila',
+  'Afegeix sessió': 'Añadir sesión',
   'Neteja': 'Limpiar',
   'Cancel·la': 'Cancelar',
   'Desa': 'Guardar',
   'Activa horari d\'estiu': 'Activa horario de verano',
+  'Copiar horari normal': 'Copiar horario normal',
   'Selecciona els mesos en què funciona l\'horari d\'estiu. La resta usarà l\'horari normal.': 'Selecciona los meses en los que funciona el horario de verano. El resto usará el horario normal.',
   'L\'horari d\'estiu està desactivat. Activa\'l per configurar-lo.': 'El horario de verano está desactivado. Actívalo para configurarlo.',
   'Si tens àrees creades a la programació i vincules una àrea a l\'horari, la informació es guardarà a l\'àrea, establint quins dies de la setmana i a quina hora tens les classes.': 'Si tienes áreas creadas en la programación y vinculas un área al horario, la información se guardará en el área, estableciendo qué días de la semana y a qué hora tienes las clases.',
@@ -6107,7 +6117,7 @@ const HORARI_PATI_ID = '__pati__';
 function initHorariData(){
   state.horari = {
     rows: [{ start:'09:00', end:'10:00', cells:{} }],
-    summer: { active: true, months: [9,10,11,12,1,2,3,4,5,6] },
+    summer: { active: false, months: [] },
     summerRows: []
   };
   saveState();
@@ -6131,43 +6141,56 @@ function horariGridHTML(rows, mode){
   for(const d of HORARI_DAYS){
     thead += `<th class="th-day">${tr(HORARI_DAY_NAMES[d-1])}</th>`;
   }
-  thead += `<th class="th-add" onclick="${addFn}" title="${tr('Afegeix fila')}" aria-label="${tr('Afegeix fila')}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></th></tr>`;
+  thead += '</tr>';
 
   let tbody = '';
   rows.forEach((row, ri) => {
     tbody += `<tr>`;
     tbody += `<td class="td-session"><div class="td-session-inner">
-      <span class="td-session-num">S${ri+1}</span>
-      <span class="td-session-time">${esc(row.start||'')} – ${esc(row.end||'')}</span>
       <button class="td-session-del" onclick="horariRemoveRow(${ri},'${mode}')" title="${tr('Elimina fila')}" aria-label="${tr('Elimina fila')}">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
+      <input type="time" class="td-session-time-input" value="${esc(row.start||'')}" onchange="horariUpdateRowTime(${ri},'start',this.value,'${mode}');render()" onclick="event.stopPropagation()">
+      <span class="td-session-sep">–</span>
+      <input type="time" class="td-session-time-input" value="${esc(row.end||'')}" onchange="horariUpdateRowTime(${ri},'end',this.value,'${mode}');render()" onclick="event.stopPropagation()">
     </div></td>`;
     for(const d of HORARI_DAYS){
       const cell = row.cells[d] || { group:'', areaId:'', areaCustom:'' };
       const hasData = cell.group || cell.areaId || cell.areaCustom;
       const areaObj = cell.areaId === HORARI_PATI_ID ? {name:'Pati'} : (cell.areaId ? state.areas.find(a=>a.id===cell.areaId) : null);
       const areaName = areaObj ? areaObj.name : (cell.areaCustom || '');
-      tbody += `<td class="td-cell ${hasData?'has-data':''}" onclick="horariOpenCellModal(${ri},${d},'${mode}')">`;
+      const areaOpts = horariAreaOptsHTML(cell.areaId);
+      tbody += `<td class="td-cell ${hasData?'has-data':''}">`;
+      tbody += '<div class="horari-cell-topbar">';
+      tbody += `<select class="horari-cell-select" onchange="horariCellSelectArea(${ri},${d},'${mode}',this.value)">${areaOpts}</select>`;
+      if(hasData){
+        tbody += `<button class="horari-cell-clean" onclick="horariClearCell(${ri},${d},'${mode}')" title="${tr('Neteja')}" aria-label="${tr('Neteja')}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>`;
+      }
+      tbody += '</div>';
       if(hasData){
         tbody += '<div class="horari-cell-content">';
         if(areaName === 'Pati') tbody += `<span class="horari-cell-area horari-cell-pati">Pati</span>`;
         else if(areaName) tbody += `<span class="horari-cell-area">${esc(areaName)}</span>`;
         if(cell.group) tbody += `<span class="horari-cell-group">${esc(cell.group)}</span>`;
         tbody += '</div>';
-      } else {
-        tbody += '<span class="horari-cell-empty">—</span>';
       }
       tbody += '</td>';
     }
     tbody += '</tr>';
   });
 
+  tbody += `<tr><td class="td-session-add" colspan="${HORARI_DAYS.length + 1}">
+    <button class="btn btn-ghost horari-add-row-btn" onclick="${addFn}" title="${tr('Afegeix fila')}" aria-label="${tr('Afegeix fila')}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      ${tr('Afegeix sessió')}
+    </button>
+  </td></tr>`;
+
   return `<div class="horari-grid-wrap"><table class="horari-grid"><thead>${thead}</thead><tbody>${tbody}</tbody></table></div>`;
 }
 
 function horariHTML(){
-  const h = state.horari || { rows:[], summer:{active:true,months:[9,10,11,12,1,2,3,4,5,6]}, summerRows:[] };
+  const h = state.horari || { rows:[], summer:{active:false,months:[]}, summerRows:[] };
   const isNormal = horariTab === 'normal';
   const isSummer = horariTab === 'estiu';
   const rows = isSummer ? (h.summerRows||[]) : (h.rows||[]);
@@ -6182,7 +6205,6 @@ function horariHTML(){
   return `
   <div class="settings-header">
     <h1 class="display">${tr('Horari')}</h1>
-    <p class="agenda-note">${tr('Configura el teu horari setmanal. Afegeix o lleva files per afegir o llevar sessions.')}</p>
   </div>
 
   <div class="horari-tabs">
@@ -6201,9 +6223,9 @@ function horariHTML(){
         </label>
       </label>
     </div>
+    <button class="btn btn-ghost horari-copy-normal-btn" onclick="horariCopyNormalToSummer()">${tr('Copiar horari normal')}</button>
     ${h.summer && h.summer.active ? `
     <div class="horari-summer-months">
-      <p class="horari-summer-hint">${tr('Selecciona els mesos en què funciona l\'horari d\'estiu. La resta usarà l\'horari normal.')}</p>
       <div class="horari-months-grid">${summerMonthsHTML}</div>
     </div>` : ''}
   </div>` : ''}
@@ -6213,11 +6235,7 @@ function horariHTML(){
     <p>${tr('L\'horari d\'estiu està desactivat. Activa\'l per configurar-lo.')}</p>
   </div>` : ''}
 
-  ${!(isSummer && !(h.summer && h.summer.active)) ? gridHTML : ''}
-
-  <div class="horari-info">
-    <p>${tr('Si tens àrees creades a la programació i vincules una àrea a l\'horari, la informació es guardarà a l\'àrea, establint quins dies de la setmana i a quina hora tens les classes.')}</p>
-  </div>`;
+  ${!(isSummer && !(h.summer && h.summer.active)) ? gridHTML : ''}`;
 }
 
 function horariSetTab(tab){
@@ -6272,6 +6290,23 @@ function horariUpdateRowTime(ri, field, value, mode){
   rows[ri][field] = value;
   if(mode === 'normal') syncHorariToAreas(rows);
   saveState();
+}
+
+function horariCellSelectArea(ri, day, mode, value){
+  if(!state.horari) initHorariData();
+  const rows = horariGetRows(mode);
+  if(!rows[ri]) return;
+  horariEnsureRowCells(rows[ri]);
+  if(!rows[ri].cells[day]) rows[ri].cells[day] = { group:'', areaId:'', areaCustom:'' };
+  if(value === '__custom__'){
+    rows[ri].cells[day].areaId = '';
+    rows[ri].cells[day].areaCustom = '';
+  } else {
+    rows[ri].cells[day].areaId = value;
+    rows[ri].cells[day].areaCustom = '';
+  }
+  if(mode === 'normal') syncHorariToAreas(rows);
+  saveState(); render();
 }
 
 function horariClearCell(ri, day, mode){
@@ -6383,6 +6418,13 @@ function horariToggleMonth(month){
     return order(a) - order(b);
   });
   state.horari.summer.months = months;
+  saveState(); render();
+}
+
+function horariCopyNormalToSummer(){
+  if(!state.horari) initHorariData();
+  const src = state.horari.rows || [];
+  state.horari.summerRows = JSON.parse(JSON.stringify(src));
   saveState(); render();
 }
 
