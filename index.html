@@ -1040,6 +1040,8 @@ body.gate-open #mobile-bottombar{visibility:hidden;}
 .horari-grid .td-session-del:hover{background:var(--danger-soft);}
 .horari-grid .td-session-del svg{width:14px;height:14px;}
 .horari-grid .td-session-time-input{width:60px;padding:2px 4px;border:1px solid transparent;border-radius:4px;font-size:.72rem;font-weight:500;color:var(--ink-faint);text-align:center;background:transparent;cursor:pointer;font-family:inherit;}
+.horari-grid .td-session-time-input::-webkit-calendar-picker-indicator{display:none;}
+.horari-grid .td-session-time-input::-moz-focus-outer{border:none;}
 .horari-grid .td-session-time-input:hover{border-color:var(--line);background:var(--white);}
 .horari-grid .td-session-time-input:focus{border-color:var(--pen);outline:none;background:var(--white);}
 .horari-grid .td-session-sep{font-size:.7rem;color:var(--ink-faint);}
@@ -1047,9 +1049,9 @@ body.gate-open #mobile-bottombar{visibility:hidden;}
 .horari-grid .td-cell:hover{background:var(--pen-soft);}
 .horari-grid .td-cell.has-data{background:var(--green-tint);}
 .horari-cell-topbar{display:flex;align-items:center;gap:4px;margin-bottom:4px;}
-.horari-cell-select{flex:1;padding:3px 4px;border:1px solid transparent;border-radius:4px;font-size:.72rem;color:var(--ink-soft);background:transparent;cursor:pointer;font-family:inherit;min-width:0;}
-.horari-cell-select:hover{border-color:var(--line);background:var(--white);}
-.horari-cell-select:focus{border-color:var(--pen);outline:none;background:var(--white);}
+.horari-cell-select{flex:1;padding:4px 6px;border:1px solid var(--line);border-radius:4px;font-size:.75rem;font-weight:600;color:var(--ink);background:var(--white);cursor:pointer;font-family:inherit;min-width:0;}
+.horari-cell-select:hover{border-color:var(--pen);}
+.horari-cell-select:focus{border-color:var(--pen);outline:none;}
 .horari-cell-clean{background:none;border:none;color:var(--ink-faint);cursor:pointer;padding:2px;border-radius:4px;line-height:0;flex-shrink:0;}
 .horari-cell-clean:hover{color:var(--danger);background:var(--danger-soft);}
 .horari-cell-clean svg{width:12px;height:12px;}
@@ -6160,19 +6162,15 @@ function horariGridHTML(rows, mode){
       const areaObj = cell.areaId === HORARI_PATI_ID ? {name:'Pati'} : (cell.areaId ? state.areas.find(a=>a.id===cell.areaId) : null);
       const areaName = areaObj ? areaObj.name : (cell.areaCustom || '');
       const areaOpts = horariAreaOptsHTML(cell.areaId);
-      tbody += `<td class="td-cell ${hasData?'has-data':''}">`;
+      tbody += `<td class="td-cell ${hasData?'has-data':''}" onclick="var s=this.querySelector('.horari-cell-select');if(s){s.focus();s.click();}">`;
       tbody += '<div class="horari-cell-topbar">';
-      tbody += `<select class="horari-cell-select" onchange="horariCellSelectArea(${ri},${d},'${mode}',this.value)">${areaOpts}</select>`;
+      tbody += `<select class="horari-cell-select" onchange="horariCellSelectArea(${ri},${d},'${mode}',this.value)" onclick="event.stopPropagation()">${areaOpts}</select>`;
       if(hasData){
-        tbody += `<button class="horari-cell-clean" onclick="horariClearCell(${ri},${d},'${mode}')" title="${tr('Neteja')}" aria-label="${tr('Neteja')}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>`;
+        tbody += `<button class="horari-cell-clean" onclick="event.stopPropagation();horariClearCell(${ri},${d},'${mode}')" title="${tr('Neteja')}" aria-label="${tr('Neteja')}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>`;
       }
       tbody += '</div>';
-      if(hasData){
-        tbody += '<div class="horari-cell-content">';
-        if(areaName === 'Pati') tbody += `<span class="horari-cell-area horari-cell-pati">Pati</span>`;
-        else if(areaName) tbody += `<span class="horari-cell-area">${esc(areaName)}</span>`;
-        if(cell.group) tbody += `<span class="horari-cell-group">${esc(cell.group)}</span>`;
-        tbody += '</div>';
+      if(cell.group){
+        tbody += `<div class="horari-cell-content"><span class="horari-cell-group">${esc(cell.group)}</span></div>`;
       }
       tbody += '</td>';
     }
