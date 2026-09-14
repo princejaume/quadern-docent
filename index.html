@@ -1049,6 +1049,8 @@ body.gate-open #mobile-bottombar{visibility:hidden;}
 .horari-cell-select{position:absolute;opacity:0;width:0;height:0;pointer-events:none;}
 .horari-cell-content{display:flex;flex-direction:column;gap:1px;text-align:center;align-items:center;justify-content:center;width:100%;height:100%;}
 .horari-cell-area{font-size:.72rem;font-weight:700;color:var(--pen-dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;}
+.horari-cell-arrow{color:var(--ink-faint);line-height:0;margin-top:-1px;}
+.horari-cell-arrow svg{width:10px;height:10px;}
 .horari-cell-group{font-size:.65rem;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .horari-cell-empty{color:var(--ink-faint);font-size:.72rem;font-style:italic;}
 .horari-cell-clean{background:none;border:none;color:var(--ink-faint);cursor:pointer;padding:1px;border-radius:4px;line-height:0;flex-shrink:0;position:absolute;top:2px;right:2px;}
@@ -1057,7 +1059,7 @@ body.gate-open #mobile-bottombar{visibility:hidden;}
 .horari-grid .td-session-add{background:var(--paper);text-align:center;padding:8px;border-top:none;}
 .horari-add-row-btn{display:inline-flex;align-items:center;gap:6px;font-size:.82rem;}
 .horari-add-row-btn svg{width:14px;height:14px;}
-.horari-copy-normal-btn{margin-top:12px;font-size:.82rem;}
+.horari-copy-normal-btn{margin-left:auto;font-size:.82rem;}
 /* Modal edició cel·la */
 .horari-cell-modal .modal{max-width:400px;}
 .horari-cell-fields{display:flex;flex-direction:column;gap:12px;}
@@ -6164,9 +6166,9 @@ function horariGridHTML(rows, mode){
       tbody += `<td class="td-cell ${hasData?'has-data':''}" onclick="var s=this.querySelector('.horari-cell-select');if(s){if(s.showPicker)s.showPicker();else s.focus();}">`;
       tbody += `<select class="horari-cell-select" onchange="horariCellSelectArea(${ri},${d},'${mode}',this.value)" onclick="event.stopPropagation()">${areaOpts}</select>`;
       tbody += '<div class="horari-cell-content">';
-      if(areaName) tbody += `<span class="horari-cell-area">${esc(areaName)}</span>`;
+      if(areaName) tbody += `<span class="horari-cell-area">${esc(areaName)}</span><span class="horari-cell-arrow"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="2,4 6,8 10,4"/></svg></span>`;
+      else tbody += '<span class="horari-cell-empty">—</span>';
       if(cell.group) tbody += `<span class="horari-cell-group">${esc(cell.group)}</span>`;
-      if(!areaName && !cell.group) tbody += '<span class="horari-cell-empty">—</span>';
       tbody += '</div>';
       if(hasData){
         tbody += `<button class="horari-cell-clean" onclick="event.stopPropagation();horariClearCell(${ri},${d},'${mode}')" title="${tr('Neteja')}" aria-label="${tr('Neteja')}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>`;
@@ -6219,8 +6221,8 @@ function horariHTML(){
           <span class="slider"></span>
         </label>
       </label>
+      <button class="btn btn-ghost horari-copy-normal-btn" onclick="horariCopyNormalToSummer()">${tr('Copiar horari normal')}</button>
     </div>
-    <button class="btn btn-ghost horari-copy-normal-btn" onclick="horariCopyNormalToSummer()">${tr('Copiar horari normal')}</button>
     ${h.summer && h.summer.active ? `
     <div class="horari-summer-months">
       <div class="horari-months-grid">${summerMonthsHTML}</div>
